@@ -50,8 +50,36 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'root'   => public_path() . '/uploads/unified',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+
+        'public_userImage' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/uploads/userImage',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+
+        'public_postImage' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/uploads/postImage',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+
+        'public_sarprasInventoryImage' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/uploads/sarprasInventoryImage',
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
+
+        'public_kantinInventoryImage' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/uploads/kantinInventoryImage',
+            'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],
 

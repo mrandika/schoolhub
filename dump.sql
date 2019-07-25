@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 25, 2019 at 03:47 PM
+-- Generation Time: Jul 25, 2019 at 04:34 PM
 -- Server version: 5.7.25
 -- PHP Version: 7.3.1
 
@@ -290,6 +290,7 @@ CREATE TABLE `notes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_teacher` bigint(20) UNSIGNED NOT NULL,
   `id_class` bigint(20) UNSIGNED NOT NULL,
+  `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -514,6 +515,118 @@ CREATE TABLE `users_session` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_class`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_class` (
+`id` bigint(20) unsigned
+,`teacher` varchar(100)
+,`name` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_notes`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_notes` (
+`id` bigint(20) unsigned
+,`teacher` varchar(100)
+,`class` varchar(50)
+,`text` text
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_students`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_students` (
+`id_user` bigint(20) unsigned
+,`name` varchar(100)
+,`nipd` varchar(20)
+,`nisn` varchar(20)
+,`class` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_teachers`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_teachers` (
+`id_user` bigint(20) unsigned
+,`name` varchar(100)
+,`nip` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_teaching_data`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_teaching_data` (
+`id` bigint(20) unsigned
+,`teacher` varchar(100)
+,`day` int(11)
+,`class` varchar(50)
+,`subject` varchar(100)
+,`time_in` timestamp
+,`time_out` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_class`
+--
+DROP TABLE IF EXISTS `v_class`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_class`  AS  (select `class`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `class`.`id_teacher`)) AS `teacher`,`class`.`name` AS `name` from `class`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_notes`
+--
+DROP TABLE IF EXISTS `v_notes`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_notes`  AS  (select `notes`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `notes`.`id_teacher`)) AS `teacher`,(select `class`.`name` from `class` where (`class`.`id` = `notes`.`id_class`)) AS `class`,`notes`.`text` AS `text` from `notes`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_students`
+--
+DROP TABLE IF EXISTS `v_students`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_students`  AS  (select `students`.`id_user` AS `id_user`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `students`.`id_user`)) AS `name`,`students`.`nipd` AS `nipd`,`students`.`nisn` AS `nisn`,(select `class`.`name` from `class` where (`class`.`id` = `students`.`id_class`)) AS `class` from `students`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_teachers`
+--
+DROP TABLE IF EXISTS `v_teachers`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_teachers`  AS  (select `teachers`.`id_user` AS `id_user`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `teachers`.`id_user`)) AS `name`,`teachers`.`nip` AS `nip` from `teachers`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_teaching_data`
+--
+DROP TABLE IF EXISTS `v_teaching_data`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_teaching_data`  AS  (select `teaching_data`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `teaching_data`.`id_teacher`)) AS `teacher`,`teaching_data`.`day` AS `day`,(select `class`.`name` from `class` where (`class`.`id` = `teaching_data`.`id_class`)) AS `class`,(select `subjects`.`name` from `subjects` where (`subjects`.`id` = `teaching_data`.`id_subject`)) AS `subject`,`teaching_data`.`time_in` AS `time_in`,`teaching_data`.`time_out` AS `time_out` from `teaching_data`) ;
 
 --
 -- Indexes for dumped tables
