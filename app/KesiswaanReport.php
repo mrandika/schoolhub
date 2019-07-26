@@ -19,4 +19,13 @@ class KesiswaanReport extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_teacher', 'id_student', 'id_violation', 'status',
+    ];
 }

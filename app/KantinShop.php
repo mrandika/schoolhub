@@ -19,4 +19,13 @@ class KantinShop extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_owner', 'name', 'image', 'description'
+    ];
 }

@@ -16,8 +16,8 @@ class CreateBlogPostMetasTable extends Migration
         Schema::create('blog_post_metas', function (Blueprint $table) {
             $table->unsignedBigInteger('id_post');
             $table->foreign('id_post')->references('id')->on('blog_posts');
-            $table->unsignedBigInteger('id_tag');
-            $table->foreign('id_tag')->references('id')->on('blog_tags');
+            $table->text('image');
+            $table->text('mime');
         });
     }
 

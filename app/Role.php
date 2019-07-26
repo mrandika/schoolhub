@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rooms extends Model
+class Role extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'rooms';
+    protected $table = 'roles';
 
     /**
      * The primary key associated with the table.
@@ -26,6 +26,6 @@ class Rooms extends Model
      * @var array
      */
     protected $fillable = [
-        'code', 'alias',
+        'name',
     ];
 }

@@ -19,4 +19,13 @@ class UserSession extends Model
      * @var string
      */
     protected $primaryKey = 'id_user';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_user', 'is_mobile', 'phone', 'imei',
+    ];
 }

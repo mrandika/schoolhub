@@ -19,4 +19,13 @@ class TeachingData extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_teacher', 'day', 'id_class', 'id_subject', 'id_room', 'time_in', 'time_out',
+    ];
 }

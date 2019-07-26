@@ -19,4 +19,13 @@ class SarprasBorrower extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_user', 'id_inventory', 'id_room', 'status'
+    ];
 }

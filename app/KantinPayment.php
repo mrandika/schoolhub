@@ -19,4 +19,13 @@ class KantinPayment extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_seller', 'id_buyer', 'id_inventory', 'qty', 'total',
+    ];
 }

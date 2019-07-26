@@ -19,4 +19,13 @@ class BlogPost extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_categories', 'id_user', 'has_meta', 'title', 'headline', 'content',
+    ];
 }

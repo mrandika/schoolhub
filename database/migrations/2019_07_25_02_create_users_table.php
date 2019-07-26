@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use Illuminate\Support\Facades\Hash;
+
+use App\User;
+
 class CreateUsersTable extends Migration
 {
     /**
@@ -15,7 +19,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->text('image');
+            $table->text('image')->nullable();
             $table->string('email')->length(100)->unique();
             $table->string('username')->length(50);
             $table->string('password');
@@ -26,6 +30,51 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        User::create([
+            'image' => 'administrator.png',
+            'email' => 'admin@starbhak.com',
+            'username' => 'administrator',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 1,
+        ]);
+
+        User::create([
+            'image' => 'admin-kesiswaan.png',
+            'email' => 'admin-kesiswaan@starbhak.com',
+            'username' => 'adminkesiswaan',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 2,
+        ]);
+
+        User::create([
+            'image' => 'admin-kurikulum.png',
+            'email' => 'admin-kurikulum@starbhak.com',
+            'username' => 'adminkurikulum',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 3,
+        ]);
+
+        User::create([
+            'image' => 'admin-sarpras.png',
+            'email' => 'admin-sarpras@starbhak.com',
+            'username' => 'adminsarpras',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 4,
+        ]);
+
+        User::create([
+            'image' => 'admin-kantin.png',
+            'email' => 'admin-kantin@starbhak.com',
+            'username' => 'adminkantin',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 5,
+        ]);
     }
 
     /**

@@ -19,4 +19,13 @@ class Subjects extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code', 'name', 'type', 'minimum',
+    ];
 }

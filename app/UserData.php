@@ -19,4 +19,13 @@ class UserData extends Model
      * @var string
      */
     protected $primaryKey = 'id_user';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_user', 'name', 'gender', 'religion', 'birthplace', 'dob', 'address', 'phone',
+    ];
 }

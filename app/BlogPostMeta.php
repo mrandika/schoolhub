@@ -19,4 +19,13 @@ class BlogPostMeta extends Model
      * @var string
      */
     protected $primaryKey = 'id_post';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id_post', 'image', 'mime',
+    ];
 }
