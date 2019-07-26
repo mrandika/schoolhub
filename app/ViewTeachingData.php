@@ -4,14 +4,14 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KantinPayment extends Model
+class ViewTeachingData extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'kantin_payments';
+    protected $table = 'v_teaching_data';
 
     /**
      * The primary key associated with the table.

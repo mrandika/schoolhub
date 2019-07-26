@@ -17,6 +17,7 @@ class CreateKantinInventoriesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_shop');
             $table->foreign('id_shop')->references('id')->on('kantin_shops');
+            $table->string('name')->length('100');
             $table->text('image');
             $table->integer('price')->length(6);
             $table->integer('stock')->length(4);

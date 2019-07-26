@@ -21,6 +21,7 @@ class CreateStudentGradeTable extends Migration
             $table->foreign('id_students')->references('id_user')->on('students');
             $table->text('section');
             $table->text('section_name');
+            $table->double('score');
             $table->timestamps();
         });
     }

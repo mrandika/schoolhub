@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 25, 2019 at 04:34 PM
+-- Generation Time: Jul 26, 2019 at 10:09 AM
 -- Server version: 5.7.25
 -- PHP Version: 7.3.1
 
@@ -86,7 +86,9 @@ CREATE TABLE `blog_post_comments` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_user` bigint(20) UNSIGNED NOT NULL,
   `id_post` bigint(20) UNSIGNED NOT NULL,
-  `text` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `text` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -149,6 +151,7 @@ CREATE TABLE `class` (
 CREATE TABLE `kantin_inventories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_shop` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` int(11) NOT NULL,
   `stock` int(11) NOT NULL,
@@ -182,6 +185,8 @@ CREATE TABLE `kantin_payments` (
 CREATE TABLE `kantin_shops` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `id_owner` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -393,6 +398,7 @@ CREATE TABLE `student_grade` (
   `id_students` bigint(20) UNSIGNED NOT NULL,
   `section` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `section_name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -519,6 +525,38 @@ CREATE TABLE `users_session` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_blog_posts`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_blog_posts` (
+`id` bigint(20) unsigned
+,`categories` mediumtext
+,`user` varchar(100)
+,`has_meta` tinyint(1)
+,`title` text
+,`headline` text
+,`content` text
+,`created_at` timestamp
+,`updated_at` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_blog_post_comment`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_blog_post_comment` (
+`id` bigint(20) unsigned
+,`users` varchar(100)
+,`posts` mediumtext
+,`created_at` timestamp
+,`updated_at` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `v_class`
 -- (See below for the actual view)
 --
@@ -526,6 +564,50 @@ CREATE TABLE `v_class` (
 `id` bigint(20) unsigned
 ,`teacher` varchar(100)
 ,`name` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_kantin_payments`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_kantin_payments` (
+`id` bigint(20) unsigned
+,`shop` varchar(100)
+,`customer` varchar(100)
+,`item` varchar(100)
+,`qty` int(11)
+,`total` int(11)
+,`created_at` timestamp
+,`updated_at` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_kantin_shops`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_kantin_shops` (
+`id` bigint(20) unsigned
+,`owner` varchar(100)
+,`name` varchar(100)
+,`image` text
+,`description` text
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_kesiswaan_reports`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_kesiswaan_reports` (
+`id` bigint(20) unsigned
+,`teacher` varchar(100)
+,`student` varchar(100)
+,`violation` mediumtext
 );
 
 -- --------------------------------------------------------
@@ -544,6 +626,20 @@ CREATE TABLE `v_notes` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_sarpras_borrower`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_sarpras_borrower` (
+`id` bigint(20) unsigned
+,`user` varchar(100)
+,`item` mediumtext
+,`room` varchar(100)
+,`status` enum('Belum Dikembalikan','Dikembalikan')
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `v_students`
 -- (See below for the actual view)
 --
@@ -553,6 +649,20 @@ CREATE TABLE `v_students` (
 ,`nipd` varchar(20)
 ,`nisn` varchar(20)
 ,`class` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_student_grade`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_student_grade` (
+`id` bigint(20) unsigned
+,`students` varchar(100)
+,`section` text
+,`section_name` text
+,`score` double
 );
 
 -- --------------------------------------------------------
@@ -586,11 +696,56 @@ CREATE TABLE `v_teaching_data` (
 -- --------------------------------------------------------
 
 --
+-- Structure for view `v_blog_posts`
+--
+DROP TABLE IF EXISTS `v_blog_posts`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_blog_posts`  AS  (select `blog_posts`.`id` AS `id`,(select `blog_categories`.`name` from `blog_categories` where (`blog_categories`.`id` = `blog_posts`.`id_categories`)) AS `categories`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `blog_posts`.`id_user`)) AS `user`,`blog_posts`.`has_meta` AS `has_meta`,`blog_posts`.`title` AS `title`,`blog_posts`.`headline` AS `headline`,`blog_posts`.`content` AS `content`,`blog_posts`.`created_at` AS `created_at`,`blog_posts`.`updated_at` AS `updated_at` from `blog_posts`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_blog_post_comment`
+--
+DROP TABLE IF EXISTS `v_blog_post_comment`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_blog_post_comment`  AS  (select `blog_post_comments`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `blog_post_comments`.`id_user`)) AS `users`,(select `blog_posts`.`title` from `blog_posts` where (`blog_posts`.`id` = `blog_post_comments`.`id_post`)) AS `posts`,`blog_post_comments`.`created_at` AS `created_at`,`blog_post_comments`.`updated_at` AS `updated_at` from `blog_post_comments`) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `v_class`
 --
 DROP TABLE IF EXISTS `v_class`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_class`  AS  (select `class`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `class`.`id_teacher`)) AS `teacher`,`class`.`name` AS `name` from `class`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_kantin_payments`
+--
+DROP TABLE IF EXISTS `v_kantin_payments`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_kantin_payments`  AS  (select `kantin_payments`.`id` AS `id`,(select `kantin_shops`.`name` from `kantin_shops` where (`kantin_shops`.`id_owner` = `kantin_payments`.`id_seller`)) AS `shop`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `kantin_payments`.`id_buyer`)) AS `customer`,(select `kantin_inventories`.`name` from `kantin_inventories` where (`kantin_inventories`.`id` = `kantin_payments`.`id_inventory`)) AS `item`,`kantin_payments`.`qty` AS `qty`,`kantin_payments`.`total` AS `total`,`kantin_payments`.`created_at` AS `created_at`,`kantin_payments`.`updated_at` AS `updated_at` from `kantin_payments`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_kantin_shops`
+--
+DROP TABLE IF EXISTS `v_kantin_shops`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_kantin_shops`  AS  (select `kantin_shops`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `kantin_shops`.`id_owner`)) AS `owner`,`kantin_shops`.`name` AS `name`,`kantin_shops`.`image` AS `image`,`kantin_shops`.`description` AS `description` from `kantin_shops`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_kesiswaan_reports`
+--
+DROP TABLE IF EXISTS `v_kesiswaan_reports`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_kesiswaan_reports`  AS  (select `kesiswaan_reports`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `kesiswaan_reports`.`id_teacher`)) AS `teacher`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `kesiswaan_reports`.`id_student`)) AS `student`,(select `kesiswaan_violation`.`name` from `kesiswaan_violation` where (`kesiswaan_violation`.`id` = `kesiswaan_reports`.`id_violation`)) AS `violation` from `kesiswaan_reports`) ;
 
 -- --------------------------------------------------------
 
@@ -604,11 +759,29 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `v_sarpras_borrower`
+--
+DROP TABLE IF EXISTS `v_sarpras_borrower`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_sarpras_borrower`  AS  (select `sarpras_borrower`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `sarpras_borrower`.`id_user`)) AS `user`,(select `sarpras_inventories`.`name` from `sarpras_inventories` where (`sarpras_inventories`.`id` = `sarpras_borrower`.`id_inventory`)) AS `item`,(select `rooms`.`alias` from `rooms` where (`rooms`.`id` = `sarpras_borrower`.`id_room`)) AS `room`,`sarpras_borrower`.`status` AS `status` from `sarpras_borrower`) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `v_students`
 --
 DROP TABLE IF EXISTS `v_students`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_students`  AS  (select `students`.`id_user` AS `id_user`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `students`.`id_user`)) AS `name`,`students`.`nipd` AS `nipd`,`students`.`nisn` AS `nisn`,(select `class`.`name` from `class` where (`class`.`id` = `students`.`id_class`)) AS `class` from `students`) ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `v_student_grade`
+--
+DROP TABLE IF EXISTS `v_student_grade`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_student_grade`  AS  (select `student_grade`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `student_grade`.`id_students`)) AS `students`,`student_grade`.`section` AS `section`,`student_grade`.`section_name` AS `section_name`,`student_grade`.`score` AS `score` from `student_grade`) ;
 
 -- --------------------------------------------------------
 

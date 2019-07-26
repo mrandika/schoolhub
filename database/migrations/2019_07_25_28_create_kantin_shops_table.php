@@ -17,6 +17,8 @@ class CreateKantinShopsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_owner');
             $table->foreign('id_owner')->references('id')->on('users');
+            $table->string('name')->length('100');
+            $table->text('image');
             $table->text('description');
             $table->timestamps();
         });

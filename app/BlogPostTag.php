@@ -4,19 +4,19 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class KantinPayment extends Model
+class BlogPostTag extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'kantin_payments';
+    protected $table = 'blog_post_tags';
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'id_post';
 }
