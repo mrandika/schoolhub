@@ -15,9 +15,10 @@ class CategoryController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('administrator');
+        $this->middleware('admin.kesiswaan');
         $this->middleware('admin.kurikulum');
         $this->middleware('admin.sarpras');
-        $this->middleware('admin.kesiswaan');
+        $this->middleware('admin.kantin');
     }
     
     /**

@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('administrator');
+        $this->middleware('student');
+    }
+
+    /**
      * Menampilkan laman Today
      * 
      * @return \Illuminate\Http\Response
