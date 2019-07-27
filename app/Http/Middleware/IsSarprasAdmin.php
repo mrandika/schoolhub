@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Response;
+
 use Closure;
 
 class IsSarprasAdmin
@@ -18,7 +20,7 @@ class IsSarprasAdmin
         if ($request->user() && $request->user()->role == 4) {
             return $next($request);
         } else {
-            return new Response(view('error/auth/insufficient'));
+            return abort(401);
         }
     }
 }

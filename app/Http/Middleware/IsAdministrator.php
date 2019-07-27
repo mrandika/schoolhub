@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Response;
+
 use Closure;
 
 class IsAdministrator
@@ -18,7 +20,7 @@ class IsAdministrator
         if ($request->user() && $request->user()->role == 1) {
             return $next($request);
         } else {
-            return new Response(view('error/auth/insufficient'));
+            return abort(401);
         }
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jul 26, 2019 at 10:09 AM
+-- Generation Time: Jul 27, 2019 at 06:26 AM
 -- Server version: 5.7.25
 -- PHP Version: 7.3.1
 
@@ -111,7 +111,21 @@ CREATE TABLE `blog_post_likes` (
 
 CREATE TABLE `blog_post_metas` (
   `id_post` bigint(20) UNSIGNED NOT NULL,
-  `id_tag` bigint(20) UNSIGNED NOT NULL
+  `image` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mime` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blog_post_tags`
+--
+
+CREATE TABLE `blog_post_tags` (
+  `id_post` bigint(20) UNSIGNED NOT NULL,
+  `id_tag` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -274,16 +288,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2019_07_25_17_create_blog_tags_table', 1),
 (19, '2019_07_25_18_create_blog_posts_table', 1),
 (20, '2019_07_25_19_create_blog_post_metas_table', 1),
-(21, '2019_07_25_20_create_blog_post_likes_table', 1),
-(22, '2019_07_25_21_create_blog_post_comments_table', 1),
-(23, '2019_07_25_22_create_sarpras_inventories_table', 1),
-(24, '2019_07_25_23_create_sarpras_borrower_table', 1),
-(25, '2019_07_25_24_create_kesiswaan_events_table', 1),
-(26, '2019_07_25_25_create_kesiswaan_violation_table', 1),
-(27, '2019_07_25_26_create_kesiswaan_reports_table', 1),
-(28, '2019_07_25_27_create_kantin_shops_table', 1),
-(29, '2019_07_25_28_create_kantin_inventories_table', 1),
-(30, '2019_07_25_29_create_kantin_payments_table', 1);
+(21, '2019_07_25_20_create_blog_post_tags_table', 1),
+(22, '2019_07_25_21_create_blog_post_likes_table', 1),
+(23, '2019_07_25_22_create_blog_post_comments_table', 1),
+(24, '2019_07_25_23_create_sarpras_inventories_table', 1),
+(25, '2019_07_25_24_create_sarpras_borrower_table', 1),
+(26, '2019_07_25_25_create_kesiswaan_events_table', 1),
+(27, '2019_07_25_26_create_kesiswaan_violation_table', 1),
+(28, '2019_07_25_27_create_kesiswaan_reports_table', 1),
+(29, '2019_07_25_28_create_kantin_shops_table', 1),
+(30, '2019_07_25_29_create_kantin_inventories_table', 1),
+(31, '2019_07_25_30_create_kantin_payments_table', 1);
 
 -- --------------------------------------------------------
 
@@ -324,6 +339,19 @@ CREATE TABLE `roles` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Administrator', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(2, 'Admin Kesiswaan', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(3, 'Admin Kurikulum', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(4, 'Admin Sarpras', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(5, 'Admin Kantin', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(6, 'Guru', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(7, 'Siswa', '2019-07-26 23:24:54', '2019-07-26 23:24:54');
 
 -- --------------------------------------------------------
 
@@ -475,7 +503,7 @@ CREATE TABLE `teaching_data` (
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `image` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` text COLLATE utf8mb4_unicode_ci,
   `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -487,6 +515,17 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `image`, `email`, `username`, `password`, `balance`, `role`, `email_verified_at`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'administrator.png', 'admin@starbhak.com', 'administrator', '$2y$10$9fAs/3iPccx4ywhijs41peR6tmtoUbMNdOv0EIVEuA5ReV3iBKtNe', 0, 1, NULL, NULL, '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(2, 'admin-kesiswaan.png', 'admin-kesiswaan@starbhak.com', 'adminkesiswaan', '$2y$10$vTRQ6ltfvBBDY7HtC/BwsOugmhEIB4RZgEe1vmnFXD7Tp6rVB6eRS', 0, 2, NULL, NULL, '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(3, 'admin-kurikulum.png', 'admin-kurikulum@starbhak.com', 'adminkurikulum', '$2y$10$za2aionjhOJq7IsOrfU7Ae7Ku1zaZxp7fwXRu5CK5l0cj3DNwonh2', 0, 3, NULL, NULL, '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(4, 'admin-sarpras.png', 'admin-sarpras@starbhak.com', 'adminsarpras', '$2y$10$JPIJj5n68zY2clUOAF2zrevPacwYstdy3IquTnyEBHRzoiamD5Fom', 0, 4, NULL, NULL, '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(5, 'admin-kantin.png', 'admin-kantin@starbhak.com', 'adminkantin', '$2y$10$YqN8of.7GmYgSLgnpFIpMuNID6AZ2IbKGglOUBUE9lhzl4vDeIp6S', 0, 5, NULL, NULL, '2019-07-26 23:24:54', '2019-07-26 23:24:54');
+
 -- --------------------------------------------------------
 
 --
@@ -496,8 +535,8 @@ CREATE TABLE `users` (
 CREATE TABLE `users_data` (
   `id_user` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `gender` enum('Laki-laki','Perempuan') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `religion` enum('Islam','Kristen Prostan','Katolik','Buddha','Hindu','Kong Hu Chu') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `gender` enum('Laki-laki','Perempuan','0') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `religion` enum('Islam','Kristen Prostan','Katolik','Buddha','Hindu','Kong Hu Chu','0') COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthplace` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dob` date NOT NULL,
   `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -505,6 +544,17 @@ CREATE TABLE `users_data` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `users_data`
+--
+
+INSERT INTO `users_data` (`id_user`, `name`, `gender`, `religion`, `birthplace`, `dob`, `address`, `phone`, `created_at`, `updated_at`) VALUES
+(1, 'Administrator', '0', '0', '0', '1970-01-01', '0', '0', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(2, 'Admin Kesiswaan', '0', '0', '0', '1970-01-01', '0', '0', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(3, 'Admin Kurikulum', '0', '0', '0', '1970-01-01', '0', '0', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(4, 'Admin Sarpras', '0', '0', '0', '1970-01-01', '0', '0', '2019-07-26 23:24:54', '2019-07-26 23:24:54'),
+(5, 'Admin Kantin', '0', '0', '0', '1970-01-01', '0', '0', '2019-07-26 23:24:54', '2019-07-26 23:24:54');
 
 -- --------------------------------------------------------
 
@@ -552,6 +602,17 @@ CREATE TABLE `v_blog_post_comment` (
 ,`posts` mediumtext
 ,`created_at` timestamp
 ,`updated_at` timestamp
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_blog_post_tags`
+-- (See below for the actual view)
+--
+CREATE TABLE `v_blog_post_tags` (
+`id_post` bigint(20) unsigned
+,`tag` mediumtext
 );
 
 -- --------------------------------------------------------
@@ -617,8 +678,7 @@ CREATE TABLE `v_kesiswaan_reports` (
 -- (See below for the actual view)
 --
 CREATE TABLE `v_notes` (
-`id` bigint(20) unsigned
-,`teacher` varchar(100)
+`teacher` varchar(100)
 ,`class` varchar(50)
 ,`text` text
 );
@@ -714,6 +774,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Structure for view `v_blog_post_tags`
+--
+DROP TABLE IF EXISTS `v_blog_post_tags`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_blog_post_tags`  AS  (select `blog_post_tags`.`id_post` AS `id_post`,(select `blog_tags`.`name` from `blog_tags` where (`blog_tags`.`id` = `blog_post_tags`.`id_tag`)) AS `tag` from `blog_post_tags`) ;
+
+-- --------------------------------------------------------
+
+--
 -- Structure for view `v_class`
 --
 DROP TABLE IF EXISTS `v_class`;
@@ -754,7 +823,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_notes`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_notes`  AS  (select `notes`.`id` AS `id`,(select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `notes`.`id_teacher`)) AS `teacher`,(select `class`.`name` from `class` where (`class`.`id` = `notes`.`id_class`)) AS `class`,`notes`.`text` AS `text` from `notes`) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_notes`  AS  (select (select `users_data`.`name` from `users_data` where (`users_data`.`id_user` = `notes`.`id_teacher`)) AS `teacher`,(select `class`.`name` from `class` where (`class`.`id` = `notes`.`id_class`)) AS `class`,`notes`.`text` AS `text` from `notes`) ;
 
 -- --------------------------------------------------------
 
@@ -854,8 +923,14 @@ ALTER TABLE `blog_post_likes`
 -- Indexes for table `blog_post_metas`
 --
 ALTER TABLE `blog_post_metas`
-  ADD KEY `blog_post_metas_id_post_foreign` (`id_post`),
-  ADD KEY `blog_post_metas_id_tag_foreign` (`id_tag`);
+  ADD KEY `blog_post_metas_id_post_foreign` (`id_post`);
+
+--
+-- Indexes for table `blog_post_tags`
+--
+ALTER TABLE `blog_post_tags`
+  ADD KEY `blog_post_tags_id_post_foreign` (`id_post`),
+  ADD KEY `blog_post_tags_id_tag_foreign` (`id_tag`);
 
 --
 -- Indexes for table `blog_tags`
@@ -1018,7 +1093,7 @@ ALTER TABLE `users`
 -- Indexes for table `users_data`
 --
 ALTER TABLE `users_data`
-  ADD KEY `users_data_id_user_foreign` (`id_user`);
+  ADD UNIQUE KEY `users_data_id_user_unique` (`id_user`);
 
 --
 -- Indexes for table `users_session`
@@ -1119,7 +1194,7 @@ ALTER TABLE `kesiswaan_violation`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `notes`
@@ -1131,7 +1206,7 @@ ALTER TABLE `notes`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -1179,7 +1254,7 @@ ALTER TABLE `teaching_data`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users_session`
@@ -1229,8 +1304,14 @@ ALTER TABLE `blog_post_likes`
 -- Constraints for table `blog_post_metas`
 --
 ALTER TABLE `blog_post_metas`
-  ADD CONSTRAINT `blog_post_metas_id_post_foreign` FOREIGN KEY (`id_post`) REFERENCES `blog_posts` (`id`),
-  ADD CONSTRAINT `blog_post_metas_id_tag_foreign` FOREIGN KEY (`id_tag`) REFERENCES `blog_tags` (`id`);
+  ADD CONSTRAINT `blog_post_metas_id_post_foreign` FOREIGN KEY (`id_post`) REFERENCES `blog_posts` (`id`);
+
+--
+-- Constraints for table `blog_post_tags`
+--
+ALTER TABLE `blog_post_tags`
+  ADD CONSTRAINT `blog_post_tags_id_post_foreign` FOREIGN KEY (`id_post`) REFERENCES `blog_posts` (`id`),
+  ADD CONSTRAINT `blog_post_tags_id_tag_foreign` FOREIGN KEY (`id_tag`) REFERENCES `blog_tags` (`id`);
 
 --
 -- Constraints for table `blog_tags`

@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Response;
+
 use Closure;
 
 class IsKantinAdmin
@@ -18,7 +20,7 @@ class IsKantinAdmin
         if ($request->user() && $request->user()->role == 5) {
             return $next($request);
         } else {
-            return new Response(view('error/auth/insufficient'));
+            return abort(401);
         }
     }
 }
