@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Rooms extends Model
+class Room extends Model
 {
     /**
      * The table associated with the model.

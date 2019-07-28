@@ -13,9 +13,8 @@ class StudentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware('administrator');
-        $this->middleware('student');
+        // $this->middleware('student');
     }
 
     /**

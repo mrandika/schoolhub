@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Notes extends Model
+class Note extends Model
 {
     /**
      * The table associated with the model.

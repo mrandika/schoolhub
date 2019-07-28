@@ -18,7 +18,7 @@ class IsStudent
         if ($request->user() && $request->user()->role == 7) {
             return $next($request);
         } else {
-            return new Response(view('error/auth/insufficient'));
+            return abort(401);
         }
     }
 }

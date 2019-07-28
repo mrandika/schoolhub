@@ -41,6 +41,19 @@ class Kernel extends HttpKernel
             'throttle:60,1',
             'bindings',
         ],
+
+        'admin' => [
+            \App\Http\Middleware\IsAdministrator::class,
+            \App\Http\Middleware\IsKesiswaanAdmin::class,
+            \App\Http\Middleware\IsKurikulumAdmin::class,
+            \App\Http\Middleware\IsSarprasAdmin::class,
+            \App\Http\Middleware\IsKantinAdmin::class,
+        ],
+
+        'teacher' => [
+            \App\Http\Middleware\IsAdministrator::class,
+            \App\Http\Middleware\IsKurikulumAdmin::class,
+        ],
     ];
 
     /**

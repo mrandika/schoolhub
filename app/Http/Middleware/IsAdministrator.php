@@ -2,8 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Response;
-
 use Closure;
 
 class IsAdministrator

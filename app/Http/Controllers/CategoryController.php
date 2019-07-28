@@ -13,12 +13,7 @@ class CategoryController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
-        $this->middleware('administrator');
-        $this->middleware('admin.kesiswaan');
-        $this->middleware('admin.kurikulum');
-        $this->middleware('admin.sarpras');
-        $this->middleware('admin.kantin');
+        $this->middleware('admin');
     }
     
     /**

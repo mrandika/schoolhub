@@ -13,11 +13,10 @@ class NoteController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware('administrator');
-        $this->middleware('admin.kurikulum');
-        $this->middleware('teacher');
-        $this->middleware('student')->only('show');
+        // $this->middleware('admin.kurikulum');
+        // $this->middleware('teacher');
+        // $this->middleware('student')->only('show');
     }
 
     /**

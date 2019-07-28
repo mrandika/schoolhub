@@ -89,25 +89,25 @@ $role = Auth::user()->role;
 
 {{-- For Teacher --}}
 @if ($role == 7)
-<li class="active"><a class="nav-link" href="{{action('TeacherController@index')}}"><i class="fas fa-pen"></i>
+<li class=@yield('todayActive')><a class="nav-link" href="{{action('TeacherController@index')}}"><i class="fas fa-pen"></i>
                 <span>Today</span></a></li>
-<li class=""><a class="nav-link" href="{{action('NoteController@index')}}"><i class="fas fa-sticky-note"></i>
+<li class=@yield('noteActive')><a class="nav-link" href="{{action('NoteController@index')}}"><i class="fas fa-sticky-note"></i>
                 <span>Catatan</span></a></li>
 
 <li class="menu-header">Pembelajaran</li>
-<li class=""><a class="nav-link" href="{{action('TeachingController@index')}}"><i class="fas fa-chalkboard-teacher"></i>
+<li class=@yield('teachingActive')><a class="nav-link" href="{{action('TeachingController@index')}}"><i class="fas fa-chalkboard-teacher"></i>
                 <span>Jadwal Mengajar</span></a></li>
-<li class=""><a class="nav-link" href="{{action('PresenceController@index')}}"><i class="fas fa-user-check"></i>
+<li class=@yield('presenceActive')><a class="nav-link" href="{{action('PresenceController@index')}}"><i class="fas fa-user-check"></i>
                 <span>Presensi Siswa</span></a></li>
-<li class=""><a class="nav-link" href="{{action('StudentController@index')}}"><i class="far fa-list"></i>
+<li class=@yield('gradingActive')><a class="nav-link" href="{{action('StudentController@index')}}"><i class="far fa-list"></i>
                 <span>Penilaian Siswa</span></a></li>
 
 <li class="menu-header">Kesiswaan</li>
-<li class=""><a class="nav-link" href="{{action('KesiswaanController@index')}}"><i class="fas fa-key"></i>
+<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanController@index')}}"><i class="fas fa-key"></i>
                 <span>Buat Laporan</span></a></li>
 
 <li class="menu-header">Sarpras</li>
-<li class=""><a class="nav-link" href="{{action('SarprasController@index')}}"><i class="fas fa-cubes"></i>
+<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasController@index')}}"><i class="fas fa-cubes"></i>
                 <span>Data Barang</span></a></li>
 {{-- <li class=""><a class="nav-link" href="{{action('SarprasController@borrowData')}}"><i class="fas fa-list"></i>
 <span>Data Peminjaman</span></a></li> --}}

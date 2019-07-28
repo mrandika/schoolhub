@@ -18,7 +18,7 @@ class IsTeacher
         if ($request->user() && $request->user()->role == 6) {
             return $next($request);
         } else {
-            return new Response(view('error/auth/insufficient'));
+            return abort(401);
         }
     }
 }

@@ -13,9 +13,8 @@ class KesiswaanController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
         $this->middleware('administrator');
-        $this->middleware('admin.kesiswaan');
+        // $this->middleware('admin.kesiswaan');
     }
 
     /**
