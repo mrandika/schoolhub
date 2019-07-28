@@ -44,7 +44,8 @@
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown"><a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="{{ url('uploads/users/'.Auth::user()->photo) }}" class="rounded-circle mr-1">
+                            <img alt="image" src="{{ url('uploads/users/'.Auth::user()->photo) }}"
+                                class="rounded-circle mr-1">
                             <div class="d-sm-none d-lg-inline-block">Hi, {{Auth::user()->name}}</div>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-title">Logged in 5 min ago</div>
@@ -84,18 +85,18 @@
 
             @yield('content')
 
-            </div>
-            </section>
         </div>
-        <footer class="main-footer">
-            <div class="footer-left">
-                Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval
-                    Azhar</a>
-            </div>
-            <div class="footer-right">
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="footer-left">
+            Copyright &copy; 2018 <div class="bullet"></div> Design By <a href="https://nauval.in/">Muhamad Nauval
+                Azhar</a>
+        </div>
+        <div class="footer-right">
 
-            </div>
-        </footer>
+        </div>
+    </footer>
     </div>
     </div>
 

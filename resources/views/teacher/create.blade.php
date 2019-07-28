@@ -24,7 +24,8 @@ active
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ action('TeacherController@index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="{{ action('TeacherController@index') }}" class="btn btn-icon"><i
+                        class="fas fa-arrow-left"></i></a>
             </div>
             <h1>Daftar Guru</h1>
             <div class="section-header-breadcrumb">
@@ -178,8 +179,7 @@ active
                                         Another</label>
                                     <div class="col-sm-12 col-md-7">
                                         <label class="custom-switch mt-2">
-                                            <input type="checkbox" name="multiple"
-                                                class="custom-switch-input">
+                                            <input type="checkbox" name="multiple" class="custom-switch-input">
                                             <span class="custom-switch-indicator"></span>
                                         </label>
                                     </div>

@@ -20,7 +20,7 @@ class CreateUsersDataTable extends Migration
             $table->foreign('id_user')->references('id')->on('users');
             $table->string('name')->length('100');
             $table->enum('gender', ['Laki-laki', 'Perempuan', '0']);
-            $table->enum('religion', ['Islam', 'Kristen Prostan', 'Katolik', 'Buddha', 'Hindu', 'Kong Hu Chu', '0']);
+            $table->enum('religion', ['Islam', 'Kristen Protestan', 'Katolik', 'Buddha', 'Hindu', 'Kong Hu Chu', '0']);
             $table->string('birthplace')->length(50);
             $table->date('dob');
             $table->text('address');

@@ -29,6 +29,7 @@ Route::resource('admin/subject', 'SubjectController');
 Route::resource('admin/presence', 'PresenceController');
 Route::resource('admin/note', 'NoteController');
 Route::resource('admin/teaching', 'TeachingController');
+Route::resource('admin/class', 'ClassController');
 
 Route::resource('admin/session', 'SessionController');
 
@@ -70,6 +71,7 @@ Route::get('admin/kesiswaan/violation/data', 'KesiswaanController@violationData'
  */
 // Today
 Route::get('teacher/today', 'TeacherController@today')->name('teacher.today');
+Route::get('/search','TeacherController@search');
 
 /**
  * Student Controller

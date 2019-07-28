@@ -125,7 +125,8 @@ active
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tempat
                                         Lahir</label>
                                     <div class="col-sm-12 col-md-7">
-                                    <input type="text" name="birthplace" value="{{ $data->birthplace }}" class="form-control">
+                                        <input type="text" name="birthplace" value="{{ $data->birthplace }}"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -139,7 +140,8 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Alamat</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="address" value="{{ $data->address }}" class="form-control">
+                                        <input type="text" name="address" value="{{ $data->address }}"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -159,7 +161,8 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Gambar</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <div id="image-preview" class="image-preview" style="background-image: url({{ url('uploads/userImage/'.\App\User::select('image')->where('id', $teacher->id_user)->first()->image) }}); background-size: cover; background-position: center center;">
+                                        <div id="image-preview" class="image-preview"
+                                            style="background-image: url({{ url('uploads/userImage/'.\App\User::select('image')->where('id', $teacher->id_user)->first()->image) }}); background-size: cover; background-position: center center;">
                                             <label for="image-upload" id="image-label">Change File</label>
                                             <input type="file" name="image" id="image-upload">
                                         </div>
@@ -169,20 +172,23 @@ active
                                     <label
                                         class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Username</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="username" value="{{ $user->username }}" class="form-control">
+                                        <input type="text" name="username" value="{{ $user->username }}"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Email</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="email" name="email" value="{{ $user->email }}" class="form-control">
+                                        <input type="email" name="email" value="{{ $user->email }}"
+                                            class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label
                                         class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Password</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="password" placeholder="Kosongkan jika tidak diganti" name="password" class="form-control">
+                                        <input type="password" placeholder="Kosongkan jika tidak diganti"
+                                            name="password" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">

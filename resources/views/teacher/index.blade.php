@@ -51,35 +51,11 @@ active
       <div class="row mt-4">
         <div class="col-12">
           <div class="card">
-            <div class="card-header">
-              <h4>All Posts</h4>
-            </div>
             <div class="card-body">
-              <div class="float-left">
-                <div class="selectric-wrapper selectric-form-control selectric-selectric selectric-below">
-                  <div class="selectric-hide-select"><select class="form-control selectric" tabindex="-1">
-                      <option>Action For Selected</option>
-                      <option>Move to Draft</option>
-                      <option>Move to Pending</option>
-                      <option>Delete Pemanently</option>
-                    </select></div>
-                  <div class="selectric"><span class="label">Action For Selected</span><b class="button">▾</b></div>
-                  <div class="selectric-items" tabindex="-1" style="width: 183.171875px;">
-                    <div class="selectric-scroll">
-                      <ul>
-                        <li data-index="0" class="selected highlighted">Action For Selected</li>
-                        <li data-index="1" class="">Move to Draft</li>
-                        <li data-index="2" class="">Move to Pending</li>
-                        <li data-index="3" class="last">Delete Pemanently</li>
-                      </ul>
-                    </div>
-                  </div><input class="selectric-input" tabindex="0">
-                </div>
-              </div>
               <div class="float-right">
                 <form>
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search">
+                    <input type="text" id="search" class="form-control" placeholder="Search">
                     <div class="input-group-append">
                       <button class="btn btn-primary"><i class="fas fa-search"></i></button>
                     </div>
@@ -112,8 +88,8 @@ active
                           <div class="bullet"></div>
                           <a href="{{ action('TeacherController@edit', $teacher->id_user) }}">Edit</a>
                           <div class="bullet"></div>
-                          <a id="deleteTeacher" data-id="{{$teacher->id_user}}" href='javascript:void(0)'
-                            class="text-danger">Delete</a>
+                          <a id="deleteTeacher_{{ $teacher->id_user }}" data-id="{{$teacher->id_user}}"
+                            href='javascript:void(0)' class="text-danger">Delete</a>
                         </div>
                       </td>
                       <td>
@@ -141,6 +117,25 @@ active
 @endsection
 
 @section('scripts')
+<script type="text/javascript">
+  $('#search').on('keyup', function () {
+    $value = $(this).val();
+    $.ajax({
+      type: 'get',
+      url: '{{URL::to('
+      search ')}}',
+      data: {
+        'search': $value
+      },
+      success: function (data) {
+        $('tbody').html(data);
+      }
+    });
+  })
+</script>
+
+
+@foreach ($teachers as $teacher)
 <script>
   $(document).ready(function () {
     $.ajaxSetup({
@@ -149,7 +144,7 @@ active
       }
     });
 
-    $('#deleteTeacher').on('click', function () {
+    $('#deleteTeacher_{{ $teacher->id_user }}').on('click', function () {
       var teacherId = $(this).data("id");
       swal({
           title: "Anda yakin?",
@@ -165,10 +160,10 @@ active
               url: "{{ url('teacher/')}}" + '/' + teacherId,
               success: function (data) {
                 $("#teacher_" + teacherId).remove();
-                swal("Sukses!", "Data guru telah dihapus.", "success");
+                swal("Sukses!", "Akun guru telah dihapus.", "success");
               },
               error: function (data) {
-                swal("Gagal!", "Data guru gagal dihapus.", "error");
+                swal("Gagal!", "Akun guru gagal dihapus.", "error");
               }
             });
           }
@@ -176,4 +171,5 @@ active
     });
   });
 </script>
+@endforeach
 @endsection

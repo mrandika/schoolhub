@@ -7,12 +7,12 @@ Today &mdash; SchoolHUB
 @section('content')
 <!-- Main Content -->
 <div class="main-content" style="min-height: 922px;">
-    <section class="section">
-      <div class="section-header">
-        <h1>Today</h1>
-      </div>
+  <section class="section">
+    <div class="section-header">
+      <h1>Today</h1>
+    </div>
 
-      @yield('section-content')
-    </section>
-  </div>
+    @yield('section-content')
+  </section>
+</div>
 @endsection

@@ -204,6 +204,31 @@ class TeacherController extends Controller
     }
 
     /**
+     * Search the specified resource from storage.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function search(Request $request)
+    {
+        if ($request->ajax()) {
+            $output = "";
+
+            $teachers = UserData::where('name','LIKE','%'.$request->search."%")->get();
+
+            if ($teachers) {
+                foreach ($teachers as $key => $teacher) {
+                    $output.='<tr id="teacher_".$teacher->id_user>'.
+                    '<td>'.$teacher->image.'</td>'.
+                    '<td>'.$teacher->name.'</td>'.
+                    '<td>'.$teacher->nip.'</td>'.
+                    '</tr>';
+                }
+                return Response($output);
+            }
+        }
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
