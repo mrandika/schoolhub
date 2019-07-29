@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\ViewClass;
+use App\ViewStudent;
+
 class StudentController extends Controller
 {
     /**
@@ -24,7 +27,7 @@ class StudentController extends Controller
      */
     public function today()
     {
-        return view('teacher/today');  
+        return view('student/today');  
     }
 
     /**
@@ -34,7 +37,11 @@ class StudentController extends Controller
      */
     public function index()
     {
-        return view('student/index');  
+        $count = ViewStudent::count();
+        $student = ViewStudent::paginate(10);
+        return view('student/index')
+        ->withCounts($count)
+        ->withStudents($student);
     }
 
     /**
@@ -44,7 +51,9 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        $class = ViewClass::all();
+        return view('student/create')
+        ->withClasses($class);  
     }
 
     /**

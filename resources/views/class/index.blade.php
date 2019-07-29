@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Teacher &mdash; SchoolHUB
+Class &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
