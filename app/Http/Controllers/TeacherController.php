@@ -72,8 +72,9 @@ class TeacherController extends Controller
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'email' => 'required|unique:users|max:100',
             'username' => 'required|unique:users',
+            'nip' => 'required|unique:teachers',
             'password' => 'required',
-            'name' => 'required|unique:users_data',
+            'name' => 'required',
             'gender' => 'required',
             'religion' => 'required',
             'birthplace' => 'required',
@@ -123,7 +124,7 @@ class TeacherController extends Controller
         if ($multiple) {
             return back();
         } else {
-            return redirect('teacher');
+            return redirect('dashboard/teacher');
         }
     }
 
@@ -164,6 +165,20 @@ class TeacherController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'email' => 'required|unique:users|max:100',
+            'username' => 'required|unique:users',
+            'nip' => 'required|unique:teachers',
+            'password' => 'required',
+            'name' => 'required',
+            'gender' => 'required',
+            'religion' => 'required',
+            'birthplace' => 'required',
+            'dob' => 'required',
+            'address' => 'required',
+            'phone' => 'required|unique:users_data',
+        ]);
 
         if ($request->post('password') != null) {
             $password = Hash::make($request->get('password'));
@@ -200,7 +215,7 @@ class TeacherController extends Controller
         $teachers->nip = $request->post('nip');
         $teachers->save();
 
-        return redirect('teacher');
+        return redirect('dashboard/teacher');
     }
 
     /**

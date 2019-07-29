@@ -29,6 +29,9 @@ $role = Auth::user()->role;
 <li class=@yield('subjectActive')><a class="nav-link" href="{{action('SubjectController@index')}}"><i
                         class="fas fa-book"></i>
                 <span>Mata Pelajaran</span></a></li>
+<li class=@yield('teachingActive')><a class="nav-link" href="{{action('TeachingController@index')}}"><i
+                        class="fas fa-book"></i>
+                <span>Pengajar</span></a></li>
 <li class=@yield('presenceActive')><a class="nav-link" href="{{action('PresenceController@index')}}"><i
                         class="fas fa-user-check"></i>
                 <span>Presensi</span></a></li>

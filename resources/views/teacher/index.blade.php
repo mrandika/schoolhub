@@ -157,7 +157,7 @@ active
           if (confirm) {
             $.ajax({
               type: "DELETE",
-              url: "{{ url('teacher/')}}" + '/' + teacherId,
+              url: "{{ url('dashboard/teacher/')}}" + '/' + teacherId,
               success: function (data) {
                 $("#teacher_" + teacherId).remove();
                 swal("Sukses!", "Akun guru telah dihapus.", "success");

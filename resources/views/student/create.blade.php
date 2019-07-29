@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Register Teacher &mdash; SchoolHUB
+Register Student &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('TeacherController@index')}}">My Hub</a>
+    <a href="{{action('StudentController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('TeacherController@index')}}">H</a>
+    <a href="{{action('StudentController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('teacherActive')
+@section('studentActive')
 active
 @endsection
 
@@ -24,14 +24,14 @@ active
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ action('TeacherController@index') }}" class="btn btn-icon"><i
+                <a href="{{ action('StudentController@index') }}" class="btn btn-icon"><i
                         class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Daftar Guru</h1>
+            <h1>Daftar Murid</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Guru</a></div>
-                <div class="breadcrumb-item">Daftar Guru</div>
+                <div class="breadcrumb-item"><a href="#">Murid</a></div>
+                <div class="breadcrumb-item">Daftar Murid</div>
             </div>
         </div>
 
@@ -39,7 +39,7 @@ active
 
             <div class="row">
                 <div class="col-12">
-                    <form action="{{ action('TeacherController@store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('StudentController@store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
@@ -47,9 +47,15 @@ active
                             </div>
                             <div class="card-body">
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nip</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">NISN</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="nip" class="form-control" required>
+                                        <input type="text" name="nisn" class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">NIPD</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" name="nipd" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -155,10 +161,21 @@ active
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kelas</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <select class="form-control selectric" name="class" required>
+                                            <option>Pilih Kelas</option>
+                                            @foreach ($classes as $class)
+                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-4">
                                     <label
                                         class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Username</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="username" class="form-control">
+                                        <input type="text" name="username" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -187,7 +204,7 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                     <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Buat Guru Baru</button>
+                                        <button class="btn btn-primary">Buat Siswa Baru</button>
                                     </div>
                                 </div>
                             </div>

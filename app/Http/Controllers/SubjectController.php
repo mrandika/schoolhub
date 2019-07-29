@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
+
+use App\Subject;
 
 class SubjectController extends Controller
 {
@@ -24,7 +27,11 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $count = Subject::count();
+        $subject = Subject::paginate(10);
+        return view('subject/index')
+        ->withCounts($count)
+        ->withSubjects($subject);
     }
 
     /**
@@ -34,7 +41,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('subject/create');
     }
 
     /**
@@ -45,7 +52,27 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'code' => 'required',
+            'name' => 'required',
+            'type' => 'required',
+            'minimum' => 'required',
+        ]);
+        
+        $multiple = $request->has('multiple');
+
+        $subject = new Subject;
+        $subject->code = $request->post('code');
+        $subject->name = $request->post('name');
+        $subject->type = $request->post('type');
+        $subject->minimum = $request->post('minimum');
+        $subject->save();
+
+        if ($multiple) {
+            return back();
+        } else {
+            return redirect('dashboard/subject');
+        } 
     }
 
     /**
@@ -67,7 +94,9 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subject = Subject::find($id);
+        return view('subject/update')
+        ->withSubject($subject);
     }
 
     /**
@@ -79,7 +108,23 @@ class SubjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'code' => 'required',
+            'name' => 'required',
+            'type' => 'required',
+            'minimum' => 'required',
+        ]);
+        
+        $multiple = $request->has('multiple');
+
+        $subject = Subject::find($id);
+        $subject->code = $request->post('code');
+        $subject->name = $request->post('name');
+        $subject->type = $request->post('type');
+        $subject->minimum = $request->post('minimum');
+        $subject->save();
+
+        return redirect('dashboard/subject');
     }
 
     /**
@@ -90,6 +135,8 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $subject = Subject::find($id);
+        $subject->delete();
+        return Response::json($subject);
     }
 }

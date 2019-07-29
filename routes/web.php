@@ -20,24 +20,24 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::resource('admin/post', 'PostController');
-Route::resource('admin/category', 'CategoryController');
-Route::resource('admin/tag', 'TagController');
+Route::resource('dashboard/post', 'PostController');
+Route::resource('dashboard/category', 'CategoryController');
+Route::resource('dashboard/tag', 'TagController');
 
-Route::resource('admin/room', 'RoomController');
-Route::resource('admin/subject', 'SubjectController');
-Route::resource('admin/presence', 'PresenceController');
-Route::resource('admin/note', 'NoteController');
-Route::resource('admin/teaching', 'TeachingController');
-Route::resource('admin/class', 'ClassController');
+Route::resource('dashboard/room', 'RoomController');
+Route::resource('dashboard/subject', 'SubjectController');
+Route::resource('dashboard/presence', 'PresenceController');
+Route::resource('dashboard/note', 'NoteController');
+Route::resource('dashboard/teaching', 'TeachingController');
+Route::resource('dashboard/class', 'ClassController');
 
-Route::resource('admin/session', 'SessionController');
+Route::resource('dashboard/session', 'SessionController');
 
-Route::resource('admin/sarpras', 'SarprasController');
-Route::resource('admin/kesiswaan', 'KesiswaanController');
+Route::resource('dashboard/sarpras', 'SarprasController');
+Route::resource('dashboard/kesiswaan', 'KesiswaanController');
 
-Route::resource('teacher', 'TeacherController');
-Route::resource('student', 'StudentController');
+Route::resource('dashboard/teacher', 'TeacherController');
+Route::resource('dashboard/student', 'StudentController');
 
 // Route::resource('admin/sarpras', 'SarprasController');
 // Route::resource('admin/kesiswaan', 'KesiswaanController');

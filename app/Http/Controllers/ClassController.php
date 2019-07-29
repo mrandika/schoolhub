@@ -7,6 +7,7 @@ use Response;
 
 use App\StudentClass;
 use App\ViewTeacher;
+use App\Student;
 
 class ClassController extends Controller
 {
@@ -59,7 +60,7 @@ class ClassController extends Controller
         if ($multiple) {
             return back();
         } else {
-            return redirect('admin/class');
+            return redirect('dashboard/class');
         }
     }
 
@@ -70,8 +71,14 @@ class ClassController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
+    {   
+        $studentCount = Student::where('id_class', $id)->count();
+        $student = Student::where('id_class', $id)->get();
+        $className = StudentClass::select('name')->where('id', $id)->first()->name;
+        return view('class/show')
+        ->withCounts($studentCount)
+        ->withClasses($className)
+        ->withStudents($student);
     }
 
     /**
@@ -108,7 +115,7 @@ class ClassController extends Controller
         $class->id_teacher = $request->post('id_teacher');
         $class->save();
 
-        return redirect('admin/class');
+        return redirect('dashboard/class');
     }
 
     /**

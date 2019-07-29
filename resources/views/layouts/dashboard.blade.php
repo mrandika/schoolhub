@@ -44,9 +44,9 @@
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown"><a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                            <img alt="image" src="{{ url('uploads/users/'.Auth::user()->photo) }}"
+                            <img alt="image" src="{{ url('uploads/userImage/'.Auth::user()->image) }}"
                                 class="rounded-circle mr-1">
-                            <div class="d-sm-none d-lg-inline-block">Hi, {{Auth::user()->name}}</div>
+                            <div class="d-sm-none d-lg-inline-block">Hi, {{ \App\UserData::select('name')->where('id_user', Auth::user()->id)->first()->name }}</div>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <div class="dropdown-title">Logged in 5 min ago</div>
                                 <a href="features-profile.html" class="dropdown-item has-icon">

@@ -6,10 +6,10 @@ Register Class &mdash; SchoolHUB
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('TeacherController@index')}}">My Hub</a>
+    <a href="{{action('ClassController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('TeacherController@index')}}">H</a>
+    <a href="{{action('ClassController@index')}}">H</a>
 </div>
 @endsection
 
@@ -56,14 +56,16 @@ active
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama
                                         Kelas</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="name" value="{{ $class->name }}" class="form-control">
+                                        <input type="text" name="name" value="{{ $class->name }}" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Wali
                                         Kelas</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric" name="id_teacher">
+                                        <select class="form-control selectric" name="id_teacher" required>
+                                            <option>Pilih Wali Kelas</option>
                                             @foreach ($teachers as $teacher)
                                             <option value="{{ $teacher->id_user }}" @if ($class->id_teacher ==
                                                 $teacher->id_user) selected @endif>{{ $teacher->name }}</option>
