@@ -136,7 +136,13 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        $userData = UserData::find($id);
+        $teacher = Teacher::find($id);
+        return view('teacher/show')
+        ->withUser($user)
+        ->withData($userData)
+        ->withTeacher($teacher);
     }
 
     /**

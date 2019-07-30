@@ -18,7 +18,7 @@ class UserSession extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'id_user';
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.

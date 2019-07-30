@@ -142,7 +142,13 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        $userData = UserData::find($id);
+        $student = Student::find($id);
+        return view('student/show')
+        ->withUser($user)
+        ->withData($userData)
+        ->withStudent($student);
     }
 
     /**

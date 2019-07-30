@@ -24,9 +24,6 @@ active
     <section class="section">
         <div class="section-header">
             <h1>Mata Pelajaran</h1>
-            <div class="section-header-button">
-                <a href="{{ action('SubjectController@create') }}" class="btn btn-primary">Add New</a>
-            </div>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Mata Pelajaran</a></div>
@@ -62,6 +59,10 @@ active
                                     </div>
                                 </form>
                             </div>
+                            <div class="float-left">
+                                <a href="{{ action('SubjectController@create') }}" class="btn btn-primary"><i
+                                        class="fas fa-plus"></i> Add</a>
+                            </div>
 
                             <div class="clearfix mb-3"></div>
 
@@ -84,9 +85,8 @@ active
                                                     <a
                                                         href="{{ action('SubjectController@edit', $subject->id) }}">Edit</a>
                                                     <div class="bullet"></div>
-                                                    <a id="deleteSubject_{{ $subject->id }}"
-                                                        data-id="{{$subject->id}}" href='javascript:void(0)'
-                                                        class="text-danger">Delete</a>
+                                                    <a id="deleteSubject_{{ $subject->id }}" data-id="{{$subject->id}}"
+                                                        href='javascript:void(0)' class="text-danger">Delete</a>
                                                 </div>
                                             </td>
                                             <td>
@@ -142,10 +142,12 @@ active
                             url: "{{ url('dashboard/subject')}}" + '/' + subjectId,
                             success: function (data) {
                                 $("#subject_" + subjectId).remove();
-                                swal("Sukses!", "Data mata pelajaran telah dihapus.", "success");
+                                swal("Sukses!", "Data mata pelajaran telah dihapus.",
+                                    "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data mata pelajaran gagal dihapus.", "error");
+                                swal("Gagal!", "Data mata pelajaran gagal dihapus.",
+                                    "error");
                             }
                         });
                     }

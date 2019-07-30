@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Class &mdash; SchoolHUB
+Session &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('ClassController@index')}}">My Hub</a>
+    <a href="{{action('SessionController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('ClassController@index')}}">H</a>
+    <a href="{{action('SessionController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('classActive')
+@section('sessionActive')
 active
 @endsection
 
@@ -24,10 +24,10 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
-            <h1>Kelas</h1>
+            <h1>Sesi</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Kelas</a></div>
+                <div class="breadcrumb-item"><a href="#">Sesi</a></div>
             </div>
         </div>
         <div class="section-body">
@@ -38,7 +38,7 @@ active
                         <div class="card-body">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#">All <span
+                                    <a class="nav-link active" href="#">Aktif <span
                                             class="badge badge-white">{{ $counts }}</span></a>
                                 </li>
                             </ul>
@@ -60,10 +60,6 @@ active
                                     </div>
                                 </form>
                             </div>
-                            <div class="float-left">
-                                <a href="{{ action('SubjectController@create') }}" class="btn btn-primary"><i
-                                        class="fas fa-plus"></i> Add</a>
-                            </div>
 
                             <div class="clearfix mb-3"></div>
 
@@ -71,23 +67,24 @@ active
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr>
-                                            <th>Nama</th>
-                                            <th>Wali Kelas</th>
+                                            <th>Pengguna</th>
+                                            <th>Platform</th>
+                                            <th>Merk</th>
+                                            <th>Action</th>
                                         </tr>
-                                        @foreach ($classes as $class)
-                                        <tr id="class_{{ $class->id }}">
-                                            <td>{{ $class->name }}
-                                                <div class="table-links">
-                                                    <a href="{{ action('ClassController@show', $class->id) }}">View</a>
-                                                    <div class="bullet"></div>
-                                                    <a href="{{ action('ClassController@edit', $class->id) }}">Edit</a>
-                                                    <div class="bullet"></div>
-                                                    <a id="deleteClass_{{ $class->id }}" data-id="{{ $class->id }}"
-                                                        href='javascript:void(0)' class="text-danger">Delete</a>
-                                                </div>
+                                        @foreach ($sessions as $session)
+                                        <tr id="session_{{ $session->id }}">
+                                            <td>{{ \App\UserData::select('name')->where('id_user', $session->id_user)->first()->name }}
                                             </td>
                                             <td>
-                                                {{ \App\UserData::select('name')->where('id_user', $class->id_teacher)->first()->name }}
+                                                {{ $session->is_mobile }}
+                                            </td>
+                                            <td>
+                                                {{ $session->phone }}
+                                            </td>
+                                            <td>
+                                                <a id="deleteSession_{{ $session->id }}" data-id="{{$session->id}}"
+                                                        href='javascript:void(0)' class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -97,7 +94,7 @@ active
                             <div class="float-right">
                                 <nav>
                                     <ul class="pagination">
-                                        {{ $classes->links() }}
+                                        {{ $sessions->links() }}
                                     </ul>
                                 </nav>
                             </div>
@@ -111,7 +108,25 @@ active
 @endsection
 
 @section('scripts')
-@foreach ($classes as $class)
+<script type="text/javascript">
+    $('#search').on('keyup', function () {
+        $value = $(this).val();
+        $.ajax({
+            type: 'get',
+            url: '{{URL::to('
+            search ')}}',
+            data: {
+                'search': $value
+            },
+            success: function (data) {
+                $('tbody').html(data);
+            }
+        });
+    })
+</script>
+
+
+@foreach ($sessions as $session)
 <script>
     $(document).ready(function () {
         $.ajaxSetup({
@@ -120,11 +135,11 @@ active
             }
         });
 
-        $('#deleteClass_{{ $class->id }}').on('click', function () {
-            var classId = $(this).data("id");
+        $('#deleteSession_{{ $session->id }}').on('click', function () {
+            var sessionId = $(this).data("id");
             swal({
                     title: "Anda yakin?",
-                    text: "Setelah data kelas ini dihapus, semua data yang terkait dengan kelas ini (termasuk siswa, nilai dan lain-lain) akan terhapus!",
+                    text: "Setelah detail sesi ini dihapus, pengguna akan dapat masuk ke perangkat baru!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -133,13 +148,14 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/class/')}}" + '/' + classId,
+                            url: "{{ url('dashboard/session')}}" + '/' + sessionId,
                             success: function (data) {
-                                $("#class_" + classId).remove();
-                                swal("Sukses!", "Data kelas telah dihapus.", "success");
+                                $("#session_" + sessionId).remove();
+                                swal("Sukses!", "Detail sesi telah dihapus.",
+                                "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data kelas gagal dihapus.", "error");
+                                swal("Gagal!", "Detail sesi gagal dihapus.", "error");
                             }
                         });
                     }

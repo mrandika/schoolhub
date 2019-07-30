@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
+
+use App\UserSession;
 
 class SessionController extends Controller
 {
@@ -23,7 +26,11 @@ class SessionController extends Controller
      */
     public function index()
     {
-        //
+        $count = UserSession::count();
+        $session = UserSession::paginate(25);
+        return view('session/index')
+        ->withCounts($count)
+        ->withSessions($session);
     }
 
     /**
@@ -89,6 +96,8 @@ class SessionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $session = UserSession::find($id);
+        $session->delete();
+        return Response::json($session);
     }
 }
