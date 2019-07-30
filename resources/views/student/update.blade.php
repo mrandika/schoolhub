@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Register Student &mdash; SchoolHUB
+Update Student &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')

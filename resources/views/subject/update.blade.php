@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Subject &mdash; SchoolHUB
+Update Subject &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')

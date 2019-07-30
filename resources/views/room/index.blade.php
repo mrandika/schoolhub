@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Class &mdash; SchoolHUB
+Room &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('ClassController@index')}}">My Hub</a>
+    <a href="{{action('RoomController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('ClassController@index')}}">H</a>
+    <a href="{{action('RoomController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('classActive')
+@section('roomActive')
 active
 @endsection
 
@@ -24,10 +24,10 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
-            <h1>Kelas</h1>
+            <h1>Ruangan</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Kelas</a></div>
+                <div class="breadcrumb-item"><a href="#">Ruangan</a></div>
             </div>
         </div>
         <div class="section-body">
@@ -61,7 +61,7 @@ active
                                 </form>
                             </div>
                             <div class="float-left">
-                                <a href="{{ action('ClassController@create') }}" class="btn btn-primary"><i
+                                <a href="{{ action('RoomController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
                             </div>
 
@@ -71,21 +71,22 @@ active
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr>
+                                            <th>Kode</th>
                                             <th>Nama</th>
-                                            <th>Wali Kelas</th>
                                             <th>Action</th>
                                         </tr>
-                                        @foreach ($classes as $class)
-                                        <tr id="class_{{ $class->id }}">
-                                            <td>{{ $class->name }}
+                                        @foreach ($rooms->sortBy('code') as $room)
+                                        <tr id="room_{{ $room->id }}">
+                                            <td>
+                                                {{ $room->code }}
                                             </td>
                                             <td>
-                                                {{ \App\UserData::select('name')->where('id_user', $class->id_teacher)->first()->name }}
+                                                {{ $room->alias }}
                                             </td>
                                             <td colspan="2">
-                                                <a href="{{ action('ClassController@edit', $class->id) }}"
+                                                <a href="{{ action('RoomController@edit', $room->id) }}"
                                                     class="btn btn-warning">Edit</a>
-                                                <a id="deleteClass_{{ $class->id }}" data-id="{{$class->id}}"
+                                                <a id="deleteRoom_{{ $room->id }}" data-id="{{$room->id}}"
                                                     href='javascript:void(0)' class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
@@ -96,7 +97,7 @@ active
                             <div class="float-right">
                                 <nav>
                                     <ul class="pagination">
-                                        {{ $classes->links() }}
+                                        {{ $rooms->links() }}
                                     </ul>
                                 </nav>
                             </div>
@@ -110,7 +111,25 @@ active
 @endsection
 
 @section('scripts')
-@foreach ($classes as $class)
+<script type="text/javascript">
+    $('#search').on('keyup', function () {
+        $value = $(this).val();
+        $.ajax({
+            type: 'get',
+            url: '{{URL::to('
+            search ')}}',
+            data: {
+                'search': $value
+            },
+            success: function (data) {
+                $('tbody').html(data);
+            }
+        });
+    })
+</script>
+
+
+@foreach ($rooms as $room)
 <script>
     $(document).ready(function () {
         $.ajaxSetup({
@@ -119,11 +138,11 @@ active
             }
         });
 
-        $('#deleteClass_{{ $class->id }}').on('click', function () {
-            var classId = $(this).data("id");
+        $('#deleteRoom_{{ $room->id }}').on('click', function () {
+            var roomId = $(this).data("id");
             swal({
                     title: "Anda yakin?",
-                    text: "Setelah data kelas ini dihapus, semua data yang terkait dengan kelas ini (termasuk siswa, nilai dan lain-lain) akan terhapus!",
+                    text: "Setelah detail ruangan ini dihapus, data yang terkait akan dihapus!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -132,13 +151,14 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/class/')}}" + '/' + classId,
+                            url: "{{ url('dashboard/room')}}" + '/' + roomId,
                             success: function (data) {
-                                $("#class_" + classId).remove();
-                                swal("Sukses!", "Data kelas telah dihapus.", "success");
+                                $("#room_" + roomId).remove();
+                                swal("Sukses!", "Data ruaangan telah dihapus.",
+                                    "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data kelas gagal dihapus.", "error");
+                                swal("Gagal!", "Data ruaangan gagal dihapus.", "error");
                             }
                         });
                     }
