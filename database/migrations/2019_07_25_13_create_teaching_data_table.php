@@ -24,8 +24,8 @@ class CreateTeachingDataTable extends Migration
             $table->foreign('id_subject')->references('id')->on('subjects');
             $table->unsignedBigInteger('id_room');
             $table->foreign('id_room')->references('id')->on('rooms');
-            $table->timestamp('time_in')->nullable();
-            $table->timestamp('time_out')->nullable();
+            $table->time('time_in')->nullable();
+            $table->time('time_out')->nullable();
             $table->timestamps();
         });
     }
