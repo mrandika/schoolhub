@@ -39,7 +39,25 @@ active
 
             <div class="row">
                 <div class="col-12">
-                    <form action="{{ action('RoomController@update', $room->id) }}" method="post" enctype="multipart/form-data">
+                    @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-has-icon">
+                            <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></i></div>
+                            <div class="alert-body">
+                                <div class="alert-title">Error</div>
+                                <ol>
+                                    @foreach ($errors->all() as $error)
+                                    <li>
+                                        <p class="mb-0">{{ $error }}</p>
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    <form action="{{ action('RoomController@update', $room->id) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <input name="_method" type="hidden" value="PATCH">
                         <div class="card">
@@ -50,13 +68,16 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode</label>
                                     <div class="col-sm-12 col-md-7">
-                                    <input type="text" name="code" placeholder="Masukan nomor ruangan" value="{{ $room->code }}" class="form-control" required>
+                                        <input type="text" name="code" placeholder="Masukan nomor ruangan"
+                                            value="{{ $room->code }}" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama ruangan (alias)</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama ruangan
+                                        (alias)</label>
                                     <div class="col-sm-12 col-md-7">
-                                    <input type="text" name="alias" value="{{ $room->alias }}" class="form-control" required>
+                                        <input type="text" name="alias" value="{{ $room->alias }}" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">

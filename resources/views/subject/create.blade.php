@@ -39,6 +39,23 @@ active
 
             <div class="row">
                 <div class="col-12">
+                    @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-has-icon">
+                            <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></i></div>
+                            <div class="alert-body">
+                                <div class="alert-title">Error</div>
+                                <ol>
+                                    @foreach ($errors->all() as $error)
+                                    <li>
+                                        <p class="mb-0">{{ $error }}</p>
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <form action="{{ action('SubjectController@store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
@@ -63,25 +80,24 @@ active
                                         Mapel</label>
                                     <div class="selectgroup w-100 col-sm-12 col-md-7">
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="type" value="C1"
-                                                class="selectgroup-input" checked="">
+                                            <input type="radio" name="type" value="C1" class="selectgroup-input"
+                                                checked="">
                                             <span class="selectgroup-button">C1</span>
                                         </label>
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="gender" value="C2"
-                                                class="selectgroup-input">
+                                            <input type="radio" name="gender" value="C2" class="selectgroup-input">
                                             <span class="selectgroup-button">C2</span>
                                         </label>
                                         <label class="selectgroup-item">
-                                            <input type="radio" name="gender" value="C3"
-                                                class="selectgroup-input">
+                                            <input type="radio" name="gender" value="C3" class="selectgroup-input">
                                             <span class="selectgroup-button">C3</span>
                                         </label>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kriteria Ketuntasan</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kriteria
+                                        Ketuntasan</label>
                                     <div class="col-sm-12 col-md-7">
                                         <input type="numberDecimal" name="minimum" class="form-control" required>
                                     </div>

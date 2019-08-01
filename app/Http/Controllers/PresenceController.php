@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\AttendanceData;
+
 class PresenceController extends Controller
 {
     /**
@@ -24,7 +26,12 @@ class PresenceController extends Controller
      */
     public function index()
     {
-        //
+        $date = date("Y-m-d");
+        $attendance = AttendanceData::where('created_at', $date);
+        $count = $attendance->count();
+        return view('attendance-data/index')
+        ->withCounts($count)
+        ->withAttendances($attendance->paginate(20));
     }
 
     /**

@@ -39,6 +39,23 @@ active
 
             <div class="row">
                 <div class="col-12">
+                    @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-has-icon">
+                            <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></i></div>
+                            <div class="alert-body">
+                                <div class="alert-title">Error</div>
+                                <ol>
+                                    @foreach ($errors->all() as $error)
+                                    <li>
+                                        <p class="mb-0">{{ $error }}</p>
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <form action="{{ action('TeachingController@store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
@@ -111,14 +128,16 @@ active
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jam
                                         Masuk</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" placeholder="Mis. 07:00" name="time_in" class="form-control" required>
+                                        <input type="text" placeholder="Mis. 07:00" name="time_in" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jam
                                         Keluar</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" placeholder="Mis. 12:00" name="time_out" class="form-control" required>
+                                        <input type="text" placeholder="Mis. 12:00" name="time_out" class="form-control"
+                                            required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">

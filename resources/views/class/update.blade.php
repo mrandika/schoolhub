@@ -43,6 +43,23 @@ active
 
             <div class="row">
                 <div class="col-12">
+                    @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-has-icon">
+                            <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></i></div>
+                            <div class="alert-body">
+                                <div class="alert-title">Error</div>
+                                <ol>
+                                    @foreach ($errors->all() as $error)
+                                    <li>
+                                        <p class="mb-0">{{ $error }}</p>
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <form action="{{ action('ClassController@update', $class->id) }}" method="post"
                         enctype="multipart/form-data">
                         @csrf

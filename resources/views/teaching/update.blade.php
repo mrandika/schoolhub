@@ -39,7 +39,25 @@ active
 
             <div class="row">
                 <div class="col-12">
-                    <form action="{{ action('TeachingController@update', $teaching->id) }}" method="post" enctype="multipart/form-data">
+                    @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-has-icon">
+                            <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></i></div>
+                            <div class="alert-body">
+                                <div class="alert-title">Error</div>
+                                <ol>
+                                    @foreach ($errors->all() as $error)
+                                    <li>
+                                        <p class="mb-0">{{ $error }}</p>
+                                    </li>
+                                    @endforeach
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+                    <form action="{{ action('TeachingController@update', $teaching->id) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <input name="_method" type="hidden" value="PATCH">
                         <div class="card">
@@ -55,7 +73,7 @@ active
                                             <option>Pilih Guru Pengajar</option>
                                             @foreach ($teachers as $teacher)
                                             <option value="{{ $teacher->id_user }}" @if ($teaching->id_teacher ==
-                                                    $teacher->id_user) selected @endif>{{ $teacher->name }}</option>
+                                                $teacher->id_user) selected @endif>{{ $teacher->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -68,7 +86,7 @@ active
                                             <option>Pilih Mata Pelajaran</option>
                                             @foreach ($subjects as $subject)
                                             <option value="{{ $subject->id }}" @if ($teaching->id_subject ==
-                                                    $subject->id) selected @endif>{{ $subject->name }}</option>
+                                                $subject->id) selected @endif>{{ $subject->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -80,7 +98,7 @@ active
                                             <option>Pilih Kelas</option>
                                             @foreach ($classes as $class)
                                             <option value="{{ $class->id }}" @if ($teaching->id_class ==
-                                                    $class->id) selected @endif>{{ $class->name }}</option>
+                                                $class->id) selected @endif>{{ $class->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -92,7 +110,7 @@ active
                                             <option>Pilih Ruangan</option>
                                             @foreach ($rooms->sortBy('code') as $room)
                                             <option value="{{ $room->id }}" @if ($teaching->id_room ==
-                                                    $room->id) selected @endif>{{ $room->alias }}</option>
+                                                $room->id) selected @endif>{{ $room->alias }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -116,14 +134,16 @@ active
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jam
                                         Masuk</label>
                                     <div class="col-sm-12 col-md-7">
-                                    <input type="text" placeholder="Mis. 07:00" value="{{ $teaching->time_in }}" name="time_in" class="form-control" required>
+                                        <input type="text" placeholder="Mis. 07:00" value="{{ $teaching->time_in }}"
+                                            name="time_in" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jam
                                         Keluar</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" placeholder="Mis. 12:00" value="{{ $teaching->time_out }}" name="time_out" class="form-control" required>
+                                        <input type="text" placeholder="Mis. 12:00" value="{{ $teaching->time_out }}"
+                                            name="time_out" class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
