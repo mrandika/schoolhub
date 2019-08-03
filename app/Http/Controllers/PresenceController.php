@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
 
+use App\Attendance;
 use App\AttendanceData;
+use App\ViewStudent;
 
 class PresenceController extends Controller
 {
@@ -27,11 +30,14 @@ class PresenceController extends Controller
     public function index()
     {
         $date = date("Y-m-d");
-        $attendance = AttendanceData::where('created_at', $date);
-        $count = $attendance->count();
+        $attendanceData = AttendanceData::where('created_at', 'like', '%'.$date.'%');
+        $count = $attendanceData->count();
+
+        $status = Attendance::where('created_at', 'like', '%'.$date.'%')->count();
         return view('attendance-data/index')
-        ->withCounts($count)
-        ->withAttendances($attendance->paginate(20));
+        ->withCountsToday($count)
+        ->withAttendances($attendanceData->paginate(20))
+        ->withAvailable($status);
     }
 
     /**
@@ -41,7 +47,19 @@ class PresenceController extends Controller
      */
     public function create()
     {
-        //
+        $student = ViewStudent::all();
+        return view('attendance-data/create')
+        ->withStudents($student);
+    }
+
+    /**
+     * Show the form for creating a new qr data.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function createQr()
+    {
+        return view('attendance-data/generate');
     }
 
     /**
@@ -52,7 +70,26 @@ class PresenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'id_students' => 'required',
+            'status' => 'required',
+        ]);
+
+        $multiple = $request->has('multiple');
+
+        $date = date("Y-m-d");
+
+        $attendanceData = new AttendanceData;
+        $attendanceData->id_students = $request->post('id_students');
+        $attendanceData->id_attendance = Attendance::select('id')->where('created_at', 'like', '%'.$date.'%')->first()->id;
+        $attendanceData->status = $request->post('status');
+        $attendanceData->save();
+
+        if ($multiple) {
+            return back();
+        } else {
+            return redirect('dashboard/presence');
+        }
     }
 
     /**
@@ -74,7 +111,11 @@ class PresenceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $student = ViewStudent::all();
+        $data = AttendanceData::find($id);
+        return view('attendance-data/update')
+        ->withData($data)
+        ->withStudents($student);
     }
 
     /**
@@ -86,7 +127,20 @@ class PresenceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'id_students' => 'required',
+            'status' => 'required',
+        ]);
+
+        $date = date("Y-m-d");
+
+        $attendanceData = AttendanceData::find($id);
+        $attendanceData->id_students = $request->post('id_students');
+        $attendanceData->id_attendance = Attendance::select('id')->where('created_at', 'like', '%'.$date.'%')->first()->id;
+        $attendanceData->status = $request->post('status');
+        $attendanceData->save();
+
+        return redirect('dashboard/presence');
     }
 
     /**
@@ -97,6 +151,8 @@ class PresenceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $attendanceData = AttendanceData::find($id);
+        $attendanceData->delete();
+        return Response::json($attendanceData);
     }
 }

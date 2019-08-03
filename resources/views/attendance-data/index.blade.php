@@ -39,7 +39,7 @@ active
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
                                     <a class="nav-link active" href="#">Hari Ini <span
-                                            class="badge badge-white">{{ $counts }}</span></a>
+                                            class="badge badge-white">{{ $countsToday }}</span></a>
                                 </li>
                             </ul>
                         </div>
@@ -60,8 +60,18 @@ active
                                     </div>
                                 </form>
                             </div>
+                            @if ($available == 0)
+                            <div class="float-left mr-2">
+                                <a href="{{ action('PresenceController@showQr') }}" class="btn btn-info"><i
+                                        class="fas fa-qrcode"></i> Generate</a>
+                            </div>
+                            @endif
+                            <div class="float-left mr-2">
+                                <a href="{{ action('PresenceController@create') }}" class="btn btn-info"><i
+                                        class="fas fa-qrcode"></i> View QR</a>
+                            </div>
                             <div class="float-left">
-                                <a href="{{ action('ClassController@create') }}" class="btn btn-primary"><i
+                                <a href="{{ action('PresenceController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
                             </div>
 
@@ -74,22 +84,23 @@ active
                                             <th>Nama</th>
                                             <th>Status</th>
                                             <th>Created At</th>
+                                            <th>Action</th>
                                         </tr>
                                         @foreach ($attendances as $attendance)
-                                        <tr id="class_{{ $attendance->id }}">
-                                            <td
-                                            {{ $attendance->id_student }}
+                                        <tr id="attendance_{{ $attendance->id }}">
+                                            <td>
+                                                {{ \App\UserData::select('name')->where('id_user', $attendance->id_students)->first()->name }}
                                             </td>
                                             <td>
                                                 {{ $attendance->status }}
                                             </td>
                                             <td>
-                                                {{ $attendance->created_at }}
+                                                {{ $attendance->created_at->diffForHumans() }}
                                             </td>
                                             <td colspan="2">
-                                                <a href="{{ action('ClassController@edit', $attendance->id) }}"
+                                                <a href="{{ action('PresenceController@edit', $attendance->id) }}"
                                                     class="btn btn-warning">Edit</a>
-                                                <a id="deleteClass_{{ $attendance->id }}" data-id="{{$attendance->id}}"
+                                                <a id="deleteAttendance_{{ $attendance->id }}" data-id="{{$attendance->id}}"
                                                     href='javascript:void(0)' class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
@@ -123,11 +134,11 @@ active
             }
         });
 
-        $('#deleteClass_{{ $attendance->id }}').on('click', function () {
-            var classId = $(this).data("id");
+        $('#deleteAttendance_{{ $attendance->id }}').on('click', function () {
+            var attendanceId = $(this).data("id");
             swal({
                     title: "Anda yakin?",
-                    text: "Setelah data kelas ini dihapus, semua data yang terkait dengan kelas ini (termasuk siswa, nilai dan lain-lain) akan terhapus!",
+                    text: "Setelah data kehadiran siswa ini dihapus, semua data yang terkait dengan kehadiran siswa ini akan terhapus!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -136,13 +147,13 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/class/')}}" + '/' + classId,
+                            url: "{{ url('dashboard/presence')}}" + '/' + attendanceId,
                             success: function (data) {
-                                $("#class_" + classId).remove();
-                                swal("Sukses!", "Data kelas telah dihapus.", "success");
+                                $("#attendance_" + attendanceId).remove();
+                                swal("Sukses!", "Data kehadiran telah dihapus.", "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data kelas gagal dihapus.", "error");
+                                swal("Gagal!", "Data kehadiran gagal dihapus.", "error");
                             }
                         });
                     }

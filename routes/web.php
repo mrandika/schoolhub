@@ -43,41 +43,47 @@ Route::resource('dashboard/student', 'StudentController');
 // Route::resource('admin/kesiswaan', 'KesiswaanController');
 
 /**
+ * Presence Controller
+ */
+// Today
+Route::get('dashboard/presence/generate', 'PresenceController@createQr')->name('presence.createQr');
+
+/**
  * Sarpras Controller
  */
 // Today
-Route::get('admin/sarpras/today', 'SarprasController@today')->name('sarpras.today');
+Route::get('dashboard/sarpras/today', 'SarprasController@today')->name('sarpras.today');
 
 // Borrow Data
-Route::get('admin/sarpras/data', 'SarprasController@borrowData')->name('sarpras.data');
+Route::get('dashboard/sarpras/data', 'SarprasController@borrowData')->name('sarpras.data');
 
 /**
  * Kesiswaan Controller
  */
 // Today
-Route::get('admin/kesiswaan/today', 'KesiswaanController@today')->name('kesiswaan.today');
+Route::get('dashboard/kesiswaan/today', 'KesiswaanController@today')->name('kesiswaan.today');
 
 // Index Event
-Route::get('admin/kesiswaan/event', 'KesiswaanController@indexEvent')->name('kesiswaan.event');
+Route::get('dashboard/kesiswaan/event', 'KesiswaanController@indexEvent')->name('kesiswaan.event');
 
 // Index Violation
-Route::get('admin/kesiswaan/violation', 'KesiswaanController@indexViolation')->name('kesiswaan.violation');
+Route::get('dashboard/kesiswaan/violation', 'KesiswaanController@indexViolation')->name('kesiswaan.violation');
 
 // Index Data Violation
-Route::get('admin/kesiswaan/violation/data', 'KesiswaanController@violationData')->name('kesiswaan.violation-data');
+Route::get('dashboard/kesiswaan/violation/data', 'KesiswaanController@violationData')->name('kesiswaan.violation-data');
 
 /**
  * Teacher Controller
  */
 // Today
-Route::get('teacher/today', 'TeacherController@today')->name('teacher.today');
+Route::get('dashboard/teacher/today', 'TeacherController@today')->name('teacher.today');
 Route::get('/search','TeacherController@search');
 
 /**
  * Student Controller
  */
 // Today
-Route::get('student/today', 'StudentController@today')->name('student.today');
+Route::get('dashboard/student/today', 'StudentController@today')->name('student.today');
 
 /**
  * Admin Controller
