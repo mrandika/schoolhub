@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
+
+use App\Note;
 
 class NoteController extends Controller
 {
@@ -26,7 +29,11 @@ class NoteController extends Controller
      */
     public function index()
     {
-        //
+        $count = Note::count();
+        $notes = Note::paginate(20);
+        return view('note/index')
+        ->withCounts($count)
+        ->withNotes($notes);
     }
 
     /**
@@ -92,6 +99,8 @@ class NoteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $note = Note::find($id);
+        $note->delete();
+        return Response::json($note);
     }
 }
