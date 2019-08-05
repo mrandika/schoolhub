@@ -40,10 +40,10 @@ $role = Auth::user()->role;
                 <span>Catatan</span></a></li>
 
 <li class="menu-header">Sarpras</li>
-<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasController@index')}}"><i
+<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i
                         class="fas fa-cubes"></i>
                 <span>Data Barang</span></a></li>
-<li class=@yield('borrowDataActive')><a class="nav-link" href="{{action('SarprasController@borrowData')}}"><i
+<li class=@yield('borrowDataActive')><a class="nav-link" href="{{action('SarprasBorrowerController@index')}}"><i
                         class="fas fa-list"></i>
                 <span>Data Peminjaman</span></a></li>
 
@@ -119,7 +119,7 @@ $role = Auth::user()->role;
                 <span>Buat Laporan</span></a></li>
 
 <li class="menu-header">Sarpras</li>
-<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasController@index')}}"><i
+<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i
                         class="fas fa-cubes"></i>
                 <span>Data Barang</span></a></li>
 {{-- <li class=""><a class="nav-link" href="{{action('SarprasController@borrowData')}}"><i class="fas fa-list"></i>

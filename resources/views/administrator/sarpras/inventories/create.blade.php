@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Create Note &mdash; SchoolHUB
+Register Inventories &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('NoteController@index')}}">My Hub</a>
+    <a href="{{action('SarprasInventoryController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('NoteController@index')}}">H</a>
+    <a href="{{action('SarprasInventoryController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('noteActive')
+@section('inventoryActive')
 active
 @endsection
 
@@ -24,14 +24,15 @@ active
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ action('NoteController@index') }}" class="btn btn-icon"><i
+                <a href="{{ action('SarprasInventoryController@index') }}" class="btn btn-icon"><i
                         class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Buat Catatan</h1>
+            <h1>Buat Inventori</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Ruangan</a></div>
-                <div class="breadcrumb-item">Buat Catatan</div>
+                <div class="breadcrumb-item"><a href="#">Sarpras</a></div>
+                <div class="breadcrumb-item"><a href="#">Inventories</a></div>
+                <div class="breadcrumb-item">Buat Inventori</div>
             </div>
         </div>
 
@@ -56,28 +57,36 @@ active
                         </div>
                     </div>
                     @endif
-                    <form action="{{ action('NoteController@store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('SarprasInventoryController@store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
-                                <h4>Masukan Catatan</h4>
+                                <h4>Masukan Data Barang</h4>
                             </div>
                             <div class="card-body">
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kelas</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Gambar</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <select class="form-control selectric" name="class" required>
-                                            <option>Pilih Kelas</option>
-                                            @foreach ($classes as $class)
-                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
-                                            @endforeach
-                                        </select>
+                                        <div id="image-preview" class="image-preview">
+                                            <label for="image-upload" id="image-label">Choose File</label>
+                                            <input type="file" name="image" id="image-upload" required>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Isi Catatan</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode
+                                        Produk</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="text" class="form-control" required>
+                                        <input type="text" name="code" placeholder="Mis. SMK/2019/06/22-PROYEKTOR"
+                                            class="form-control" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama
+                                        Produk</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="text" name="name" placeholder="Mis. PROYEKTOR MERK XY"
+                                            class="form-control" required>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -93,7 +102,7 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                     <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Buat Catatan Baru</button>
+                                        <button class="btn btn-primary">Buat Inventori Baru</button>
                                     </div>
                                 </div>
                             </div>
@@ -104,4 +113,11 @@ active
         </div>
     </section>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{asset('modules/jquery-selectric/jquery.selectric.min.js')}}"></script>
+<script src="{{asset('modules/upload-preview/assets/js/jquery.uploadPreview.min.js')}}"></script>
+<script src="{{asset('modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js')}}"></script>
+<script src="{{asset('js/dashboard/page/features-post-create.js')}}"></script>
 @endsection

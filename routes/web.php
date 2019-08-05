@@ -33,7 +33,8 @@ Route::resource('dashboard/class', 'ClassController');
 
 Route::resource('dashboard/session', 'SessionController');
 
-Route::resource('dashboard/sarpras', 'SarprasController');
+Route::resource('dashboard/sarpras/inventory', 'SarprasInventoryController');
+Route::resource('dashboard/sarpras/borrower', 'SarprasBorrowerController');
 Route::resource('dashboard/kesiswaan', 'KesiswaanController');
 
 Route::resource('dashboard/teacher', 'TeacherController');
@@ -68,15 +69,6 @@ Route::get('dashboard/presence/data/{presence}', array(
 ), function ($id) {
     return redirect()->action('PresenceController@showdata');
 });
-
-/**
- * Sarpras Controller
- */
-// Today
-Route::get('dashboard/sarpras/today', 'SarprasController@today')->name('sarpras.today');
-
-// Borrow Data
-Route::get('dashboard/sarpras/data', 'SarprasController@borrowData')->name('sarpras.data');
 
 /**
  * Kesiswaan Controller
