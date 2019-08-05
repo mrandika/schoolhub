@@ -1,7 +1,7 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Attendance &mdash; SchoolHUB
+Create Attendance Data &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
@@ -24,6 +24,10 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
+            <div class="section-header-back">
+                <a href="{{ action('PresenceController@index') }}" class="btn btn-icon"><i
+                        class="fas fa-arrow-left"></i></a>
+            </div>
             <h1>Generate QR</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
@@ -34,20 +38,6 @@ active
         <div class="section-body">
 
             <div class="row">
-                <div class="col-12">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#">Hari Ini <span
-                                            class="badge badge-white">{{ $countsToday }}</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
                 <div class="col-12">
                     @if ($errors->any())
                     <div class="alert alert-danger" role="alert">
@@ -66,8 +56,7 @@ active
                         </div>
                     </div>
                     @endif
-                    <form action="{{ action('PresenceController@generate') }}" method="post"
-                        enctype="multipart/form-data">
+                <form action="{{ action('PresenceController@storedata') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
@@ -88,15 +77,9 @@ active
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Tanggal</label>
-                                    <div class="col-sm-12 col-md-7">
-                                            <input type="date" class="form-control datepicker">
-                                    </div>
-                                </div>
-                                <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                     <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Buat Ruangan Baru</button>
+                                        <button class="btn btn-primary">Buat Data Baru</button>
                                     </div>
                                 </div>
                             </div>

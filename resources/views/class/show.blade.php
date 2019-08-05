@@ -24,6 +24,10 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
+            <div class="section-header-back">
+                <a href="{{ action('ClassController@index') }}" class="btn btn-icon"><i
+                        class="fas fa-arrow-left"></i></a>
+            </div>
             <h1>Kelas {{ $classes }}</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>

@@ -31,7 +31,7 @@ active
             </div>
         </div>
         <div class="section-body">
-            <div class="card mb-0">
+            <div class="card mb-4">
                 <div class="card-body">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
@@ -41,22 +41,27 @@ active
                     </ul>
                 </div>
             </div>
-            @foreach ($notes->sortByDesc('id') as $note)
-            <div id="note_{{ $note->id }}" class="card">
-                <div class="card-header">
-                    <h4 class="card-title">
-                        {{ \App\UserData::select('name')->where('id_user', $note->id_teacher)->first()->name }},</h4>
-                    <p class="card-text">Untuk:
-                        {{ \App\StudentClass::select('name')->where('id', $note->id_class)->first()->name }}</p>
+            <div class="row">
+                    @foreach ($notes->sortByDesc('id') as $note)
+                <div class="col-md-6">
+                    <div id="note_{{ $note->id }}" class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">
+                                {{ \App\UserData::select('name')->where('id_user', $note->id_teacher)->first()->name }},
+                            </h4>
+                            <p class="card-text">Untuk:
+                                {{ \App\StudentClass::select('name')->where('id', $note->id_class)->first()->name }}</p>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ $note->text }}</p>
+                            <a href="#" class="card-link text-warning">Edit</a>
+                            <a id="deleteNote_{{ $note->id }}" data-id="{{ $note->id }}"
+                                class="card-link text-danger"><i class="fas fa-minus-circle"></i> Delete</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p class="card-text">{{ $note->text }}</p>
-                    <a href="#" class="card-link text-warning">Edit</a>
-                    <a id="deleteNote_{{ $note->id }}" data-id="{{ $note->id }}" class="card-link text-danger"><i
-                            class="fas fa-minus-circle"></i> Delete</a>
-                </div>
+                @endforeach
             </div>
-            @endforeach
             <div class="float-right">
                 <nav>
                     <ul class="pagination">

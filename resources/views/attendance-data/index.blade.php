@@ -62,14 +62,17 @@ active
                             </div>
                             @if ($available == 0)
                             <div class="float-left mr-2">
-                                <a href="{{ action('PresenceController@showQr') }}" class="btn btn-info"><i
+                                <a href="{{ action('PresenceController@createdata') }}" class="btn btn-info"><i
                                         class="fas fa-qrcode"></i> Generate</a>
                             </div>
                             @endif
+
+                            @if ($available != 0)
                             <div class="float-left mr-2">
-                                <a href="{{ action('PresenceController@create') }}" class="btn btn-info"><i
-                                        class="fas fa-qrcode"></i> View QR</a>
-                            </div>
+                                    <a href="{{ action('PresenceController@showdata', \App\Attendance::select('id')->where('date', 'like', '%'.date("Y-m-d").'%')->first()->id) }}" class="btn btn-info"><i
+                                            class="fas fa-qrcode"></i> View QR</a>
+                                </div>
+                            @endif
                             <div class="float-left">
                                 <a href="{{ action('PresenceController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>

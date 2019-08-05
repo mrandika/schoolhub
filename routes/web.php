@@ -45,8 +45,29 @@ Route::resource('dashboard/student', 'StudentController');
 /**
  * Presence Controller
  */
-// Today
-Route::get('dashboard/presence/generate', 'PresenceController@createQr')->name('presence.createQr');
+// Generate QR
+Route::get('dashboard/presence/data/create', array(
+    'as' => 'presence.createdata', 
+    'uses' => 'PresenceController@createdata'
+), function () {
+    return redirect()->action('PresenceController@createdata');
+});
+
+// Create QR
+Route::post('dashboard/presence/data', array(
+    'as' => 'presence.storedata', 
+    'uses' => 'PresenceController@storedata'
+), function () {
+    return redirect()->action('PresenceController@storedata');
+});
+
+// Show QR
+Route::get('dashboard/presence/data/{presence}', array(
+    'as' => 'presence.showdata', 
+    'uses' => 'PresenceController@showdata'
+), function ($id) {
+    return redirect()->action('PresenceController@showdata');
+});
 
 /**
  * Sarpras Controller

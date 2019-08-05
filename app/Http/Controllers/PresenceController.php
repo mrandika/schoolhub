@@ -33,7 +33,7 @@ class PresenceController extends Controller
         $attendanceData = AttendanceData::where('created_at', 'like', '%'.$date.'%');
         $count = $attendanceData->count();
 
-        $status = Attendance::where('created_at', 'like', '%'.$date.'%')->count();
+        $status = Attendance::select('id')->where('created_at', 'like', '%'.$date.'%')->count();
         return view('attendance-data/index')
         ->withCountsToday($count)
         ->withAttendances($attendanceData->paginate(20))
@@ -53,13 +53,13 @@ class PresenceController extends Controller
     }
 
     /**
-     * Show the form for creating a new qr data.
+     * Show the form for creating a new data.
      *
      * @return \Illuminate\Http\Response
      */
-    public function createQr()
+    public function createdata() 
     {
-        return view('attendance-data/generate');
+        return view('attendance-data/createdata');
     }
 
     /**
@@ -93,6 +93,30 @@ class PresenceController extends Controller
     }
 
     /**
+     * Store a newly created data in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function storedata(Request $request)
+    {
+        $validatedData = $request->validate([
+            'uid' => 'required',
+            'password' => 'required',
+        ]);
+
+        $date = date("Y-m-d");
+
+        $attendance = new Attendance;
+        $attendance->uid = $request->post('uid');
+        $attendance->password = $request->post('password');
+        $attendance->date = $date;
+        $attendance->save();
+
+        return redirect('dashboard/presence');
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -101,6 +125,19 @@ class PresenceController extends Controller
     public function show($id)
     {
         //
+    }
+
+    /**
+     * Display the specified data.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showdata($id)
+    {
+        $attendance = Attendance::find($id);
+        return view('attendance-data/showdata')
+        ->withAttendance($attendance);
     }
 
     /**
