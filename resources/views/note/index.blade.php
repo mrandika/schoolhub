@@ -40,6 +40,10 @@ active
                         </li>
                     </ul>
                 </div>
+                <div class="float-left p-4">
+                        <a href="{{ action('NoteController@create') }}" class="btn btn-primary"><i
+                                class="fas fa-plus"></i> Add</a>
+                    </div>
             </div>
             <div class="row">
                     @foreach ($notes->sortByDesc('id') as $note)
@@ -54,7 +58,7 @@ active
                         </div>
                         <div class="card-body">
                             <p class="card-text">{{ $note->text }}</p>
-                            <a href="#" class="card-link text-warning">Edit</a>
+                        <a href="{{ action('NoteController@edit', $note->id) }}" class="card-link text-warning">Edit</a>
                             <a id="deleteNote_{{ $note->id }}" data-id="{{ $note->id }}"
                                 class="card-link text-danger"><i class="fas fa-minus-circle"></i> Delete</a>
                         </div>

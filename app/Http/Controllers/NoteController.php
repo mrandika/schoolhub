@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Response;
+use Response, Auth;
 
 use App\Note;
+use App\StudentClass;
 
 class NoteController extends Controller
 {
@@ -43,7 +44,9 @@ class NoteController extends Controller
      */
     public function create()
     {
-        //
+        $class = StudentClass::all();
+        return view('note/create')
+        ->withClasses($class);
     }
 
     /**
@@ -54,7 +57,24 @@ class NoteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'class' => 'required',
+            'text' => 'required',
+        ]);
+
+        $multiple = $request->has('multiple');
+
+        $note = new Note;
+        $note->id_teacher = Auth::user()->id;
+        $note->id_class = $request->post('class');
+        $note->text = $request->post('text');
+        $note->save();
+
+        if ($multiple) {
+            return back();
+        } else {
+            return redirect('dashboard/note');
+        }
     }
 
     /**
@@ -76,7 +96,11 @@ class NoteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $class = StudentClass::all();
+        $note = Note::find($id);
+        return view('note/update')
+        ->withClasses($class)
+        ->withNote($note);
     }
 
     /**
@@ -88,7 +112,17 @@ class NoteController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validatedData = $request->validate([
+            'class' => 'required',
+            'text' => 'required',
+        ]);
+
+        $note = Note::find($id);
+        $note->id_class = $request->post('class');
+        $note->text = $request->post('text');
+        $note->save();
+
+        return redirect('dashboard/note');
     }
 
     /**
