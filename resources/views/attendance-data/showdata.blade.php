@@ -20,7 +20,7 @@ active
 @endsection
 
 @php
-$qrdata = "PRS=".Hash::make($attendance->id);
+$qrdata = "PRS=".Crypt::encryptString($attendance->id);
 $isValid = date('Y-m-d') == $attendance->date
 @endphp
 
