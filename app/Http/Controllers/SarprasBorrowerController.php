@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\ViewSarprasBorrower;
+
 class SarprasBorrowerController extends Controller
 {
     /**
@@ -13,7 +15,15 @@ class SarprasBorrowerController extends Controller
      */
     public function index()
     {
-        //
+        $count = ViewSarprasBorrower::count();
+        $countAvailable = ViewSarprasBorrower::where('status', 'Dikembalikan')->count();
+        $countBorrow = ViewSarprasBorrower::where('status', 'Belum Dikembalikan')->count();
+        $borrower = ViewSarprasBorrower::paginate(20);
+        return view('administrator/sarpras/borrower/index')
+        ->withCounts($count)
+        ->withAvailable($countAvailable)
+        ->withBorrowed($countBorrow)
+        ->withBorrowers($borrower);
     }
 
     /**

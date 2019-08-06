@@ -86,7 +86,8 @@ $qrdata = $qrdata = "SRP=".Crypt::encryptString($inventory->id);
                                                 </td>
                                                 <td>
                                                     @if ($inventory->status == "Tersedia")
-                                                    <div class="badge badge-success">Tersedia</div>
+                                                    <div class="badge badge-success">Tersedia</div> <a href="{{ action('SarprasInventoryController@edit', $inventory->id) }}"
+                                                        class="btn">Pinjam <i class="fas fa-chevron-right"></i></a>
                                                     @else
                                                     <div class="badge badge-warning">Dipinjam</div>
                                                     @endif
