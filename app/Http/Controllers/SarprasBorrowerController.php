@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\UserData;
+use App\SarprasInventory;
+use App\Room;
+use App\SarprasBorrower;
 use App\ViewSarprasBorrower;
 
 class SarprasBorrowerController extends Controller
@@ -33,7 +37,13 @@ class SarprasBorrowerController extends Controller
      */
     public function create()
     {
-        //
+        $user = UserData::all();
+        $inventory = SarprasInventory::where('status', 'Tersedia')->get();
+        $room = Room::all();
+        return view('administrator/sarpras/borrower/create')
+        ->withUsers($user)
+        ->withInventories($inventory)
+        ->withRooms($room);
     }
 
     /**
@@ -44,7 +54,26 @@ class SarprasBorrowerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'id_user' => 'required',
+            'id_inventory' => 'required',
+            'id_room' => 'required',
+        ]);
+
+        $multiple = $request->has('multiple');
+
+        $borrower = new SarprasBorrower;
+        $borrower->id_user = $request->post('id_user');
+        $borrower->id_inventory = $request->post('id_inventory');
+        $borrower->id_room = $request->post('id_room');
+        $borrower->status = "Belum Dikembalikan";
+        $borrower->save();
+
+        if ($multiple) {
+            return back();
+        } else {
+            return redirect('dashboard/sarpras/borrower');
+        }
     }
 
     /**
@@ -66,7 +95,10 @@ class SarprasBorrowerController extends Controller
      */
     public function edit($id)
     {
-        //
+        $borrower = SarprasBorrower::find($id);
+        $borrower->status = "Dikembalikan";
+        $borrower->save();
+        return redirect('dashboard/sarpras/borrower');
     }
 
     /**

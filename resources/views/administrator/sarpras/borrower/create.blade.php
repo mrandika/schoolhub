@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Register Room &mdash; SchoolHUB
+Register Borrower &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('RoomController@index')}}">My Hub</a>
+    <a href="{{action('SarprasBorrowerController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('RoomController@index')}}">H</a>
+    <a href="{{action('SarprasBorrowerController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('roomActive')
+@section('borrowDataActive')
 active
 @endsection
 
@@ -24,14 +24,15 @@ active
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="{{ action('RoomController@index') }}" class="btn btn-icon"><i
+                <a href="{{ action('SarprasBorrowerController@index') }}" class="btn btn-icon"><i
                         class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Daftar Ruangan</h1>
+            <h1>Buat Peminjam</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Ruangan</a></div>
-                <div class="breadcrumb-item">Daftar Ruangan</div>
+                <div class="breadcrumb-item"><a href="#">Sarpras</a></div>
+                <div class="breadcrumb-item"><a href="#">Peminjam</a></div>
+                <div class="breadcrumb-item">Buat Peminjam</div>
             </div>
         </div>
 
@@ -56,25 +57,46 @@ active
                         </div>
                     </div>
                     @endif
-                    <form action="{{ action('RoomController@store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('SarprasBorrowerController@store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
-                                <h4>Masukan Data Ruangan</h4>
+                                <h4>Masukan Data Peminjam</h4>
                             </div>
                             <div class="card-body">
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Kode</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama
+                                        Peminjam</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="code" placeholder="Masukan nomor ruangan"
-                                            class="form-control" required>
+                                        <select class="form-control selectric" name="id_user" required>
+                                            <option>Pilih Peminjam</option>
+                                            @foreach ($users as $user)
+                                            <option value="{{ $user->id_user }}">{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama ruangan
-                                        (alias)</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama
+                                        Barang</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="alias" class="form-control" required>
+                                        <select class="form-control selectric" name="id_inventory" required>
+                                            <option>Pilih Barang</option>
+                                            @foreach ($inventories as $inventory)
+                                            <option value="{{ $inventory->id }}">{{ $inventory->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row mb-4">
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Ruangan</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <select class="form-control selectric" name="id_room" required>
+                                            <option>Pilih Ruangan</option>
+                                            @foreach ($rooms as $room)
+                                            <option value="{{ $room->id }}">{{ $room->alias }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group row mb-4">
@@ -90,7 +112,7 @@ active
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                     <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Buat Ruangan Baru</button>
+                                        <button class="btn btn-primary">Buat Peminjam Baru</button>
                                     </div>
                                 </div>
                             </div>

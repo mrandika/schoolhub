@@ -70,7 +70,7 @@ active
                                 </form>
                             </div>
                             <div class="float-left">
-                                <a href="{{ action('SarprasInventoryController@create') }}" class="btn btn-primary"><i
+                                <a href="{{ action('SarprasBorrowerController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
                             </div>
 
@@ -85,6 +85,7 @@ active
                                             <th>Barang Dipinjam</th>
                                             <th>Ruangan</th>
                                             <th>Status</th>
+                                            <th>Action</th>
                                         </tr>
                                         @foreach ($borrowers->sortBy('id') as $borrower)
                                         <tr id="borrower_{{ $borrower->id }}">
@@ -105,6 +106,12 @@ active
                                                 <div class="badge badge-success">Dikembalikan</div>
                                                 @else
                                                 <div class="badge badge-warning">Belum Dikembalikan</div>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($borrower->status == "Belum Dikembalikan")
+                                                <a href="{{ action('SarprasBorrowerController@edit', $borrower->id) }}"
+                                                    class="btn btn-warning">Kembalikan</a>
                                                 @endif
                                             </td>
                                         </tr>
