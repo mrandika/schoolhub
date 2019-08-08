@@ -48,13 +48,13 @@ $role = Auth::user()->role;
                 <span>Data Peminjaman</span></a></li>
 
 <li class="menu-header">Kesiswaan</li>
-<li class=@yield('eventActive')><a class="nav-link" href="{{action('KesiswaanController@indexEvent')}}"><i
+<li class=@yield('eventActive')><a class="nav-link" href="{{action('KesiswaanEventController@index')}}"><i
                         class="fas fa-ticket-alt"></i>
                 <span>Acara</span></a></li>
-<li class=@yield('violationActive')><a class="nav-link" href="{{action('KesiswaanController@indexViolation')}}"><i
+<li class=@yield('violationActive')><a class="nav-link" href="{{action('KesiswaanViolationController@index')}}"><i
                         class="fas fa-exclamation"></i>
                 <span>Pelanggaran</span></a></li>
-<li class=@yield('violationDataActive')><a class="nav-link" href="{{action('KesiswaanController@violationData')}}"><i
+<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanReportController@index')}}"><i
                         class="fas fa-list"></i>
                 <span>Data Pelanggaran</span></a></li>
 
@@ -113,10 +113,10 @@ $role = Auth::user()->role;
                         class="far fa-list"></i>
                 <span>Penilaian Siswa</span></a></li>
 
-<li class="menu-header">Kesiswaan</li>
-<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanController@index')}}"><i
+{{-- <li class="menu-header">Kesiswaan</li>
+<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanViolationListController@create')}}"><i
                         class="fas fa-key"></i>
-                <span>Buat Laporan</span></a></li>
+                <span>Buat Laporan</span></a></li> --}}
 
 <li class="menu-header">Sarpras</li>
 <li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i

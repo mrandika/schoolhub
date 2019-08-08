@@ -20,9 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::resource('dashboard/post', 'PostController');
-Route::resource('dashboard/category', 'CategoryController');
-Route::resource('dashboard/tag', 'TagController');
+Route::resource('dashboard/blog/posts', 'PostController');
+Route::resource('dashboard/blog/categories', 'CategoryController');
+Route::resource('dashboard/blog/tags', 'TagController');
 
 Route::resource('dashboard/room', 'RoomController');
 Route::resource('dashboard/subject', 'SubjectController');
@@ -35,7 +35,10 @@ Route::resource('dashboard/session', 'SessionController');
 
 Route::resource('dashboard/sarpras/inventory', 'SarprasInventoryController');
 Route::resource('dashboard/sarpras/borrower', 'SarprasBorrowerController');
-Route::resource('dashboard/kesiswaan', 'KesiswaanController');
+
+Route::resource('dashboard/kesiswaan/events', 'KesiswaanEventController');
+Route::resource('dashboard/kesiswaan/violations', 'KesiswaanViolationController');
+Route::resource('dashboard/kesiswaan/reports', 'KesiswaanReportController');
 
 Route::resource('dashboard/teacher', 'TeacherController');
 Route::resource('dashboard/student', 'StudentController');
@@ -69,21 +72,6 @@ Route::get('dashboard/presence/data/{presence}', array(
 ), function ($id) {
     return redirect()->action('PresenceController@showdata');
 });
-
-/**
- * Kesiswaan Controller
- */
-// Today
-Route::get('dashboard/kesiswaan/today', 'KesiswaanController@today')->name('kesiswaan.today');
-
-// Index Event
-Route::get('dashboard/kesiswaan/event', 'KesiswaanController@indexEvent')->name('kesiswaan.event');
-
-// Index Violation
-Route::get('dashboard/kesiswaan/violation', 'KesiswaanController@indexViolation')->name('kesiswaan.violation');
-
-// Index Data Violation
-Route::get('dashboard/kesiswaan/violation/data', 'KesiswaanController@violationData')->name('kesiswaan.violation-data');
 
 /**
  * Teacher Controller
