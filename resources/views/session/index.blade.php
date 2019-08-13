@@ -19,6 +19,10 @@ Session &mdash; SchoolHUB
 active
 @endsection
 
+@section('css')
+<link rel="stylesheet" href="{{asset('modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+@endsection
+
 @section('content')
 <!-- Main Content -->
 <div class="main-content" style="min-height: 922px;">
@@ -63,6 +67,7 @@ active
 
                             <div class="clearfix mb-3"></div>
 
+                            {{--
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <tbody>
@@ -74,55 +79,86 @@ active
                                         </tr>
                                         @foreach ($sessions as $session)
                                         <tr id="session_{{ $session->id }}">
-                                            <td>{{ \App\UserData::select('name')->where('id_user', $session->id_user)->first()->name }}
-                                            </td>
-                                            <td>
-                                                {{ $session->is_mobile }}
-                                            </td>
-                                            <td>
-                                                {{ $session->phone }}
-                                            </td>
-                                            <td>
-                                                <a id="deleteSession_{{ $session->id }}" data-id="{{$session->id}}"
-                                                        href='javascript:void(0)' class="btn btn-danger">Delete</a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="float-right">
-                                <nav>
-                                    <ul class="pagination">
-                                        {{ $sessions->links() }}
-                                    </ul>
-                                </nav>
-                            </div>
+                            <td>{{ \App\UserData::select('name')->where('id_user', $session->id_user)->first()->name }}
+                            </td>
+                            <td>
+                                {{ $session->is_mobile }}
+                            </td>
+                            <td>
+                                {{ $session->phone }}
+                            </td>
+                            <td>
+                                <a id="deleteSession_{{ $session->id }}" data-id="{{$session->id}}"
+                                    href='javascript:void(0)' class="btn btn-danger">Delete</a>
+                            </td>
+                            </tr>
+                            @endforeach
+                            </tbody>
+                            </table>
+                        </div>
+                        <div class="float-right">
+                            <nav>
+                                <ul class="pagination">
+                                    {{ $sessions->links() }}
+                                </ul>
+                            </nav>
+                        </div>
+                        --}}
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered data-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Pengguna</th>
+                                        <th>Platform</th>
+                                        <th>Merk</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+</div>
+</section>
 </div>
 @endsection
 
 @section('scripts')
+<script src="{{asset('modules/datatables/datatables.min.js')}}"></script>
+<script src="{{asset('modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
 <script type="text/javascript">
-    $('#search').on('keyup', function () {
-        $value = $(this).val();
-        $.ajax({
-            type: 'get',
-            url: '{{URL::to('
-            search ')}}',
-            data: {
-                'search': $value
-            },
-            success: function (data) {
-                $('tbody').html(data);
-            }
+    $(function () {
+
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('session.index') }}",
+            columns: [{
+                    data: 'id',
+                    name: 'id'
+                },
+                {
+                    data: 'id_user',
+                    name: 'id_user'
+                },
+                {
+                    data: 'is_mobile',
+                    name: 'is_mobile'
+                },
+                {
+                    data: 'phone',
+                    name: 'phone'
+                },
+            ]
         });
-    })
+
+    });
 </script>
 
 
@@ -152,7 +188,7 @@ active
                             success: function (data) {
                                 $("#session_" + sessionId).remove();
                                 swal("Sukses!", "Detail sesi telah dihapus.",
-                                "success");
+                                    "success");
                             },
                             error: function (data) {
                                 swal("Gagal!", "Detail sesi gagal dihapus.", "error");

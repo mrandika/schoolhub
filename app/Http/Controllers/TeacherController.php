@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Storage, File, Response;
+use DataTables;
 
 use App\Teacher;
 use App\ViewTeacher;
@@ -41,10 +42,15 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $teachersCount = ViewTeacher::count();
-        $teachers = ViewTeacher::paginate(10);
+        $teachers = ViewTeacher::all();
+        if ($request->ajax()) {
+            return Datatables::of($teachers)
+                    ->addIndexColumn()
+                    ->make(true);
+        }
         return view('teacher/index')
         ->withCounts($teachersCount)
         ->withTeachers($teachers);  

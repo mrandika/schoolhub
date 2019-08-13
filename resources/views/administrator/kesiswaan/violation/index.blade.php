@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Events &mdash; SchoolHUB
+Violation &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('KesiswaanEventController@index')}}">My Hub</a>
+    <a href="{{action('KesiswaanViolationController@index')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('KesiswaanEventController@index')}}">H</a>
+    <a href="{{action('KesiswaanViolationController@index')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('eventActive')
+@section('violationActive')
 active
 @endsection
 
@@ -24,11 +24,11 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
-            <h1>Kesiswaan &mdash; Event</h1>
+            <h1>Kesiswaan &mdash; Violation</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                 <div class="breadcrumb-item"><a href="#">Kesiswaan</a></div>
-                <div class="breadcrumb-item"><a href="#">Event</a></div>
+                <div class="breadcrumb-item"><a href="#">Violation</a></div>
             </div>
         </div>
         <div class="section-body">
@@ -62,7 +62,7 @@ active
                                 </form>
                             </div>
                             <div class="float-left">
-                                <a href="{{ action('KesiswaanEventController@create') }}" class="btn btn-primary"><i
+                                <a href="{{ action('KesiswaanViolationController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
                             </div>
 
@@ -74,29 +74,28 @@ active
                                         <tr>
                                             <th>ID</th>
                                             <th>Nama</th>
-                                            <th>Pelaksanaan</th>
+                                            <th>Score</th>
+                                            <th>Action</th>
                                         </tr>
-                                        @foreach ($events->sortByDesc('id') as $event)
-                                        <tr id="event_{{ $event->id }}">
+                                        @foreach ($violations->sortByDesc('id') as $violation)
+                                        <tr id="violation_{{ $violation->id }}">
                                             <td>
-                                                {{ $event->id }}
+                                                {{ $violation->id }}
                                             </td>
                                             <td>
-                                                {{ $event->name }}
-                                                <div class="table-links">
-                                                    <a
-                                                        href="{{ action('KesiswaanEventController@show', $event->id) }}">View</a>
-                                                    <div class="bullet"></div>
-                                                    <a
-                                                        href="{{ action('KesiswaanEventController@edit', $event->id) }}">Edit</a>
-                                                    <div class="bullet"></div>
-                                                    <a id="deleteEvent_{{ $event->id }}"
-                                                        data-id="{{$event->id}}" href='javascript:void(0)'
-                                                        class="text-danger">Delete</a>
-                                                </div>
+                                                {{ $violation->name }}
                                             </td>
                                             <td>
-                                                {{ $event->date }}
+                                                {{ $violation->score }}
+                                            </td>
+                                            <td colspan="2">
+                                                <a href="{{ action('KesiswaanViolationController@show', $violation->id) }}"
+                                                    class="btn btn-success">Show</a>
+                                                <a href="{{ action('KesiswaanViolationController@edit', $violation->id) }}"
+                                                    class="btn btn-warning">Edit</a>
+                                                <a id="deleteViolation_{{ $violation->id }}"
+                                                    data-id="{{$violation->id}}" href='javascript:void(0)'
+                                                    class="btn btn-danger">Delete</a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -106,7 +105,7 @@ active
                             <div class="float-right">
                                 <nav>
                                     <ul class="pagination">
-                                        {{ $events->links() }}
+                                        {{ $violations->links() }}
                                     </ul>
                                 </nav>
                             </div>
@@ -120,7 +119,7 @@ active
 @endsection
 
 @section('scripts')
-@foreach ($events as $event)
+@foreach ($violations as $violation)
 <script>
     $(document).ready(function () {
         $.ajaxSetup({
@@ -129,11 +128,11 @@ active
             }
         });
 
-        $('#deleteEvent_{{ $event->id }}').on('click', function () {
-            var eventId = $(this).data("id");
+        $('#deleteViolation_{{ $violation->id }}').on('click', function () {
+            var violationId = $(this).data("id");
             swal({
                     title: "Anda yakin?",
-                    text: "Setelah detail acara ini dihapus, data yang terkait akan dihapus!",
+                    text: "Setelah detail pelanggaran ini dihapus, data yang terkait akan dihapus!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -142,14 +141,16 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/kesiswaan/events')}}" + '/' + eventId,
+                            url: "{{ url('dashboard/kesiswaan/violations')}}" + '/' +
+                                violationId,
                             success: function (data) {
-                                $("#event_" + eventId).remove();
-                                swal("Sukses!", "Data acara telah dihapus.",
+                                $("#violation_" + violationId).remove();
+                                swal("Sukses!", "Data pelanggaran telah dihapus.",
                                     "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data acara gagal dihapus.", "error");
+                                swal("Gagal!", "Data pelanggaran gagal dihapus.",
+                                    "error");
                                 console.log(data)
                             }
                         });

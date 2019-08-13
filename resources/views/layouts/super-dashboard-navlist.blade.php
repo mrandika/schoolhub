@@ -58,6 +58,17 @@ $role = Auth::user()->role;
                         class="fas fa-list"></i>
                 <span>Data Pelanggaran</span></a></li>
 
+<li class="menu-header">Kantin</li>
+<li class=@yield('sellerActive')><a class="nav-link" href=""><i
+                        class="fas fa-ticket-alt"></i>
+                <span>Penjual</span></a></li>
+<li class=@yield('shopActive')><a class="nav-link" href=""><i
+                        class="fas fa-exclamation"></i>
+                <span>Warung</span></a></li>
+<li class=@yield('itemActive')><a class="nav-link" href=""><i
+                        class="fas fa-list"></i>
+                <span>Data Item</span></a></li>
+
 <li class="menu-header">Data Blog</li>
 <li class=@yield('postActive')><a class="nav-link" href="{{action('PostController@index')}}"><i class="fas fa-pen"></i>
                 <span>Post</span></a></li>
@@ -115,8 +126,8 @@ $role = Auth::user()->role;
 
 {{-- <li class="menu-header">Kesiswaan</li>
 <li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanViolationListController@create')}}"><i
-                        class="fas fa-key"></i>
-                <span>Buat Laporan</span></a></li> --}}
+        class="fas fa-key"></i>
+<span>Buat Laporan</span></a></li> --}}
 
 <li class="menu-header">Sarpras</li>
 <li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i

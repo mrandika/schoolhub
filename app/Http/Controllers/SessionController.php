@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Response;
+use DataTables;
 
 use App\UserSession;
 
@@ -24,10 +25,15 @@ class SessionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $count = UserSession::count();
-        $session = UserSession::paginate(25);
+        $session = UserSession::all();
+        if ($request->ajax()) {
+            return Datatables::of($session)
+                    ->addIndexColumn()
+                    ->make(true);
+        }
         return view('session/index')
         ->withCounts($count)
         ->withSessions($session);

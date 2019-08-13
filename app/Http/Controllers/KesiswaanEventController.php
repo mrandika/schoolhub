@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Response;
 
 use App\KesiswaanEvent;
 
@@ -69,7 +70,9 @@ class KesiswaanEventController extends Controller
      */
     public function show($id)
     {
-        //
+        $event = KesiswaanEveny::find($id);
+        return view('administrator/kesiswaan/event/show')
+        ->withEvent($event);
     }
 
     /**
@@ -80,7 +83,9 @@ class KesiswaanEventController extends Controller
      */
     public function edit($id)
     {
-        //
+        $event = KesiswaanEvent::find($id);
+        return view('administrator/kesiswaan/event/update')
+        ->withEvent($event);
     }
 
     /**
@@ -92,7 +97,13 @@ class KesiswaanEventController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $event = KesiswaanEvent::find($id);
+        $event->name = $request->post('name');
+        $event->description = $request->post('description');
+        $event->date = $request->post('date');
+        $event->save();
+
+        return redirect('dashboard/kesiswaan/events');
     }
 
     /**
@@ -103,6 +114,8 @@ class KesiswaanEventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = KesiswaanEvent::find($id);
+        $event->delete();
+        return Response::json($event);
     }
 }

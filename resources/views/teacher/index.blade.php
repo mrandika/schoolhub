@@ -103,7 +103,7 @@ active
               <div class="float-right">
                 <nav>
                   <ul class="pagination">
-                    {{ $teachers->links() }}
+                    {{-- {{ $teachers->links() }} --}}
                   </ul>
                 </nav>
               </div>
@@ -117,23 +117,23 @@ active
 @endsection
 
 @section('scripts')
-<script type="text/javascript">
-  $('#search').on('keyup', function () {
-    $value = $(this).val();
-    $.ajax({
-      type: 'get',
-      url: '{{URL::to('
-      search ')}}',
-      data: {
-        'search': $value
-      },
-      success: function (data) {
-        $('tbody').html(data);
-      }
-    });
-  })
-</script>
 
+<script type="text/javascript">
+  $(function () {
+    
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('teacher.index') }}",
+        columns: [
+            {data: 'id_user', name: 'id_user'},
+            {data: 'name', name: 'name'},
+            {data: 'nip', name: 'nip'},
+        ]
+    });
+    
+  });
+</script>
 
 @foreach ($teachers as $teacher)
 <script>
