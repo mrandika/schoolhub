@@ -19,7 +19,7 @@ class SarprasInventoryController extends Controller
         $count = SarprasInventory::count();
         $countAvailable = SarprasInventory::where('status', 'Tersedia')->count();
         $countBorrow = SarprasInventory::where('status', 'Dipinjam')->count();
-        $inventories = SarprasInventory::paginate(20);
+        $inventories = SarprasInventory::all();
         return view('administrator/sarpras/inventories/index')
         ->withCounts($count)
         ->withAvailable($countAvailable)

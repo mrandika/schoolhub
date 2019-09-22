@@ -16,7 +16,7 @@ class CreateKantinInventoriesTable extends Migration
         Schema::create('kantin_inventories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_shop');
-            $table->foreign('id_shop')->references('id')->on('kantin_shops');
+            $table->foreign('id_shop')->references('id')->on('kantin_shops')->onDelete('cascade');
             $table->string('name')->length('100');
             $table->text('image');
             $table->integer('price')->length(6);

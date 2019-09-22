@@ -59,14 +59,11 @@ $role = Auth::user()->role;
                 <span>Data Pelanggaran</span></a></li>
 
 <li class="menu-header">Kantin</li>
-<li class=@yield('sellerActive')><a class="nav-link" href=""><i
-                        class="fas fa-ticket-alt"></i>
+<li class=@yield('sellerActive')><a class="nav-link" href=""><i class="fas fa-ticket-alt"></i>
                 <span>Penjual</span></a></li>
-<li class=@yield('shopActive')><a class="nav-link" href=""><i
-                        class="fas fa-exclamation"></i>
+<li class=@yield('shopActive')><a class="nav-link" href=""><i class="fas fa-exclamation"></i>
                 <span>Warung</span></a></li>
-<li class=@yield('itemActive')><a class="nav-link" href=""><i
-                        class="fas fa-list"></i>
+<li class=@yield('itemActive')><a class="nav-link" href=""><i class="fas fa-list"></i>
                 <span>Data Item</span></a></li>
 
 <li class="menu-header">Data Blog</li>

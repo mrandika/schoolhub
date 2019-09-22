@@ -28,7 +28,7 @@ class SubjectController extends Controller
     public function index()
     {
         $count = Subject::count();
-        $subject = Subject::paginate(10);
+        $subject = Subject::all();
         return view('subject/index')
         ->withCounts($count)
         ->withSubjects($subject);

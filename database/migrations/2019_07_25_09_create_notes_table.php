@@ -16,9 +16,9 @@ class CreateNotesTable extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_teacher');
-            $table->foreign('id_teacher')->references('id_user')->on('teachers');
+            $table->foreign('id_teacher')->references('id_user')->on('teachers')->onDelete('cascade');
             $table->unsignedBigInteger('id_class');
-            $table->foreign('id_class')->references('id')->on('class');
+            $table->foreign('id_class')->references('id')->on('class')->onDelete('cascade');
             $table->text('text');
             $table->timestamps();
         });

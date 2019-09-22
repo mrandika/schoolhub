@@ -102,13 +102,6 @@ active
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="float-right">
-                                <nav>
-                                    <ul class="pagination">
-                                        {{ $violations->links() }}
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </div>
                 </div>

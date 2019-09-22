@@ -16,9 +16,9 @@ class CreateBlogPostLikesTable extends Migration
         Schema::create('blog_post_likes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_post');
-            $table->foreign('id_post')->references('id')->on('blog_posts');
+            $table->foreign('id_post')->references('id')->on('blog_posts')->onDelete('cascade');
         });
     }
 

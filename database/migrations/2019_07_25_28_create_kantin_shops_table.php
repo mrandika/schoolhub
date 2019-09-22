@@ -16,7 +16,7 @@ class CreateKantinShopsTable extends Migration
         Schema::create('kantin_shops', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_owner');
-            $table->foreign('id_owner')->references('id')->on('users');
+            $table->foreign('id_owner')->references('id')->on('users')->onDelete('cascade');
             $table->string('name')->length('100');
             $table->text('image');
             $table->text('description');

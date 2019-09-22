@@ -19,6 +19,10 @@ Teacher &mdash; SchoolHUB
 active
 @endsection
 
+@section('css')
+<link rel="stylesheet" href="{{asset('modules/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css')}}">
+@endsection
+
 @section('content')
 <!-- Main Content -->
 <div class="main-content" style="min-height: 922px;">
@@ -100,13 +104,6 @@ active
                   </tbody>
                 </table>
               </div>
-              <div class="float-right">
-                <nav>
-                  <ul class="pagination">
-                    {{-- {{ $teachers->links() }} --}}
-                  </ul>
-                </nav>
-              </div>
             </div>
           </div>
         </div>
@@ -118,26 +115,15 @@ active
 
 @section('scripts')
 
-<script type="text/javascript">
-  $(function () {
-    
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ route('teacher.index') }}",
-        columns: [
-            {data: 'id_user', name: 'id_user'},
-            {data: 'name', name: 'name'},
-            {data: 'nip', name: 'nip'},
-        ]
-    });
-    
-  });
-</script>
+<script src="{{asset('modules/datatables/datatables.min.js')}}"></script>
+<script src="{{asset('modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('modules/datatables/Select-1.2.4/js/dataTables.select.min.js')}}"></script>
 
 @foreach ($teachers as $teacher)
 <script>
   $(document).ready(function () {
+    $('.table').DataTable();
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

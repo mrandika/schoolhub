@@ -100,13 +100,6 @@ active
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="float-right">
-                                <nav>
-                                    <ul class="pagination">
-                                        {{ $subjects->links() }}
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -16,9 +16,9 @@ class CreateStudentGradeTable extends Migration
         Schema::create('student_grade', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_teaching');
-            $table->foreign('id_teaching')->references('id')->on('teaching_data');
+            $table->foreign('id_teaching')->references('id')->on('teaching_data')->onDelete('cascade');
             $table->unsignedBigInteger('id_students');
-            $table->foreign('id_students')->references('id_user')->on('students');
+            $table->foreign('id_students')->references('id_user')->on('students')->onDelete('cascade');
             $table->text('section');
             $table->text('section_name');
             $table->double('score');

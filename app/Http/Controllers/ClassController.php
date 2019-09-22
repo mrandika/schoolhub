@@ -19,7 +19,7 @@ class ClassController extends Controller
     public function index()
     {
         $count = StudentClass::count();
-        $class = StudentClass::paginate(10);
+        $class = StudentClass::all();
         return view('class/index')
         ->withCounts($count)
         ->withClasses($class);  

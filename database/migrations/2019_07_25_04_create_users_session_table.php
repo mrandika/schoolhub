@@ -16,7 +16,7 @@ class CreateUsersSessionTable extends Migration
         Schema::create('users_session', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->boolean('is_mobile');
             $table->text('phone');
             $table->text('imei');

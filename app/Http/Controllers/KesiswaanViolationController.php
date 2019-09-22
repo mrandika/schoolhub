@@ -20,7 +20,7 @@ class KesiswaanViolationController extends Controller
     public function index()
     {
         $count = KesiswaanViolation::count();
-        $violation = KesiswaanViolation::paginate(20);
+        $violation = KesiswaanViolation::all();
         return view('administrator/kesiswaan/violation/index')
         ->withCounts($count)
         ->withViolations($violation);

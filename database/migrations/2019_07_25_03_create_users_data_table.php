@@ -17,7 +17,7 @@ class CreateUsersDataTable extends Migration
     {
         Schema::create('users_data', function (Blueprint $table) {
             $table->unsignedBigInteger('id_user')->unique();
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->string('name')->length('100');
             $table->enum('gender', ['Laki-laki', 'Perempuan', '0']);
             $table->enum('religion', ['Islam', 'Kristen Protestan', 'Katolik', 'Buddha', 'Hindu', 'Kong Hu Chu', '0']);

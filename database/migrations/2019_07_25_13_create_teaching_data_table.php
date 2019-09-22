@@ -16,14 +16,14 @@ class CreateTeachingDataTable extends Migration
         Schema::create('teaching_data', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_teacher');
-            $table->foreign('id_teacher')->references('id_user')->on('teachers');
+            $table->foreign('id_teacher')->references('id_user')->on('teachers')->onDelete('cascade');
             $table->integer('day')->length(1);
             $table->unsignedBigInteger('id_class');
-            $table->foreign('id_class')->references('id')->on('class');
+            $table->foreign('id_class')->references('id')->on('class')->onDelete('cascade');
             $table->unsignedBigInteger('id_subject');
-            $table->foreign('id_subject')->references('id')->on('subjects');
+            $table->foreign('id_subject')->references('id')->on('subjects')->onDelete('cascade');
             $table->unsignedBigInteger('id_room');
-            $table->foreign('id_room')->references('id')->on('rooms');
+            $table->foreign('id_room')->references('id')->on('rooms')->onDelete('cascade');
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();
             $table->timestamps();

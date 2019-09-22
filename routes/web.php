@@ -74,6 +74,17 @@ Route::get('dashboard/presence/data/{presence}', array(
 });
 
 /**
+ * Kesiswaan Report Controller
+ */
+// Reporting
+Route::get('dashboard/presence/reports/exports', array(
+    'as' => 'reports.export', 
+    'uses' => 'KesiswaanReportController@export_excel'
+), function () {
+    return redirect()->action('KesiswaanReportController@export_excel');
+});
+
+/**
  * Teacher Controller
  */
 // Today

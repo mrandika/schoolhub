@@ -44,7 +44,7 @@ class StudentController extends Controller
     public function index()
     {
         $count = ViewStudent::count();
-        $student = ViewStudent::paginate(10);
+        $student = ViewStudent::all();
         return view('student/index')
         ->withCounts($count)
         ->withStudents($student);
@@ -101,7 +101,7 @@ class StudentController extends Controller
 
         $user = new User;
         $user->id = $id;
-        $user->image = $imageName;
+        $user->image = $immageName;
         $user->email = $request->post('email');
         $user->username = $request->post('username');
         $user->password = $password;

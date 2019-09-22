@@ -61,14 +61,14 @@ active
                                 </form>
                             </div>
                             @if ($available == 0)
-                            <div class="float-left mr-2">
+                            <div class="float-left ml-2">
                                 <a href="{{ action('PresenceController@createdata') }}" class="btn btn-info"><i
                                         class="fas fa-qrcode"></i> Generate</a>
                             </div>
                             @endif
 
                             @if ($available != 0)
-                            <div class="float-left mr-2">
+                            <div class="float-left ml-2">
                                     <a href="{{ action('PresenceController@showdata', \App\Attendance::select('id')->where('date', 'like', '%'.date("Y-m-d").'%')->first()->id) }}" class="btn btn-info"><i
                                             class="fas fa-qrcode"></i> View QR</a>
                                 </div>
@@ -110,13 +110,6 @@ active
                                         @endforeach
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="float-right">
-                                <nav>
-                                    <ul class="pagination">
-                                        {{ $attendances->links() }}
-                                    </ul>
-                                </nav>
                             </div>
                         </div>
                     </div>

@@ -36,7 +36,7 @@ class PresenceController extends Controller
         $status = Attendance::select('id')->where('created_at', 'like', '%'.$date.'%')->count();
         return view('attendance-data/index')
         ->withCountsToday($count)
-        ->withAttendances($attendanceData->paginate(20))
+        ->withAttendances($attendanceData->get())
         ->withAvailable($status);
     }
 

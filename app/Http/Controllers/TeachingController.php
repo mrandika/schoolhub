@@ -34,7 +34,7 @@ class TeachingController extends Controller
     public function index()
     {
         $count = ViewTeachingData::count();
-        $teachings = ViewTeachingData::paginate(20);
+        $teachings = ViewTeachingData::all();
         return view('teaching/index')
         ->withCounts($count)
         ->withTeachings($teachings);

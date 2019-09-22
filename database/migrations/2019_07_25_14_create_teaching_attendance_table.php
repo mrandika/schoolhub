@@ -16,7 +16,7 @@ class CreateTeachingAttendanceTable extends Migration
         Schema::create('teaching_attendance', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_teaching');
-            $table->foreign('id_teaching')->references('id')->on('teaching_data');
+            $table->foreign('id_teaching')->references('id')->on('teaching_data')->onDelete('cascade');
             $table->text('section');
             $table->text('section_name');
             $table->enum('status', ['Hadir', 'Tidak Hadir', 'Dispensasi', 'Izin', 'Sakit', 'Absen']);

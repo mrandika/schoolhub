@@ -22,7 +22,7 @@ class SarprasBorrowerController extends Controller
         $count = ViewSarprasBorrower::count();
         $countAvailable = ViewSarprasBorrower::where('status', 'Dikembalikan')->count();
         $countBorrow = ViewSarprasBorrower::where('status', 'Belum Dikembalikan')->count();
-        $borrower = ViewSarprasBorrower::paginate(20);
+        $borrower = ViewSarprasBorrower::all();
         return view('administrator/sarpras/borrower/index')
         ->withCounts($count)
         ->withAvailable($countAvailable)

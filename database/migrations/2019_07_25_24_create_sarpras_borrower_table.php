@@ -16,11 +16,11 @@ class CreateSarprasBorrowerTable extends Migration
         Schema::create('sarpras_borrower', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('id_inventory');
-            $table->foreign('id_inventory')->references('id')->on('sarpras_inventories');
+            $table->foreign('id_inventory')->references('id')->on('sarpras_inventories')->onDelete('cascade');
             $table->unsignedBigInteger('id_room');
-            $table->foreign('id_room')->references('id')->on('rooms');
+            $table->foreign('id_room')->references('id')->on('rooms')->onDelete('cascade');
             $table->enum('status', ['Belum Dikembalikan', 'Dikembalikan']);
             $table->timestamps();
         });

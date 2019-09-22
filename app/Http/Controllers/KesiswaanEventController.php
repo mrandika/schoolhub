@@ -17,7 +17,7 @@ class KesiswaanEventController extends Controller
     public function index()
     {
         $count = KesiswaanEvent::count();
-        $event = KesiswaanEvent::paginate(20);
+        $event = KesiswaanEvent::all();
         return view('administrator/kesiswaan/event/index')
         ->withCounts($count)
         ->withEvents($event);

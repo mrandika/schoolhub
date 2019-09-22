@@ -16,9 +16,9 @@ class CreateAttendanceDataTable extends Migration
         Schema::create('attendance_data', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_students');
-            $table->foreign('id_students')->references('id_user')->on('students');
+            $table->foreign('id_students')->references('id_user')->on('students')->onDelete('cascade');
             $table->unsignedBigInteger('id_attendance');
-            $table->foreign('id_attendance')->references('id')->on('attendance');
+            $table->foreign('id_attendance')->references('id')->on('attendance')->onDelete('cascade');
             $table->enum('status', ['Hadir', 'Tidak Hadir', 'Dispensasi', 'Izin', 'Sakit', 'Absen']);
             $table->timestamps();
         });

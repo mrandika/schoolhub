@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Response;
 use DataTables;
 
-use App\UserSession;
+use App\ViewUserSession;
 
 class SessionController extends Controller
 {
@@ -27,13 +27,8 @@ class SessionController extends Controller
      */
     public function index(Request $request)
     {
-        $count = UserSession::count();
-        $session = UserSession::all();
-        if ($request->ajax()) {
-            return Datatables::of($session)
-                    ->addIndexColumn()
-                    ->make(true);
-        }
+        $count = ViewUserSession::count();
+        $session = ViewUserSession::get();
         return view('session/index')
         ->withCounts($count)
         ->withSessions($session);

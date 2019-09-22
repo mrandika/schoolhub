@@ -15,11 +15,11 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->unsignedBigInteger('id_user')->unique();
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->string('nipd')->length(20);
             $table->string('nisn')->length(20);
             $table->unsignedBigInteger('id_class');
-            $table->foreign('id_class')->references('id')->on('class');
+            $table->foreign('id_class')->references('id')->on('class')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -28,7 +28,7 @@ class RoomController extends Controller
     public function index()
     {
         $count = Room::count();
-        $rooms = Room::paginate(20);
+        $rooms = Room::all();
         return view('room/index')
         ->withCounts($count)
         ->withRooms($rooms);
