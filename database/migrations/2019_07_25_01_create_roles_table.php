@@ -28,6 +28,7 @@ class CreateRolesTable extends Migration
         Role::create(['name' => 'Admin Kantin']);
         Role::create(['name' => 'Guru']);
         Role::create(['name' => 'Siswa']);
+        Role::create(['name' => 'Penjual']);
     }
 
     /**

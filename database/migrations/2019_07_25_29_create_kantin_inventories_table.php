@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\KantinInventory;
+
 class CreateKantinInventoriesTable extends Migration
 {
     /**
@@ -23,6 +25,22 @@ class CreateKantinInventoriesTable extends Migration
             $table->integer('stock')->length(4);
             $table->timestamps();
         });
+
+        KantinInventory::create([
+            'id_shop' => 1,
+            'name' => 'Makanan',
+            'image' => 'makanan.png',
+            'price' => 1000,
+            'stock' => 10
+        ]);
+
+        KantinInventory::create([
+            'id_shop' => 1,
+            'name' => 'Minuman',
+            'image' => 'minuman.png',
+            'price' => 1000,
+            'stock' => 10
+        ]);
     }
 
     /**

@@ -295,6 +295,34 @@ trait MakesHttpRequests
     }
 
     /**
+     * Visit the given URI with a OPTIONS request.
+     *
+     * @param  string  $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function options($uri, array $data = [], array $headers = [])
+    {
+        $server = $this->transformHeadersToServerVars($headers);
+
+        return $this->call('OPTIONS', $uri, $data, [], [], $server);
+    }
+
+    /**
+     * Visit the given URI with a OPTIONS request, expecting a JSON response.
+     *
+     * @param  string  $uri
+     * @param  array  $data
+     * @param  array  $headers
+     * @return \Illuminate\Foundation\Testing\TestResponse
+     */
+    public function optionsJson($uri, array $data = [], array $headers = [])
+    {
+        return $this->json('OPTIONS', $uri, $data, $headers);
+    }
+
+    /**
      * Call the given URI with a JSON request.
      *
      * @param  string  $method

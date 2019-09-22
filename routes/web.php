@@ -40,6 +40,10 @@ Route::resource('dashboard/kesiswaan/events', 'KesiswaanEventController');
 Route::resource('dashboard/kesiswaan/violations', 'KesiswaanViolationController');
 Route::resource('dashboard/kesiswaan/reports', 'KesiswaanReportController');
 
+Route::resource('dashboard/kantin/seller', 'KantinSellerController');
+Route::resource('dashboard/kantin/shop', 'KantinShopController');
+Route::resource('dashboard/kantin/inventory', 'KantinInventoryController');
+
 Route::resource('dashboard/teacher', 'TeacherController');
 Route::resource('dashboard/student', 'StudentController');
 

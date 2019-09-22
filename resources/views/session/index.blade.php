@@ -77,7 +77,7 @@ active
                                         </tr>
                                         @foreach ($sessions as $session)
                                         <tr id="session_{{ $session->id }}">
-                                            <td>{{ \App\UserData::select('name')->where('id_user', $session->id_user)->first()->name }}
+                                            <td>{{ $session->name }}
                                             </td>
                                             <td>
                                                 {{ $session->is_mobile }}

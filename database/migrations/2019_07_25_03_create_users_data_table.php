@@ -82,6 +82,39 @@ class CreateUsersDataTable extends Migration
             'address' => '0',
             'phone' => '0'
         ]);
+
+        UserData::create([
+            'id_user' => '6',
+            'name' => 'Guru Pengajar',
+            'gender' => '0',
+            'religion' => '0',
+            'birthplace' => '0',
+            'dob' => '1970-01-01',
+            'address' => '0',
+            'phone' => '0'
+        ]);
+
+        UserData::create([
+            'id_user' => '7',
+            'name' => 'Siswa',
+            'gender' => '0',
+            'religion' => '0',
+            'birthplace' => '0',
+            'dob' => '1970-01-01',
+            'address' => '0',
+            'phone' => '0'
+        ]);
+
+        UserData::create([
+            'id_user' => '8',
+            'name' => 'Penjual',
+            'gender' => '0',
+            'religion' => '0',
+            'birthplace' => '0',
+            'dob' => '1970-01-01',
+            'address' => '0',
+            'phone' => '0'
+        ]);
     }
 
     /**

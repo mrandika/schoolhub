@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\KantinShop;
+
 class CreateKantinShopsTable extends Migration
 {
     /**
@@ -22,6 +24,13 @@ class CreateKantinShopsTable extends Migration
             $table->text('description');
             $table->timestamps();
         });
+
+        KantinShop::create([
+            'id_owner' => 8,
+            'name' => 'Warung Penjual',
+            'image' => 'warungpenjual.png',
+            'description' => 'Warung Penjual lorem dorem.'
+        ]);
     }
 
     /**

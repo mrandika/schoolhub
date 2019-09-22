@@ -28,7 +28,7 @@ class SessionController extends Controller
     public function index(Request $request)
     {
         $count = ViewUserSession::count();
-        $session = ViewUserSession::get();
+        $session = ViewUserSession::all();
         return view('session/index')
         ->withCounts($count)
         ->withSessions($session);

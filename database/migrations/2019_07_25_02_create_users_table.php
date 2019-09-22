@@ -75,6 +75,33 @@ class CreateUsersTable extends Migration
             'balance' => 0,
             'role' => 5,
         ]);
+
+        User::create([
+            'image' => 'guru.png',
+            'email' => 'guru@starbhak.com',
+            'username' => 'guru',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 6,
+        ]);
+
+        User::create([
+            'image' => 'siswa.png',
+            'email' => 'siswa@starbhak.com',
+            'username' => 'siswa',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 7,
+        ]);
+
+        User::create([
+            'image' => 'penjual.png',
+            'email' => 'penjual@starbhak.com',
+            'username' => 'penjual',
+            'password' => Hash::make('supersecret'),
+            'balance' => 0,
+            'role' => 8,
+        ]);
     }
 
     /**
