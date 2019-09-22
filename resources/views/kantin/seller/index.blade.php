@@ -60,10 +60,10 @@ active
                                     </div>
                                 </form>
                             </div>
-                            {{-- <div class="float-left">
-                                <a href="{{ action('ClassController@create') }}" class="btn btn-primary"><i
+                            <div class="float-left">
+                                <a href="{{ action('KantinSellerController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
-                            </div> --}}
+                            </div>
 
                             <div class="clearfix mb-3"></div>
 
@@ -80,7 +80,11 @@ active
                                             <td>{{ \App\UserData::select('name')->where('id_user', $seller->id)->first()->name }}
                                             </td>
                                             <td>
+                                                @if (\App\KantinShop::where('id_owner', $seller->id)->first())
                                                 {{ \App\KantinShop::select('name')->where('id_owner', $seller->id)->first()->name }}
+                                                @else
+                                                <div class="text-warning">Belum ada warung.</div>
+                                                @endif
                                             </td>
                                             <td colspan="2">
                                                 <a href="{{ action('KantinSellerController@edit', $seller->id) }}"

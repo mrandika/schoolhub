@@ -101,7 +101,7 @@ class StudentController extends Controller
 
         $user = new User;
         $user->id = $id;
-        $user->image = $immageName;
+        $user->image = $imageName;
         $user->email = $request->post('email');
         $user->username = $request->post('username');
         $user->password = $password;

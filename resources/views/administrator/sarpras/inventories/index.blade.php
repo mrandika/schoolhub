@@ -92,7 +92,7 @@ active
                                             </td>
                                             <td>
                                                 <img
-                                                    src="{{ url('uploads/sarprasInventoryImage/'.$inventory->image) }}">
+                                                    src="{{ url('uploads/sarprasInventoryImage/'.$inventory->image) }}" width="50%">
                                             </td>
                                             <td>
                                                 {{ $inventory->name }}
