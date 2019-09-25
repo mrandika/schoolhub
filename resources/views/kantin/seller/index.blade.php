@@ -86,7 +86,9 @@ active
                                                 <div class="text-warning">Belum ada warung.</div>
                                                 @endif
                                             </td>
-                                            <td colspan="2">
+                                            <td colspan="3">
+                                                    <a href="{{ action('KantinSellerController@show', $seller->id) }}"
+                                                            class="btn btn-success">Show</a>
                                                 <a href="{{ action('KantinSellerController@edit', $seller->id) }}"
                                                     class="btn btn-warning">Edit</a>
                                                 <a id="deleteSeller_{{ $seller->id }}" data-id="{{$seller->id}}"

@@ -3,6 +3,7 @@
 use Illuminate\Database\Seeder;
 
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Hash;
 
 use App\User;
 use App\UserData;
@@ -31,7 +32,7 @@ class StudentSeeder extends Seeder
             $user->image = '8_ANDIKA.png';
             $user->email = $faker->email;
             $user->username = $faker->userName;
-            $user->password = $password;
+            $user->password = Hash::make($password);
             $user->balance = $balance;
             $user->role = $role;
             $user->save();

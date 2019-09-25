@@ -9,6 +9,9 @@ use Response, Hash, Storage, File;
 use App\User;
 use App\UserData;
 
+use App\KantinShop;
+use App\KantinInventory;
+
 class KantinSellerController extends Controller
 {
     /**
@@ -105,7 +108,22 @@ class KantinSellerController extends Controller
      */
     public function show($id)
     {
-        //
+        $shop = KantinShop::where('id_owner', $id)->first();
+
+        $user = User::find($id);
+        $userData = UserData::find($id);
+        
+        if ($shop) {
+            $inventory = KantinInventory::where('id_shop', $shop->id)->get();
+            
+            return view('kantin/seller/show')
+            ->withShop($shop)
+            ->withInventories($inventory)
+            ->withUser($user)
+            ->withData($userData);
+        } else {
+            return view('kantin/seller/show');
+        }
     }
 
     /**

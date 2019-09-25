@@ -61,10 +61,6 @@ $role = Auth::user()->role;
 <li class="menu-header">Kantin</li>
 <li class=@yield('sellerActive')><a class="nav-link" href="{{action('KantinSellerController@index')}}"><i class="fas fa-ticket-alt"></i>
                 <span>Penjual</span></a></li>
-<li class=@yield('shopActive')><a class="nav-link" href="{{action('KantinShopController@index')}}"><i class="fas fa-exclamation"></i>
-                <span>Warung</span></a></li>
-<li class=@yield('itemActive')><a class="nav-link" href="{{action('KantinInventoryController@index')}}"><i class="fas fa-list"></i>
-                <span>Data Item</span></a></li>
 
 <li class="menu-header">Data Blog</li>
 <li class=@yield('postActive')><a class="nav-link" href="{{action('PostController@index')}}"><i class="fas fa-pen"></i>

@@ -77,7 +77,7 @@ active
                                         </tr>
                                         @foreach ($classes as $class)
                                         <tr id="class_{{ $class->id }}">
-                                            <td>{{ $class->name }}
+                                            <td><a href="{{ (route('class.show', $class->id)) }}">{{ $class->name }}</a>
                                             </td>
                                             <td>
                                                 {{ \App\UserData::select('name')->where('id_user', $class->id_teacher)->first()->name }}

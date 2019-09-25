@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use App\Student;
+
 class CreateStudentsTable extends Migration
 {
     /**
@@ -22,6 +24,13 @@ class CreateStudentsTable extends Migration
             $table->foreign('id_class')->references('id')->on('class')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Student::create([
+            'id_user' => '7',
+            'nipd' => '123456789',
+            'nisn' => '123456789',
+            'id_class' => 1
+        ]);
     }
 
     /**

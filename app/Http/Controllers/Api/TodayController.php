@@ -9,6 +9,8 @@ use JWTAuth;
 
 use App\AttendanceData;
 
+use App\User;
+
 class TodayController extends Controller
 {
     public function __construct()
@@ -30,9 +32,12 @@ class TodayController extends Controller
             $isPresenced = 1;
         }
 
+        $balance = User::find($user->id)->balance;
+
         $data = array();
         $data['id_user'] = $user->id;
         $data['is_presenced'] = $isPresenced;
+        $data['balance'] = $balance;
 
         return response()->json([
             'code' => 200,

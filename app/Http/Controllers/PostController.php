@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\BlogPost;
+
 class PostController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class PostController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin');
+        //$this->middleware('admin');
     }
 
     /**
@@ -23,7 +25,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $post = BlogPost::paginate(10);
+        $count = BlogPost::count();
+        return view('post/index')
+        ->withPosts($post)
+        ->withCount($count);
     }
 
     /**
