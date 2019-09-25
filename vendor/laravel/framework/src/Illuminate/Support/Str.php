@@ -34,13 +34,6 @@ class Str
     protected static $studlyCache = [];
 
     /**
-     * The callback that should be used to generate UUIDs.
-     *
-     * @var callable
-     */
-    protected static $uuidFactory;
-
-    /**
      * Return the remainder of a string after a given value.
      *
      * @param  string  $subject
@@ -573,9 +566,7 @@ class Str
      */
     public static function uuid()
     {
-        return static::$uuidFactory
-                    ? call_user_func(static::$uuidFactory)
-                    : Uuid::uuid4();
+        return Uuid::uuid4();
     }
 
     /**
@@ -585,11 +576,7 @@ class Str
      */
     public static function orderedUuid()
     {
-        if (static::$uuidFactory) {
-            return call_user_func(static::$uuidFactory);
-        }
-
-        $factory = new UuidFactory();
+        $factory = new UuidFactory;
 
         $factory->setRandomGenerator(new CombGenerator(
             $factory->getRandomGenerator(),
@@ -601,27 +588,6 @@ class Str
         ));
 
         return $factory->uuid4();
-    }
-
-    /**
-     * Set the callable that will be used to generate UUIDs.
-     *
-     * @param  callable
-     * @return void
-     */
-    public static function createUuidsUsing(callable $factory = null)
-    {
-        static::$uuidFactory = $factory;
-    }
-
-    /**
-     * Indicate that UUIDs should be created normally and not using a custom factory.
-     *
-     * @return void
-     */
-    public static function createUuidsNormally()
-    {
-        static::$uuidFactory = null;
     }
 
     /**

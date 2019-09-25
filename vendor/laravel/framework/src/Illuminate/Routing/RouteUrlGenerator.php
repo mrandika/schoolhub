@@ -197,12 +197,9 @@ class RouteUrlGenerator
         $path = $this->replaceNamedParameters($path, $parameters);
 
         $path = preg_replace_callback('/\{.*?\}/', function ($match) use (&$parameters) {
-            // Reset only the numeric keys...
-            $parameters = array_merge($parameters);
-
             return (empty($parameters) && ! Str::endsWith($match[0], '?}'))
                         ? $match[0]
-                        : Arr::pull($parameters, 0);
+                        : array_shift($parameters);
         }, $path);
 
         return trim(preg_replace('/\{.*?\?\}/', '', $path), '/');
