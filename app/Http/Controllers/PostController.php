@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\BlogPost;
+use App\BlogCategory;
+use App\BlogTag;
 
 class PostController extends Controller
 {
@@ -39,7 +43,11 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $tag = BlogTag::where('id_user', Auth::user()->id)->get();
+        $category = BlogCategory::where('id_user', Auth::user()->id)->get();
+        return view('post/create')
+        ->withTags($tag)
+        ->withCategories($category);
     }
 
     /**
@@ -50,7 +58,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new BlogPost;
+        $post->id_categories = $request->post('id_categories');
+        $post->id_user = Auth::user()->id;
+        $post->has_meta = 0;
+        $post->title = $request->post('title');
+        $post->headline = $request->post('headline');
+        $post->content = $request->post('content');
+        $post->save();
+
+        return redirect('dashboard/blog/posts');
     }
 
     /**
@@ -61,7 +78,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = BlogPost::find($id);
+        return view('post/show')
+        ->withPost($post);
     }
 
     /**

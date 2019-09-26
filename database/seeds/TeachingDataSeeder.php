@@ -28,5 +28,17 @@ class TeachingDataSeeder extends Seeder
             $teaching->time_out = '12:00';
             $teaching->save();
         }
+
+        for($i = 1; $i <= 5; $i++) {
+            $teaching = new TeachingData;
+            $teaching->id_teacher = $faker->numberBetween($min = 9, $max = 28);
+            $teaching->id_subject = $faker->numberBetween($min = 1, $max = 20);
+            $teaching->id_class = 1;
+            $teaching->id_room = $faker->numberBetween($min = 1, $max = 20);
+            $teaching->day = $faker->numberBetween($min = 1, $max = 6);
+            $teaching->time_in = '07:00';
+            $teaching->time_out = '12:00';
+            $teaching->save();
+        }
     }
 }

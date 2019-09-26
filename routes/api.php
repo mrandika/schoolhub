@@ -23,5 +23,8 @@ Route::post('register', 'Api\UserController@register');
 Route::get('user', 'Api\UserController@getUser');
 Route::get('today', 'Api\TodayController@index');
 
+Route::get('sarpras/borrow', 'Api\SarprasBorrowerController@borrow');
+Route::get('teaching', 'Api\TeachingController@index');
+
 Route::resource('presence', 'Api\PresenceController');
 Route::resource('post', 'Api\PostController');

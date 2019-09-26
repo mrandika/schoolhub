@@ -51,7 +51,10 @@ active
                     <div class="card">
 
                         <div class="card-header">
-                            <h4>All Posts</h4>
+                            <div class="float-left">
+                                <a href="{{ action('PostController@create') }}" class="btn btn-primary"><i
+                                        class="fas fa-plus"></i> Add</a>
+                            </div>
                         </div>
 
                         <div class="clearfix mb-3"></div>
@@ -79,15 +82,15 @@ active
                                         </div>
                                     </td>
                                     <td>
-                                        <a href="#">{{\App\Category::where('id',
-                                                    $post->categoriesId)->first()->title}}</a>
+                                        <a href="#">{{\App\BlogCategory::where('id',
+                                                    $post->id_categories)->first()->name}}</a>
                                     </td>
                                     <td>
                                         <a href="#">
                                             <img alt="image" src="{{asset('image/profile.jpg')}}" class="rounded-circle"
                                                 width="35" data-toggle="title" title="">
                                             <div class="d-inline-block ml-1">
-                                                {{ \App\User::select('name')->where('id', $post->uploadedBy)->first()->name }}
+                                                {{ \App\UserData::select('name')->where('id_user', $post->id_user)->first()->name }}
                                             </div>
                                         </a>
                                     </td>
