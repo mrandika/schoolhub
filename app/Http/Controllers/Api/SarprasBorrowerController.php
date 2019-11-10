@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use Crypt;
+use DB, Crypt;
 use JWTAuth;
 
 use App\SarprasInventory;
@@ -32,19 +32,20 @@ class SarprasBorrowerController extends Controller
     public function borrow() {
         $request = $_GET['id'];
         $id = Crypt::decryptString($request);
-
-        $inventory = SarprasInventory::find($id);
-        $inventory->status = "Dipinjam";
-        $inventory->save();
-
         $token = JWTAuth::getToken();
 
-        $borrower = new SarprasBorrower;
-        $borrower->id_user = JWTAuth::toUser($token)->id;
-        $borrower->id_inventory = $id;
-        $borrower->id_room = 1;
-        $borrower->status = "Belum Dikembalikan";
-        $borrower->save();
+        DB::transaction(function() {
+            $inventory = SarprasInventory::find($id);
+            $inventory->status = "Dipinjam";
+            $inventory->save();
+
+            $borrower = new SarprasBorrower;
+            $borrower->id_user = JWTAuth::toUser($token)->id;
+            $borrower->id_inventory = $id;
+            $borrower->id_room = 1;
+            $borrower->status = "Belum Dikembalikan";
+            $borrower->save();
+        });
 
         return $this::response(200, 'success');
     }

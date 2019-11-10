@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Storage, File, Response;
-
-use App\ViewClass;
-use App\ViewStudent;
-use App\User;
-use App\UserData;
 use App\Student;
 use App\StudentClass;
+use App\StudentGrade;
+use App\TestQuestion;
+use App\TestQuestionItem;
+use App\TestSession;
+use App\TestToken;
+use App\User;
+use App\UserData;
+use App\ViewClass;
+use App\ViewKesiswaanReport;
+use App\ViewStudent;
+use App\ViewStudentGrade;
+use Auth;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Hash;
+use Response;
+use Storage;
 
 class StudentController extends Controller
 {
@@ -22,18 +32,18 @@ class StudentController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('administrator');
+        // $this->middleware('administrator');
         // $this->middleware('student');
     }
 
     /**
      * Menampilkan laman Today
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function today()
     {
-        return view('student/today');  
+        return view('student/today');
     }
 
     /**
@@ -46,8 +56,8 @@ class StudentController extends Controller
         $count = ViewStudent::count();
         $student = ViewStudent::all();
         return view('student/index')
-        ->withCounts($count)
-        ->withStudents($student);
+            ->withCounts($count)
+            ->withStudents($student);
     }
 
     /**
@@ -59,7 +69,7 @@ class StudentController extends Controller
     {
         $class = ViewClass::all();
         return view('student/create')
-        ->withClasses($class);  
+            ->withClasses($class);
     }
 
     /**
@@ -87,7 +97,7 @@ class StudentController extends Controller
             'phone' => 'required|unique:users_data',
         ]);
 
-        $id = User::count()+1;
+        $id = User::count() + 1;
         $role = 7;
         $balance = 0;
         $password = Hash::make($request->get('password'));
@@ -96,8 +106,8 @@ class StudentController extends Controller
 
         $image = $request->file('image');
         $imageExtension = $image->getClientOriginalExtension();
-        $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-        Storage::disk('public_userImage')->put($imageName,  File::get($image));
+        $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+        Storage::disk('public_userImage')->put($imageName, File::get($image));
 
         $user = new User;
         $user->id = $id;
@@ -146,9 +156,9 @@ class StudentController extends Controller
         $userData = UserData::find($id);
         $student = Student::find($id);
         return view('student/show')
-        ->withUser($user)
-        ->withData($userData)
-        ->withStudent($student);
+            ->withUser($user)
+            ->withData($userData)
+            ->withStudent($student);
     }
 
     /**
@@ -164,10 +174,10 @@ class StudentController extends Controller
         $class = StudentClass::all();
         $student = Student::find($id);
         return view('student/update')
-        ->withUser($user)
-        ->withData($userData)
-        ->withClasses($class)
-        ->withStudent($student);
+            ->withUser($user)
+            ->withData($userData)
+            ->withClasses($class)
+            ->withStudent($student);
     }
 
     /**
@@ -188,8 +198,8 @@ class StudentController extends Controller
             Storage::disk('public_userImage')->delete($user->image);
             $image = $request->file('image');
             $imageExtension = $image->getClientOriginalExtension();
-            $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-            Storage::disk('public_userImage')->put($imageName,  File::get($image));
+            $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+            Storage::disk('public_userImage')->put($imageName, File::get($image));
             $user->image = $imageName;
         }
         $user->email = $request->post('email');
@@ -237,5 +247,255 @@ class StudentController extends Controller
         $userdata->delete();
         $user->delete();
         return Response::json($user);
+    }
+
+    public function grading()
+    {
+        $grade = ViewStudentGrade::where('id_students', Auth::id());
+        $count = $grade->count();
+
+        return view('student/grade')->with([
+            'counts' => $count,
+            'grades' => $grade->get(),
+        ]);
+    }
+
+    public function violation()
+    {
+        $violation = ViewKesiswaanReport::where('id_student', Auth::id());
+        $sum = $violation->sum('violation_score');
+        $count = $violation->count();
+
+        return view('student/violation')->with([
+            'counts' => $count,
+            'sum' => $sum,
+            'violations' => $violation->get(),
+        ]);
+    }
+
+    public function show_testing()
+    {
+        $nisn = Student::where('id_user', Auth::id())->first()->nisn;
+        return view('student/test_login')->with([
+            'nisn' => $nisn
+        ]);
+    }
+
+    public function validate_token(Request $request)
+    {
+        $nisn = $request->post('nisn');
+        $token = $request->post('token');
+
+        $isNisnValid = Student::where('nisn', $nisn)->first();
+
+        if ($isNisnValid) {
+            $isTokenValid = TestToken::where(['id_student' => $isNisnValid->id_user, 'token' => $nisn."-".$token])->first();
+
+            if ($isTokenValid) {
+                $isSessionFinished = TestSession::where([
+                    'id_student' => $isNisnValid->id_user,
+                    'id_token' => TestToken::where('token', $nisn."-".$token)->first()->id,
+                    'is_finished' => 1,
+                ])->first();
+
+                if (!$isSessionFinished) {
+                    TestSession::updateOrCreate(
+                        ['id_student' => $isNisnValid->id_user, 'id_token' => $isTokenValid->id],
+                        [
+                            'id_student' => $isNisnValid->id_user,
+                            'id_token' => $isTokenValid->id,
+                            'progress' => '',
+                            'score' => 0,
+                            'is_ongoing' => 1,
+                            'is_finished' => 0,
+                        ]);
+
+                    return redirect(route('student.test', ['token' => Crypt::encryptString($isTokenValid->token)]));
+                } else {
+                    return view('student/test_login')->with([
+                        'nisn' => $nisn,
+                        'error' => true,
+                        'code' => 403,
+                        'message' => 'Sesi anda telah selesai.',
+                    ]);
+                }
+
+            } else {
+                return view('student/test_login')->with([
+                    'nisn' => $nisn,
+                    'error' => true,
+                    'code' => 403,
+                    'message' => 'Token tidak valid.',
+                ]);
+            }
+        } else {
+            return view('student/test_login')->with([
+                'nisn' => $nisn,
+                'error' => true,
+                'code' => 403,
+                'message' => 'NISN tidak ditemukan.',
+            ]);
+        }
+    }
+
+    public function start_test()
+    {
+        $tokenCrypt = $_GET['token'];
+        $token = Crypt::decryptString($tokenCrypt);
+        $idUser = Auth::id();
+
+        $isSessionFinished = TestSession::where([
+            'id_student' => $idUser,
+            'id_token' => TestToken::where('token', $token)->first()->id,
+            'is_finished' => 1,
+        ])->first();
+
+        if (!$isSessionFinished) {
+
+            $tokenData = TestToken::where('token', $token)->first();
+            $question = TestQuestion::where('id', $tokenData->id_question)->first();
+            $items = TestQuestionItem::where('id_question', $tokenData->id_question);
+            $saved_session = TestSession::where(['id_student' => Auth::id(), 'id_token' => $tokenData->id])->first();
+
+            //dd(json_decode($saved_session->progress['jawaban']));
+
+            $maxGrade = 100;
+            $numOfTest = $items->count();
+            $scorePerTest = $maxGrade / $numOfTest;
+
+            return view('student/test_page')->with([
+                'question' => $question,
+                'items' => $items->get(),
+                'score' => $scorePerTest,
+                //'saved' => json_decode($saved_session->progress[0], true)
+            ]);
+
+        } else {
+            return redirect(route('student.grading'));
+        }
+    }
+
+    public function save_progress(Request $request)
+    {
+        $tokenCrypt = $_GET['token'];
+        $token = Crypt::decryptString($tokenCrypt);
+        $idUser = Auth::id();
+
+        $isSessionFinished = TestSession::where([
+            'id_student' => $idUser,
+            'id_token' => TestToken::where('token', $token)->first()->id,
+            'is_finished' => 1,
+        ])->first();
+
+        if (!$isSessionFinished) {
+            if ($request->ajax()) {
+
+                $tokenData = TestToken::where('token', $token)->first();
+                $items = TestQuestionItem::where('id_question', $tokenData->id_question);
+
+                $json = array();
+                $json['jawaban'] = array();
+
+                for ($i = 1; $i <= intval($items->count()); $i++) {
+                    $json['jawaban'][$i] = $request->post("jawaban_$i");
+                }
+
+                $maxGrade = 100;
+                $numOfTest = $items->count();
+                $scorePerTest = $maxGrade / $numOfTest;
+                $finalScore = 0;
+
+                $answers = $json['jawaban'];
+
+                $isCorrect = $items->get();
+
+                foreach ($answers as $key => $answer) {
+                    if ($answer == $isCorrect[$key - 1]->is_correct) {
+                        $finalScore += $scorePerTest;
+                    };
+                }
+
+                TestSession::updateOrCreate(
+                    ['id_student' => $idUser, 'id_token' => $tokenData->id],
+                    [
+                        'id_student' => $idUser,
+                        'id_token' => $tokenData->id,
+                        'progress' => json_encode($json),
+                        'score' => $finalScore,
+                        'is_ongoing' => 1,
+                        'is_finished' => 0,
+                    ]);
+
+                return response()->json([
+                    'code' => 200,
+                    'message' => 'Answer saved.',
+                ]);
+            }
+        } else {
+            return response()->json(['error' => 'Invalid Session.'], 403);
+        }
+    }
+
+    public function finish_test(Request $request)
+    {
+        $tokenCrypt = $_GET['token'];
+        $token = Crypt::decryptString($tokenCrypt);
+        $idUser = Auth::id();
+
+        $isSessionFinished = TestSession::where([
+            'id_student' => $idUser,
+            'id_token' => TestToken::where('token', $token)->first()->id,
+            'is_finished' => 1,
+        ])->first();
+
+        if (!$isSessionFinished) {
+
+            $tokenData = TestToken::where('token', $token)->first();
+            $items = TestQuestionItem::where('id_question', $tokenData->id_question);
+
+            $json = array();
+            $json['jawaban'] = array();
+
+            for ($i = 1; $i <= intval($items->count()); $i++) {
+                $json['jawaban'][$i] = $request->post("jawaban_$i");
+            }
+
+            $maxGrade = 100;
+            $numOfTest = $items->count();
+            $scorePerTest = $maxGrade / $numOfTest;
+            $finalScore = 0;
+
+            $answers = $json['jawaban'];
+
+            $isCorrect = $items->get();
+
+            foreach ($answers as $key => $answer) {
+                if ($answer == $isCorrect[$key - 1]->is_correct) {
+                    $finalScore += $scorePerTest;
+                };
+            }
+
+            TestSession::updateOrCreate(['id_student' => $idUser, 'id_token' => $tokenData->id], [
+                'id_student' => $idUser,
+                'id_token' => $tokenData->id,
+                'progress' => json_encode($json),
+                'score' => $finalScore,
+                'is_ongoing' => 0,
+                'is_finished' => 1,
+            ]);
+
+            $question = TestQuestion::where('id', $tokenData->id_question)->first();
+
+            $grade = StudentGrade::create([
+                'id_teaching' => $question->id_teaching,
+                'id_students' => $idUser,
+                'section' => $question->section,
+                'section_name' => $question->section_name,
+                'score' => $finalScore,
+            ]);
+            return redirect(route('student.grading', ['id' => $grade->id]));
+        } else {
+            return redirect(route('student.grading'));
+        }
     }
 }

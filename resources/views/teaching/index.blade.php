@@ -60,10 +60,12 @@ active
                                     </div>
                                 </form>
                             </div>
+                            @if (Auth::user()->role != 7)
                             <div class="float-left">
                                 <a href="{{ action('TeachingController@create') }}" class="btn btn-primary"><i
                                         class="fas fa-plus"></i> Add</a>
                             </div>
+                            @endif
 
                             <div class="clearfix mb-3"></div>
 
@@ -85,6 +87,7 @@ active
                                             </td>
                                             <td>
                                                 {{ $teaching->subject }}
+                                                @if (Auth::user()->role != 7)
                                                 <div class="table-links">
                                                     <a
                                                         href="{{ action('TeachingController@show', $teaching->id) }}">View</a>
@@ -96,6 +99,7 @@ active
                                                         data-id="{{$teaching->id}}" href='javascript:void(0)'
                                                         class="text-danger">Delete</a>
                                                 </div>
+                                                @endif
                                             </td>
                                             <td>
                                                 {{ $teaching->class }}
@@ -152,7 +156,8 @@ active
                             url: "{{ url('dashboard/teaching')}}" + '/' + teachingId,
                             success: function (data) {
                                 $("#teaching_" + teachingId).remove();
-                                swal("Sukses!", "Data pengajar telah dihapus.", "success");
+                                swal("Sukses!", "Data pengajar telah dihapus.",
+                                    "success");
                             },
                             error: function (data) {
                                 swal("Gagal!", "Data pengajar gagal dihapus.", "error");

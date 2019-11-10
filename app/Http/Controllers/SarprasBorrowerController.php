@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\UserData;
 use App\SarprasInventory;
 use App\Room;
@@ -19,6 +21,17 @@ class SarprasBorrowerController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role == 7 || Auth::user()->role == 6) {
+            $count = ViewSarprasBorrower::where('id_user', Auth::id())->count();
+            $countAvailable = ViewSarprasBorrower::where(['status' => 'Dikembalikan', 'id_user' => Auth::id()])->count();
+            $countBorrow = ViewSarprasBorrower::where(['status' => 'Belum Dikembalikan', 'id_user' => Auth::id()])->count();
+            $borrower = ViewSarprasBorrower::where('id_user', Auth::id())->get();
+            return view('student/borrow')
+            ->withCounts($count)
+            ->withAvailable($countAvailable)
+            ->withBorrowed($countBorrow)
+            ->withBorrowers($borrower);
+        }
         $count = ViewSarprasBorrower::count();
         $countAvailable = ViewSarprasBorrower::where('status', 'Dikembalikan')->count();
         $countBorrow = ViewSarprasBorrower::where('status', 'Belum Dikembalikan')->count();

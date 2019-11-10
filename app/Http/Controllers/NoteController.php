@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Response, Auth;
 
 use App\Note;
+use App\Student;
 use App\StudentClass;
 
 class NoteController extends Controller
@@ -17,7 +18,7 @@ class NoteController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('administrator');
+        //$this->middleware('administrator');
         // $this->middleware('admin.kurikulum');
         // $this->middleware('teacher');
         // $this->middleware('student')->only('show');
@@ -30,11 +31,21 @@ class NoteController extends Controller
      */
     public function index()
     {
-        $count = Note::count();
-        $notes = Note::paginate(20);
-        return view('note/index')
-        ->withCounts($count)
-        ->withNotes($notes);
+        if(Auth::user()->role == 7) {
+            $class = Student::where('id_user', Auth::id());
+            $idClass = $class->first()->id_class;
+            $count = Note::where('id_class', $idClass)->count();
+            $notes = Note::where('id_class', $idClass)->paginate(20);
+            return view('note/index')
+            ->withCounts($count)
+            ->withNotes($notes);
+        } else {
+            $count = Note::count();
+            $notes = Note::paginate(20);
+            return view('note/index')
+            ->withCounts($count)
+            ->withNotes($notes);
+        }
     }
 
     /**

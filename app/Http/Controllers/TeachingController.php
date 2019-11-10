@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Response;
+use Response, Auth;
 
 use App\TeachingData;
 use App\Subject;
+use App\Student;
 use App\StudentClass;
 use App\Room;
 use App\ViewTeachingData;
@@ -21,7 +22,7 @@ class TeachingController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('administrator');
+        //$this->middleware('administrator');
         // $this->middleware('admin.kurikulum');
         // $this->middleware('teacher')->only('show');
     }
@@ -33,11 +34,35 @@ class TeachingController extends Controller
      */
     public function index()
     {
-        $count = ViewTeachingData::count();
-        $teachings = ViewTeachingData::all();
-        return view('teaching/index')
-        ->withCounts($count)
-        ->withTeachings($teachings);
+        $role = Auth::user()->role;
+        if ($role == 7) {
+            $todayDate = date('N', strtotime(date('l')));
+            $myClass = Student::where('id_user', Auth::id())->first()->id_class;
+
+            $cond = ['day' => $todayDate, 'class' => StudentClass::find($myClass)->name];
+
+            $count = ViewTeachingData::where($cond)->count();
+            $teachings = ViewTeachingData::where($cond)->get();
+            return view('teaching/index')
+            ->withCounts($count)
+            ->withTeachings($teachings);
+        } else if($role == 6) {
+            $todayDate = date('N', strtotime(date('l')));
+
+            $cond = ['day' => $todayDate, 'id_teacher' => Auth::id()];
+
+            $count = ViewTeachingData::where($cond)->count();
+            $teachings = ViewTeachingData::where($cond)->get();
+            return view('teaching/index')
+            ->withCounts($count)
+            ->withTeachings($teachings);
+        } else {
+            $count = ViewTeachingData::count();
+            $teachings = ViewTeachingData::all();
+            return view('teaching/index')
+            ->withCounts($count)
+            ->withTeachings($teachings);
+        }
     }
 
     /**

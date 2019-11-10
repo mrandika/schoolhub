@@ -57,7 +57,8 @@ active
                         </div>
                     </div>
                     @endif
-                    <form action="{{ action('SarprasBorrowerController@store') }}" method="post" enctype="multipart/form-data">
+                    <form action="{{ action('SarprasBorrowerController@store') }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="card">
                             <div class="card-header">
@@ -65,6 +66,7 @@ active
                             </div>
                             <div class="card-body">
                                 <div class="form-group row mb-4">
+                                    @if (Auth::user()->role != 7)
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama
                                         Peminjam</label>
                                     <div class="col-sm-12 col-md-7">
@@ -75,6 +77,12 @@ active
                                             @endforeach
                                         </select>
                                     </div>
+                                    @else
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">ID Peminjam</label>
+                                    <div class="col-sm-12 col-md-7">
+                                        <input type="number" class="form-control" name="id_user" value="{{ Auth::id() }}" readonly>
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Nama

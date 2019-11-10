@@ -19,6 +19,14 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/blog', function() {
+    $post = \App\BlogPost::all();
+    $categories = \App\BlogCategory::all();
+    return view('blog/home')
+    ->withCategories($categories)
+    ->withPosts($post);
+})->name('home');
+
 
 Route::resource('dashboard/blog/posts', 'PostController');
 Route::resource('dashboard/blog/categories', 'CategoryController');
@@ -94,12 +102,22 @@ Route::get('dashboard/presence/reports/exports', array(
 // Today
 Route::get('dashboard/teacher/today', 'TeacherController@today')->name('teacher.today');
 Route::get('/search','TeacherController@search');
+Route::get('dashboard/test/teacher','TeacherController@index_test')->name('teacher.index.test');
+Route::get('dashboard/test/teacher/create','TeacherController@create_test')->name('teacher.create.test');
+Route::post('dashboard/test/teacher/save','TeacherController@store_test')->name('teacher.store.test');
 
 /**
  * Student Controller
  */
 // Today
-Route::get('dashboard/student/today', 'StudentController@today')->name('student.today');
+Route::get('dashboard/today', 'StudentController@today')->name('student.today');
+Route::get('dashboard/grading', 'StudentController@grading')->name('student.grading');
+Route::get('dashboard/violation', 'StudentController@violation')->name('student.violation');
+Route::get('dashboard/test', 'StudentController@show_testing')->name('student.show.testing');
+Route::post('dashboard/test/validate', 'StudentController@validate_token')->name('student.validate.token');
+Route::get('dashboard/test/attempt', 'StudentController@start_test')->name('student.test');
+Route::post('dashboard/test/save', 'StudentController@save_progress')->name('student.ajax.save.answer');
+Route::post('dashboard/test/finish', 'StudentController@finish_test')->name('student.test.finish');
 
 /**
  * Admin Controller

@@ -40,14 +40,16 @@ active
                         </li>
                     </ul>
                 </div>
+                @if (Auth::user()->role != 7)
                 <div class="float-left p-4">
-                        <a href="{{ action('NoteController@create') }}" class="btn btn-primary"><i
-                                class="fas fa-plus"></i> Add</a>
-                    </div>
+                    <a href="{{ action('NoteController@create') }}" class="btn btn-primary"><i class="fas fa-plus"></i>
+                        Add</a>
+                </div>
+                @endif
             </div>
             <div class="row">
-                    @foreach ($notes->sortByDesc('id') as $note)
-                <div class="col-md-6">
+                @foreach ($notes->sortByDesc('id') as $note)
+                <div class="col-md-3">
                     <div id="note_{{ $note->id }}" class="card">
                         <div class="card-header">
                             <h4 class="card-title">
@@ -58,9 +60,12 @@ active
                         </div>
                         <div class="card-body">
                             <p class="card-text">{{ $note->text }}</p>
-                        <a href="{{ action('NoteController@edit', $note->id) }}" class="card-link text-warning">Edit</a>
+                            @if (Auth::user()->role != 7)
+                            <a href="{{ action('NoteController@edit', $note->id) }}"
+                                class="card-link text-warning">Edit</a>
                             <a id="deleteNote_{{ $note->id }}" data-id="{{ $note->id }}"
                                 class="card-link text-danger"><i class="fas fa-minus-circle"></i> Delete</a>
+                            @endif
                         </div>
                     </div>
                 </div>

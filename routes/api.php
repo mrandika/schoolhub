@@ -25,6 +25,8 @@ Route::get('today', 'Api\TodayController@index');
 
 Route::get('sarpras/borrow', 'Api\SarprasBorrowerController@borrow');
 Route::get('teaching', 'Api\TeachingController@index');
+Route::get('payment', 'Api\PaymentController@buy');
+Route::get('grade', 'Api\GradeController@index');
 
 Route::resource('presence', 'Api\PresenceController');
 Route::resource('post', 'Api\PostController');

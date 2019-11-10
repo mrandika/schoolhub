@@ -90,15 +90,15 @@ active
                                             <td>
                                                 {{ $inventory->id }}
                                             </td>
-                                            <td>
-                                                <img
-                                                    src="{{ url('uploads/sarprasInventoryImage/'.$inventory->image) }}" width="50%">
+                                            <td width="30%">
+                                                <img src="{{ url('uploads/sarprasInventoryImage/'.$inventory->image) }}" width="30%">
                                             </td>
                                             <td>
                                                 {{ $inventory->name }}
                                                 <div class="table-links">
                                                     <a
                                                         href="{{ action('SarprasInventoryController@show', $inventory->id) }}">View</a>
+                                                    @if (Auth::user()->role != 7)
                                                     <div class="bullet"></div>
                                                     <a
                                                         href="{{ action('SarprasInventoryController@edit', $inventory->id) }}">Edit</a>
@@ -106,6 +106,7 @@ active
                                                     <a id="deleteInventory_{{ $inventory->id }}"
                                                         data-id="{{$inventory->id}}" href='javascript:void(0)'
                                                         class="text-danger">Delete</a>
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td>
@@ -152,7 +153,8 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/sarpras/inventory')}}" + '/' + inventoryId,
+                            url: "{{ url('dashboard/sarpras/inventory')}}" + '/' +
+                                inventoryId,
                             success: function (data) {
                                 $("#inventory_" + inventoryId).remove();
                                 swal("Sukses!", "Data barang telah dihapus.",

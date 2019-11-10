@@ -59,17 +59,18 @@ $role = Auth::user()->role;
                 <span>Data Pelanggaran</span></a></li>
 
 <li class="menu-header">Kantin</li>
-<li class=@yield('sellerActive')><a class="nav-link" href="{{action('KantinSellerController@index')}}"><i class="fas fa-ticket-alt"></i>
+<li class=@yield('sellerActive')><a class="nav-link" href="{{action('KantinSellerController@index')}}"><i
+                        class="fas fa-ticket-alt"></i>
                 <span>Penjual</span></a></li>
 
 <li class="menu-header">Data Blog</li>
 <li class=@yield('postActive')><a class="nav-link" href="{{action('PostController@index')}}"><i class="fas fa-pen"></i>
                 <span>Post</span></a></li>
-<li class=@yield('categoryActive')><a class="nav-link" href="{{action('CategoryController@index')}}"><i
-                        class="fas fa-pen"></i>
-                <span>Kategori</span></a></li>
+{{-- <li class=@yield('categoryActive')><a class="nav-link" href="{{action('CategoryController@index')}}"><i
+        class="fas fa-pen"></i>
+<span>Kategori</span></a></li>
 <li class=@yield('tagActive')><a class="nav-link" href="{{action('TagController@index')}}"><i class="fas fa-pen"></i>
-                <span>Tag</span></a></li>
+                <span>Tag</span></a></li> --}}
 @endif
 
 {{-- For Kesiswaan Admin --}}
@@ -94,13 +95,37 @@ $role = Auth::user()->role;
 
 {{-- For Teacher --}}
 @if ($role == 6)
-
+<li class=@yield('todayActive')><a class="nav-link" href="{{route('student.today')}}"><i class="fas fa-pen"></i>
+                <span>Today</span></a></li>
+<li class="menu-header">Data Pembelajaran</li>
+<li class=@yield('teachingActive')><a class="nav-link" href="{{action('TeachingController@index')}}"><i
+                        class="fas fa-book"></i>
+                <span>Jadwal Mengajar</span></a></li>
+<li class=@yield('presenceActive')><a class="nav-link" href="{{action('PresenceController@index')}}"><i
+                        class="fas fa-user-check"></i>
+                <span>Presensi Siswa</span></a></li>
+<li class=@yield('noteActive')><a class="nav-link" href="{{action('NoteController@index')}}"><i
+                        class="fas fa-sticky-note"></i>
+                <span>Catatan</span></a></li>
+<li class=@yield('testActive')><a class="nav-link" href="{{route('teacher.index.test')}}"><i
+                        class="fas fa-spell-check"></i>
+                <span>Data Ujian</span></a></li>
+<li class="menu-header">Kesiswaan</li>
+<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanReportController@index')}}"><i
+                        class="fas fa-list"></i>
+                <span>Laporan Pelanggaran</span></a></li>
+<li class="menu-header">Sarpras</li>
+<li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i
+                        class="fas fa-cubes"></i>
+                <span>Data Barang</span></a></li>
+<li class=@yield('borrowDataActive')><a class="nav-link" href="{{action('SarprasBorrowerController@index')}}"><i
+                        class="fas fa-list"></i>
+                <span>Data Peminjaman</span></a></li>
 @endif
 
-{{-- For Teacher --}}
+{{-- For Student --}}
 @if ($role == 7)
-<li class=@yield('todayActive')><a class="nav-link" href="{{action('TeacherController@index')}}"><i
-                        class="fas fa-pen"></i>
+<li class=@yield('todayActive')><a class="nav-link" href="{{route('student.today')}}"><i class="fas fa-pen"></i>
                 <span>Today</span></a></li>
 <li class=@yield('noteActive')><a class="nav-link" href="{{action('NoteController@index')}}"><i
                         class="fas fa-sticky-note"></i>
@@ -109,25 +134,29 @@ $role = Auth::user()->role;
 <li class="menu-header">Pembelajaran</li>
 <li class=@yield('teachingActive')><a class="nav-link" href="{{action('TeachingController@index')}}"><i
                         class="fas fa-chalkboard-teacher"></i>
-                <span>Jadwal Mengajar</span></a></li>
+                <span>Jadwal Pelajaran</span></a></li>
 <li class=@yield('presenceActive')><a class="nav-link" href="{{action('PresenceController@index')}}"><i
                         class="fas fa-user-check"></i>
-                <span>Presensi Siswa</span></a></li>
-<li class=@yield('gradingActive')><a class="nav-link" href="{{action('StudentController@index')}}"><i
+                <span>Presensi</span></a></li>
+<li class=@yield('gradingActive')><a class="nav-link" href="{{action('StudentController@grading')}}"><i
                         class="far fa-list"></i>
-                <span>Penilaian Siswa</span></a></li>
+                <span>Penilaian</span></a></li>
+<li class=@yield('testActive')><a class="nav-link" href="{{action('StudentController@show_testing')}}"><i
+                        class="fas fa-spell-check"></i>
+                <span>Ujian</span></a></li>
 
-{{-- <li class="menu-header">Kesiswaan</li>
-<li class=@yield('reportActive')><a class="nav-link" href="{{action('KesiswaanViolationListController@create')}}"><i
-        class="fas fa-key"></i>
-<span>Buat Laporan</span></a></li> --}}
+<li class="menu-header">Kesiswaan</li>
+<li class=@yield('reportActive')><a class="nav-link" href="{{action('StudentController@violation')}}"><i
+                        class="fas fa-list"></i>
+                <span>Pelanggaran</span></a></li>
 
 <li class="menu-header">Sarpras</li>
 <li class=@yield('inventoryActive')><a class="nav-link" href="{{action('SarprasInventoryController@index')}}"><i
                         class="fas fa-cubes"></i>
                 <span>Data Barang</span></a></li>
-{{-- <li class=""><a class="nav-link" href="{{action('SarprasController@borrowData')}}"><i class="fas fa-list"></i>
-<span>Data Peminjaman</span></a></li> --}}
+<li class=@yield('borrowDataActive')><a class="nav-link" href="{{action('SarprasBorrowerController@index')}}"><i
+                        class="fas fa-list"></i>
+                <span>Data Peminjaman</span></a></li>
 @endif
 
 @endsection

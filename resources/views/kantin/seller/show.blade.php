@@ -139,6 +139,7 @@ active
                                 <h2><a href="#">{{ $inventory->name }}</a></h2>
                             </div>
                             <p>Rp. {{ $inventory->price }} </p>
+                            {!! Qr::size(150)->generate("KTN=".Crypt::encryptString($inventory->id)); !!}
                         </div>
                     </article>
                 </div>

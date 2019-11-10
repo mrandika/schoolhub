@@ -54,12 +54,12 @@ class HomeController extends Controller
             /**
              * Is an guru
             */
-            return view('guru/today');
+            return view('teacher/today');
         } else if ($role == 7) {
             /**
              * Is an siswa
             */
-            return view('siswa/today');
+            return view('student/today');
         }
     }
 }

@@ -2,16 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Storage, File, Response;
-use DataTables;
-
 use App\Teacher;
-use App\ViewTeacher;
-
+use App\Student;
 use App\User;
 use App\UserData;
+use App\ViewTeacher;
+use App\ViewTeachingData;
+use App\TestQuestion;
+use App\ViewTestQuestion;
+use App\TestToken;
+use App\TeachingData;
+use Auth;
+use DataTables;
+use File;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Response;
+use Storage;
+
+use App\Imports\TestQuestionItemImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+use Faker\Factory as Faker;
 
 class TeacherController extends Controller
 {
@@ -22,19 +34,19 @@ class TeacherController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('administrator');
+        // $this->middleware('administrator');
         // $this->middleware('admin.kurikulum');
         // $this->middleware('teacher')->only('show');
     }
 
     /**
      * Menampilkan laman Today
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function today()
     {
-        return view('teacher/today');  
+        return view('teacher/today');
     }
 
     /**
@@ -48,12 +60,12 @@ class TeacherController extends Controller
         $teachers = ViewTeacher::all();
         if ($request->ajax()) {
             return Datatables::of($teachers)
-                    ->addIndexColumn()
-                    ->make(true);
+                ->addIndexColumn()
+                ->make(true);
         }
         return view('teacher/index')
-        ->withCounts($teachersCount)
-        ->withTeachers($teachers);  
+            ->withCounts($teachersCount)
+            ->withTeachers($teachers);
     }
 
     /**
@@ -63,7 +75,7 @@ class TeacherController extends Controller
      */
     public function create()
     {
-        return view('teacher/create'); 
+        return view('teacher/create');
     }
 
     /**
@@ -89,7 +101,7 @@ class TeacherController extends Controller
             'phone' => 'required|unique:users_data',
         ]);
 
-        $id = User::count()+1;
+        $id = User::count() + 1;
         $role = 6;
         $balance = 0;
         $password = Hash::make($request->get('password'));
@@ -98,8 +110,8 @@ class TeacherController extends Controller
 
         $image = $request->file('image');
         $imageExtension = $image->getClientOriginalExtension();
-        $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-        Storage::disk('public_userImage')->put($imageName,  File::get($image));
+        $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+        Storage::disk('public_userImage')->put($imageName, File::get($image));
 
         $user = new User;
         $user->id = $id;
@@ -146,9 +158,9 @@ class TeacherController extends Controller
         $userData = UserData::find($id);
         $teacher = Teacher::find($id);
         return view('teacher/show')
-        ->withUser($user)
-        ->withData($userData)
-        ->withTeacher($teacher);
+            ->withUser($user)
+            ->withData($userData)
+            ->withTeacher($teacher);
     }
 
     /**
@@ -163,9 +175,9 @@ class TeacherController extends Controller
         $userData = UserData::find($id);
         $teacher = Teacher::find($id);
         return view('teacher/update')
-        ->withUser($user)
-        ->withData($userData)
-        ->withTeacher($teacher);
+            ->withUser($user)
+            ->withData($userData)
+            ->withTeacher($teacher);
     }
 
     /**
@@ -201,8 +213,8 @@ class TeacherController extends Controller
             Storage::disk('public_userImage')->delete($user->image);
             $image = $request->file('image');
             $imageExtension = $image->getClientOriginalExtension();
-            $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-            Storage::disk('public_userImage')->put($imageName,  File::get($image));
+            $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+            Storage::disk('public_userImage')->put($imageName, File::get($image));
             $user->image = $imageName;
         }
         $user->email = $request->post('email');
@@ -232,7 +244,7 @@ class TeacherController extends Controller
 
     /**
      * Search the specified resource from storage.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      */
     public function search(Request $request)
@@ -240,15 +252,15 @@ class TeacherController extends Controller
         if ($request->ajax()) {
             $output = "";
 
-            $teachers = UserData::where('name','LIKE','%'.$request->search."%")->get();
+            $teachers = UserData::where('name', 'LIKE', '%' . $request->search . "%")->get();
 
             if ($teachers) {
                 foreach ($teachers as $key => $teacher) {
-                    $output.='<tr id="teacher_".$teacher->id_user>'.
-                    '<td>'.$teacher->image.'</td>'.
-                    '<td>'.$teacher->name.'</td>'.
-                    '<td>'.$teacher->nip.'</td>'.
-                    '</tr>';
+                    $output .= '<tr id="teacher_".$teacher->id_user>' .
+                    '<td>' . $teacher->image . '</td>' .
+                    '<td>' . $teacher->name . '</td>' .
+                    '<td>' . $teacher->nip . '</td>' .
+                        '</tr>';
                 }
                 return Response($output);
             }
@@ -273,5 +285,87 @@ class TeacherController extends Controller
         $userdata->delete();
         $user->delete();
         return Response::json($user);
+    }
+
+    public function index_test()
+    {
+        $id_user = Auth::id();
+        $tests = ViewTestQuestion::where('id_teacher', $id_user);
+
+        return view('teacher/test_index')->with([
+            'counts' => $tests->count(),
+            'tests' => $tests->get()
+        ]);
+    }
+
+    public function create_test()
+    {
+        $faker = Faker::create('id_ID');
+
+        $teaching = ViewTeachingData::where('id_teacher', Auth::id())->get();
+        $token = $faker->swiftBicNumber;
+        return view('teacher/test_create')->with([
+            'teachings' => $teaching,
+            'token' => $token
+        ]);
+    }
+
+    public function store_test(Request $request)
+    {
+        $id_teaching = $request->post('id_teaching');
+        $section = $request->post('section');
+        $section_name = $request->post('section_name');
+        $token = $request->post('token');
+        $file = $request->file('file');
+        $multiple = $request->has('multiple');
+
+        $question = new TestQuestion;
+        $question->id_teaching = $id_teaching;
+        $question->section = $section;
+        $question->section_name = $section_name;
+        $question->save();
+
+        $teaching = TeachingData::where('id', $id_teaching)->first();
+        $students = Student::where('id_class', $teaching->id_class)->get();
+
+        foreach($students as $student) {
+            $testToken = new TestToken;
+            $testToken->id_question = $question->id;
+            $testToken->id_student = $student->id_user;
+            $testToken->token = $student->nisn."-".$token;
+            $testToken->save();
+        }
+
+        $file_name = "soal-ujian_".$question->id.".xlsx";
+        $file->move('soal', $file_name);
+        Excel::import(new TestQuestionItemImport, public_path('/soal/'.$file_name));
+
+        if ($multiple) {
+            return back();
+        } else {
+            return redirect(route('teacher.index.test'));
+        }
+    }
+
+    public function edit_test(Request $request, $id)
+    {
+        $question = TestQuestion::find($id);
+        $token = TestToken::where('id_question', $id);
+
+        return view('teacher/edit_test')->with([
+            'question' => $question,
+            'token' => $token
+        ]);
+    }
+
+    public function copy_test(Request $request, $id)
+    {
+        $question = TestQuestion::find($id);
+        $token = TestToken::where('id_question', $id);
+        
+        return view('teacher/edit_test')->with([
+            'question' => $question,
+            'token' => $token
+        ]);
     }
 }

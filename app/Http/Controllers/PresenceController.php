@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Response;
+use Response, Auth;
 
 use App\Attendance;
 use App\AttendanceData;
@@ -18,7 +18,7 @@ class PresenceController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('administrator');
+        //$this->middleware('administrator');
         // $this->middleware('teacher');
     }
 
@@ -30,6 +30,18 @@ class PresenceController extends Controller
     public function index()
     {
         $date = date("Y-m-d");
+
+        if(Auth::user()->role == 7) {
+            $attendanceData = AttendanceData::where('created_at', 'like', '%'.$date.'%')->where('id_students', Auth::id());
+            $attendanceHistory = AttendanceData::where('id_students', Auth::id())->get();
+            $count = $attendanceData->count();
+            
+            return view('student/presence')
+            ->withCount($count)
+            ->withAttendances($attendanceData->first())
+            ->withHistory($attendanceHistory);
+        }
+
         $attendanceData = AttendanceData::where('created_at', 'like', '%'.$date.'%');
         $count = $attendanceData->count();
 
