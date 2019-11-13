@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
-use JWTAuth;
-
-use App\UserData;
-use App\ViewTeachingData;
 use App\Student;
 use App\StudentClass;
+use App\ViewTeachingData;
+use JWTAuth;
 
 class TeachingController extends Controller
 {
@@ -20,7 +16,7 @@ class TeachingController extends Controller
             return response()->json([
                 'code' => $code,
                 'message' => $message,
-                'data' => $data
+                'data' => $data,
             ], $code);
         }
 
@@ -30,15 +26,18 @@ class TeachingController extends Controller
         ], $code);
     }
 
-    public function index() 
+    public function index()
     {
         $token = JWTAuth::getToken();
         $id_student = JWTAuth::toUser($token)->id;
 
-        $class = Student::where('id_user', $id_student)->first()->id_class;
+        $todayDate = date('N', strtotime(date('l')));
+        $myClass = Student::where('id_user', $id_student)->first()->id_class;
 
-        $teachingData = ViewTeachingData::where('class', StudentClass::find($class)->name)->get();
-        
+        $cond = ['day' => $todayDate, 'class' => StudentClass::find($myClass)->name];
+
+        $teachingData = ViewTeachingData::where($cond)->get();
+
         return $this::response(200, 'success', $teachingData);
     }
 }

@@ -33,7 +33,7 @@ class PaymentController extends Controller
         $quantity = 1;
         $total = (int) $price * (int) $quantity;
 
-        DB::transaction(function() {
+        DB::transaction(function() use ($seller, $id_buyer, $inventory, $quantity, $total) {
             $payment = new KantinPayment;
             $payment->id_seller = $seller;
             $payment->id_buyer = $id_buyer;

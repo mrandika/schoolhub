@@ -18,6 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/create', 'TodayController@create')->name('today.create');
+Route::post('/home/store', 'TodayController@store')->name('today.store');
+Route::get('/home/edit/{id}', 'TodayController@edit')->name('today.edit');
+Route::patch('/home/update', 'TodayController@update')->name('today.update');
 
 Route::get('/blog', function() {
     $post = \App\BlogPost::all();
@@ -26,7 +30,6 @@ Route::get('/blog', function() {
     ->withCategories($categories)
     ->withPosts($post);
 })->name('home');
-
 
 Route::resource('dashboard/blog/posts', 'PostController');
 Route::resource('dashboard/blog/categories', 'CategoryController');
@@ -57,6 +60,11 @@ Route::resource('dashboard/student', 'StudentController');
 
 // Route::resource('admin/sarpras', 'SarprasController');
 // Route::resource('admin/kesiswaan', 'KesiswaanController');
+
+// Seller Controller
+Route::get('dashboard/seller_transfer/create', 'KantinSellerController@create_transfer')->name('seller.create.transfer');
+Route::post('dashboard/seller_transfer', 'KantinSellerController@store_transfer')->name('seller.store.transfer');
+Route::get('dashboard/seller_transaction/history', 'KantinSellerController@index_transaction')->name('seller.index.transaction');
 
 /**
  * Presence Controller
@@ -105,6 +113,15 @@ Route::get('/search','TeacherController@search');
 Route::get('dashboard/test/teacher','TeacherController@index_test')->name('teacher.index.test');
 Route::get('dashboard/test/teacher/create','TeacherController@create_test')->name('teacher.create.test');
 Route::post('dashboard/test/teacher/save','TeacherController@store_test')->name('teacher.store.test');
+Route::get('dashboard/test/teacher/edit/{id}','TeacherController@edit_test')->name('teacher.edit.test');
+Route::patch('dashboard/test/teacher/update/{id}','TeacherController@update_test')->name('teacher.update.test');
+Route::delete('dashboard/test/teacher/delete/{id}','TeacherController@destroy_test')->name('teacher.destroy.test');
+Route::get('dashboard/grade','TeacherController@index_grade')->name('teacher.index.grade');
+Route::get('dashboard/grade/create/individual','TeacherController@create_grade_individual')->name('teacher.individual.grade');
+Route::get('dashboard/grade/create/class','TeacherController@create_grade_class')->name('teacher.class.grade');
+Route::post('dashboard/grade/save','TeacherController@store_grade_class')->name('teacher.store.class.grade');
+Route::delete('dashboard/grade/delete/{id}','TeacherController@destroy_grade')->name('teacher.destroy.grade');
+Route::get('dashboard/grade/data/class/{id}','TeacherController@get_class_student')->name('teacher.get.student');
 
 /**
  * Student Controller
@@ -118,6 +135,7 @@ Route::post('dashboard/test/validate', 'StudentController@validate_token')->name
 Route::get('dashboard/test/attempt', 'StudentController@start_test')->name('student.test');
 Route::post('dashboard/test/save', 'StudentController@save_progress')->name('student.ajax.save.answer');
 Route::post('dashboard/test/finish', 'StudentController@finish_test')->name('student.test.finish');
+Route::get('dashboard/grading_reports/export', 'StudentController@export_excel_grade')->name('export.grade');
 
 /**
  * Admin Controller

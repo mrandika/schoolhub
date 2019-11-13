@@ -17,7 +17,7 @@ class CreateTestSessionsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('id_student');
             $table->unsignedBigInteger('id_token');
-            $table->longtext('progress');
+            $table->longtext('progress')->nullable();
             $table->integer('score');
             $table->boolean('is_ongoing');
             $table->boolean('is_finished');

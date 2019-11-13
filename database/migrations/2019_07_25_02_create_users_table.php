@@ -72,7 +72,7 @@ class CreateUsersTable extends Migration
             'email' => 'admin-kantin@starbhak.com',
             'username' => 'adminkantin',
             'password' => Hash::make('supersecret'),
-            'balance' => 0,
+            'balance' => 100000,
             'role' => 5,
         ]);
 
@@ -90,7 +90,7 @@ class CreateUsersTable extends Migration
             'email' => 'siswa@starbhak.com',
             'username' => 'siswa',
             'password' => Hash::make('supersecret'),
-            'balance' => 0,
+            'balance' => 10000,
             'role' => 7,
         ]);
 
@@ -99,7 +99,7 @@ class CreateUsersTable extends Migration
             'email' => 'penjual@starbhak.com',
             'username' => 'penjual',
             'password' => Hash::make('supersecret'),
-            'balance' => 0,
+            'balance' => 10000,
             'role' => 8,
         ]);
     }

@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Response;
 use Storage;
+use App\Exports\SiswaGradeExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -299,16 +301,27 @@ class StudentController extends Controller
                 ])->first();
 
                 if (!$isSessionFinished) {
-                    TestSession::updateOrCreate(
-                        ['id_student' => $isNisnValid->id_user, 'id_token' => $isTokenValid->id],
-                        [
-                            'id_student' => $isNisnValid->id_user,
-                            'id_token' => $isTokenValid->id,
-                            'progress' => '',
-                            'score' => 0,
-                            'is_ongoing' => 1,
-                            'is_finished' => 0,
-                        ]);
+                    $session = TestSession::where(['id_student' => $isNisnValid->id_user, 'id_token' => $isTokenValid->id])->first();
+                    if ($session) {
+                        TestSession::updateOrCreate(
+                            ['id_student' => $isNisnValid->id_user, 'id_token' => $isTokenValid->id],
+                            [
+                                'id_student' => $isNisnValid->id_user,
+                                'id_token' => $isTokenValid->id,
+                                'is_ongoing' => 1,
+                                'is_finished' => 0,
+                            ]);
+                    } else {
+                        TestSession::updateOrCreate(
+                            ['id_student' => $isNisnValid->id_user, 'id_token' => $isTokenValid->id],
+                            [
+                                'id_student' => $isNisnValid->id_user,
+                                'id_token' => $isTokenValid->id,
+                                'score' => 0,
+                                'is_ongoing' => 1,
+                                'is_finished' => 0,
+                            ]);
+                    }
 
                     return redirect(route('student.test', ['token' => Crypt::encryptString($isTokenValid->token)]));
                 } else {
@@ -357,7 +370,7 @@ class StudentController extends Controller
             $items = TestQuestionItem::where('id_question', $tokenData->id_question);
             $saved_session = TestSession::where(['id_student' => Auth::id(), 'id_token' => $tokenData->id])->first();
 
-            //dd(json_decode($saved_session->progress['jawaban']));
+            //dd(json_decode($saved_session->progress, 1));
 
             $maxGrade = 100;
             $numOfTest = $items->count();
@@ -367,7 +380,7 @@ class StudentController extends Controller
                 'question' => $question,
                 'items' => $items->get(),
                 'score' => $scorePerTest,
-                //'saved' => json_decode($saved_session->progress[0], true)
+                'saved' => json_decode($saved_session->progress, 1)['jawaban']
             ]);
 
         } else {
@@ -497,5 +510,11 @@ class StudentController extends Controller
         } else {
             return redirect(route('student.grading'));
         }
+    }
+
+    public function export_excel_grade()
+    {
+        $studentName = UserData::where('id_user', Auth::id())->first()->name;
+        return Excel::download(new SiswaGradeExport, '[GRADE] '.$studentName.'.xlsx');
     }
 }

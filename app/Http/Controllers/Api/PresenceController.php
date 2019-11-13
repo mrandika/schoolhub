@@ -71,11 +71,11 @@ class PresenceController extends Controller
 
         $token = JWTAuth::getToken();
 
-        $attendanceData = new AttendanceData;
-        $attendanceData->id_students = JWTAuth::toUser($token)->id;
-        $attendanceData->id_attendance = $id_attendance;
-        $attendanceData->status = $request->post('status');
-        $attendanceData->save();
+        AttendanceData::updateOrCreate(['id_students' => JWTAuth::toUser($token)->id, 'id_attendance' => $id_attendance], [
+            'id_students' => JWTAuth::toUser($token)->id,
+            'id_attendance' => $id_attendance,
+            'status' => $request->post('status')
+        ]);
 
         return $this::response(200, 'success');
     }

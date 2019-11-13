@@ -41,6 +41,12 @@ active
                     </ul>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-body">
+                        <a class="float-right" href="{{ route('export.grade') }}" class="btn btn-info"><i
+                            class="fas fa-download"></i> Export</a>
+                </div>
+            </div>
             <table class="table table-striped">
                 <thead>
                     <tr>

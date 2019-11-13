@@ -12,6 +12,6 @@ class SiswaReportExport implements FromCollection
     */
     public function collection()
     {
-        return ViewKesiswaanReport::where('status', 'Tervalidasi')->get();
+        return ViewKesiswaanReport::select(['id', 'teacher', 'student', 'violation', 'violation_score', 'status', 'created_at'])->where('status', 'Tervalidasi')->get();
     }
 }

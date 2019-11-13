@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Response, Hash, Storage, File;
-
+use App\KantinInventory;
+use App\KantinShop;
+use App\Student;
 use App\User;
 use App\UserData;
-
-use App\KantinShop;
-use App\KantinInventory;
+use App\ViewKantinPayment;
+use Auth;
+use File;
+use Hash;
+use Illuminate\Http\Request;
+use Response;
+use Storage;
 
 class KantinSellerController extends Controller
 {
@@ -24,8 +27,8 @@ class KantinSellerController extends Controller
         $seller = User::where('role', 8)->get();
         $counts = User::where('role', 8)->count();
         return view('kantin/seller/index')
-        ->withCounts($counts)
-        ->withSellers($seller);
+            ->withCounts($counts)
+            ->withSellers($seller);
     }
 
     /**
@@ -60,7 +63,7 @@ class KantinSellerController extends Controller
             'phone' => 'required|unique:users_data',
         ]);
 
-        $id = User::count()+1;
+        $id = User::count() + 1;
         $role = 8;
         $balance = 0;
         $password = Hash::make($request->get('password'));
@@ -69,8 +72,8 @@ class KantinSellerController extends Controller
 
         $image = $request->file('image');
         $imageExtension = $image->getClientOriginalExtension();
-        $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-        Storage::disk('public_userImage')->put($imageName,  File::get($image));
+        $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+        Storage::disk('public_userImage')->put($imageName, File::get($image));
 
         $user = new User;
         $user->id = $id;
@@ -112,15 +115,15 @@ class KantinSellerController extends Controller
 
         $user = User::find($id);
         $userData = UserData::find($id);
-        
+
         if ($shop) {
             $inventory = KantinInventory::where('id_shop', $shop->id)->get();
-            
+
             return view('kantin/seller/show')
-            ->withShop($shop)
-            ->withInventories($inventory)
-            ->withUser($user)
-            ->withData($userData);
+                ->withShop($shop)
+                ->withInventories($inventory)
+                ->withUser($user)
+                ->withData($userData);
         } else {
             return view('kantin/seller/show');
         }
@@ -137,8 +140,8 @@ class KantinSellerController extends Controller
         $user = User::find($id);
         $userData = UserData::find($id);
         return view('kantin/seller/update')
-        ->withUser($user)
-        ->withData($userData);
+            ->withUser($user)
+            ->withData($userData);
     }
 
     /**
@@ -156,8 +159,8 @@ class KantinSellerController extends Controller
             Storage::disk('public_userImage')->delete($user->image);
             $image = $request->file('image');
             $imageExtension = $image->getClientOriginalExtension();
-            $imageName = $id."_".$request->post('name').'.'.$imageExtension;
-            Storage::disk('public_userImage')->put($imageName,  File::get($image));
+            $imageName = $id . "_" . $request->post('name') . '.' . $imageExtension;
+            Storage::disk('public_userImage')->put($imageName, File::get($image));
             $user->image = $imageName;
         }
 
@@ -194,5 +197,37 @@ class KantinSellerController extends Controller
         $seller = User::find($id);
         $seller->delete();
         return Response::json($seller);
+    }
+
+    public function index_transaction()
+    {
+        $date = date("Y-m-d");
+        $payment = ViewKantinPayment::where('id_seller', Auth::id())->where('created_at', 'like', '%'.$date.'%')->get();
+        return view('kantin/seller/transaction_index')->with([
+            'payments' => $payment
+        ]);
+    }
+
+    public function create_transfer()
+    {
+        return view('kantin/seller/transfer');
+    }
+
+    public function store_transfer(Request $request)
+    {
+        $nisn = $request->post('nisn');
+        $balance = $request->post('balance');
+
+        $id_user = Student::where('nisn', $nisn)->first()->id_user;
+
+        $seller = User::find(Auth::id());
+        $seller->balance = $seller->balance - $balance;
+        $seller->save();
+
+        $user = User::find($id_user);
+        $user->balance = $user->balance + $balance;
+        $user->save();
+
+        return view('today');
     }
 }

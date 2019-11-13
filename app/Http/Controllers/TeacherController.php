@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Teacher;
+use App\Imports\TestQuestionItemImport;
 use App\Student;
+use App\StudentGrade;
+use App\Teacher;
+use App\TeachingData;
+use App\TestQuestion;
+use App\TestToken;
 use App\User;
 use App\UserData;
+use App\ViewStudent;
+use App\ViewStudentGrade;
 use App\ViewTeacher;
 use App\ViewTeachingData;
-use App\TestQuestion;
 use App\ViewTestQuestion;
-use App\TestToken;
-use App\TeachingData;
 use Auth;
 use DataTables;
+use Faker\Factory as Faker;
 use File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 use Response;
 use Storage;
-
-use App\Imports\TestQuestionItemImport;
-use Maatwebsite\Excel\Facades\Excel;
-
-use Faker\Factory as Faker;
 
 class TeacherController extends Controller
 {
@@ -287,6 +288,70 @@ class TeacherController extends Controller
         return Response::json($user);
     }
 
+    public function index_grade()
+    {
+        $grade = ViewStudentGrade::where('id_teacher', Auth::id())->get();
+        return view('teacher/grade_index')->with([
+            'grades' => $grade,
+        ]);
+    }
+
+    public function create_grade_individual()
+    {
+        $teaching = ViewTeachingData::where('id_teacher', Auth::id())->get();
+        return view('teacher/grade_create_individual')->with([
+            'teachings' => $teaching,
+        ]);
+    }
+
+    public function create_grade_class()
+    {
+        $teaching = ViewTeachingData::where('id_teacher', Auth::id())->get();
+        return view('teacher/grade_create_class')->with([
+            'teachings' => $teaching,
+        ]);
+    }
+
+    public function store_grade_class(Request $request)
+    {
+        $id_teaching = $request->post('id_teaching');
+        $id_class = $request->post('id_class');
+        $section = $request->post('section');
+        $section_name = $request->post('section_name');
+        $grade = $request->post('grade');
+
+        $students = Student::where('id_class', $id_class)->get();
+
+        foreach ($students as $key => $student) {
+            if ($grade[$key] != null) {
+                $studentGrade = new StudentGrade;
+                $studentGrade->id_teaching = $id_teaching;
+                $studentGrade->id_students = $student->id_user;
+                $studentGrade->section = $section;
+                $studentGrade->section_name = $section_name;
+                $studentGrade->score = $grade[$key];
+                $studentGrade->save();
+            }
+        }
+
+        return redirect(action('TeacherController@index_grade'));
+    }
+
+    public function get_class_student($id)
+    {
+        $student = ViewStudent::where('id_class', $id)->get();
+
+        return response()->json($student);
+    }
+
+    public function destroy_grade($id)
+    {
+        $grade = StudentGrade::find($id);
+        $grade->delete();
+
+        return response()->json($grade);
+    }
+
     public function index_test()
     {
         $id_user = Auth::id();
@@ -294,7 +359,7 @@ class TeacherController extends Controller
 
         return view('teacher/test_index')->with([
             'counts' => $tests->count(),
-            'tests' => $tests->get()
+            'tests' => $tests->get(),
         ]);
     }
 
@@ -306,7 +371,7 @@ class TeacherController extends Controller
         $token = $faker->swiftBicNumber;
         return view('teacher/test_create')->with([
             'teachings' => $teaching,
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -328,17 +393,17 @@ class TeacherController extends Controller
         $teaching = TeachingData::where('id', $id_teaching)->first();
         $students = Student::where('id_class', $teaching->id_class)->get();
 
-        foreach($students as $student) {
+        foreach ($students as $student) {
             $testToken = new TestToken;
             $testToken->id_question = $question->id;
             $testToken->id_student = $student->id_user;
-            $testToken->token = $student->nisn."-".$token;
+            $testToken->token = $student->nisn . "-" . $token;
             $testToken->save();
         }
 
-        $file_name = "soal-ujian_".$question->id.".xlsx";
+        $file_name = "soal-ujian_" . $question->id . ".xlsx";
         $file->move('soal', $file_name);
-        Excel::import(new TestQuestionItemImport, public_path('/soal/'.$file_name));
+        Excel::import(new TestQuestionItemImport, public_path('/soal/' . $file_name));
 
         if ($multiple) {
             return back();
@@ -347,25 +412,79 @@ class TeacherController extends Controller
         }
     }
 
-    public function edit_test(Request $request, $id)
+    public function edit_test($id)
     {
-        $question = TestQuestion::find($id);
-        $token = TestToken::where('id_question', $id);
+        $faker = Faker::create('id_ID');
 
-        return view('teacher/edit_test')->with([
+        $question = TestQuestion::find($id);
+
+        if ($_GET['mode'] == 'copy') {
+            $token = $faker->swiftBicNumber;
+        } else {
+            $studentToken = TestToken::where('id_question', $id)->first()->token;
+            $token = explode('-', $studentToken)[1];
+        }
+
+        return view('teacher/test_edit')->with([
             'question' => $question,
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
-    public function copy_test(Request $request, $id)
+    public function update_test(Request $request, $id)
+    {
+        $mode = $_GET['mode'];
+
+        $id_teaching = $request->post('id_teaching');
+        $section = $request->post('section');
+        $section_name = $request->post('section_name');
+        $token = $request->post('token');
+        $file = $request->file('file');
+
+        switch ($mode) {
+            case 'copy':
+                $id_test = $request->post('_id-test');
+
+                $question = new TestQuestion;
+                $question->id_teaching = $id_teaching;
+                $question->section = $section;
+                $question->section_name = $section_name;
+                $question->save();
+
+                $teaching = TeachingData::where('id', $id_teaching)->first();
+                $students = Student::where('id_class', $teaching->id_class)->get();
+
+                foreach ($students as $student) {
+                    $testToken = new TestToken;
+                    $testToken->id_question = $question->id;
+                    $testToken->id_student = $student->id_user;
+                    $testToken->token = $student->nisn . "-" . $token;
+                    $testToken->save();
+                }
+
+                $file_name = "soal-ujian_" . $question->id . ".xlsx";
+                $file->move('soal', $file_name);
+                Excel::import(new TestQuestionItemImport, public_path('/soal/' . $file_name));
+
+                return redirect(route('teacher.index.test'));
+                break;
+
+            case 'edit':
+                $question = TestQuestion::find($id);
+                $question->section = $section;
+                $question->section_name = $section_name;
+                $question->save();
+
+                return redirect(route('teacher.index.test'));
+                break;
+        }
+    }
+
+    public function destroy_test($id)
     {
         $question = TestQuestion::find($id);
-        $token = TestToken::where('id_question', $id);
-        
-        return view('teacher/edit_test')->with([
-            'question' => $question,
-            'token' => $token
-        ]);
+        $question->delete();
+
+        return response()->json($question);
     }
 }

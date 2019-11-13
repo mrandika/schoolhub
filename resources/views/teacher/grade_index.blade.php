@@ -1,21 +1,21 @@
 @extends('layouts.dashboard')
 
 @section('title')
-Test Page &mdash; SchoolHUB
+Grade Page &mdash; SchoolHUB
 @endsection
 
 @section('sidebarNavigation')
 <div class="sidebar-brand">
-    <a href="{{action('TeacherController@index_test')}}">My Hub</a>
+    <a href="{{action('TeacherController@index_grade')}}">My Hub</a>
 </div>
 <div class="sidebar-brand sidebar-brand-sm">
-    <a href="{{action('TeacherController@index_test')}}">H</a>
+    <a href="{{action('TeacherController@index_grade')}}">H</a>
 </div>
 @endsection
 
 @extends('layouts.super-dashboard-navlist')
 
-@section('testActive')
+@section('gradeActive')
 active
 @endsection
 
@@ -24,29 +24,14 @@ active
 <div class="main-content" style="min-height: 922px;">
     <section class="section">
         <div class="section-header">
-            <h1>Data Ujian</h1>
+            <h1>Data Nilai</h1>
             <div class="section-header-breadcrumb">
                 <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-                <div class="breadcrumb-item"><a href="#">Data Ujian</a></div>
+                <div class="breadcrumb-item"><a href="#">Data Nilai</a></div>
             </div>
         </div>
         <div class="section-body">
-
             <div class="row">
-                <div class="col-12">
-                    <div class="card mb-0">
-                        <div class="card-body">
-                            <ul class="nav nav-pills">
-                                <li class="nav-item">
-                                    <a class="nav-link active" href="#">All <span
-                                            class="badge badge-white">{{ $counts }}</span></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row mt-4">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
@@ -61,8 +46,10 @@ active
                                 </form>
                             </div>
                             <div class="float-left">
-                                <a href="{{ action('TeacherController@create_test') }}" class="btn btn-primary"><i
-                                        class="fas fa-plus"></i> Add</a>
+                                {{-- <a href="{{ action('TeacherController@create_grade_individual') }}"
+                                class="btn btn-primary"><i class="fas fa-plus"></i> Add One</a> --}}
+                                <a href="{{ action('TeacherController@create_grade_class') }}"
+                                    class="btn btn-primary"><i class="fas fa-plus"></i> Add {{--By Class--}}</a>
                             </div>
 
                             <div class="clearfix mb-3"></div>
@@ -71,29 +58,34 @@ active
                                 <table class="table table-striped">
                                     <tbody>
                                         <tr>
+                                            <th>ID Pengajar</th>
                                             <th>Nama</th>
-                                            <th>Mapel</th>
                                             <th>Kelas</th>
+                                            <th>Mapel</th>
+                                            <th>Nilai</th>
                                             <th>Action</th>
-                                            <th>Delete</th>
                                         </tr>
-                                        @foreach ($tests->sortByDesc('id') as $test)
-                                        <tr id="row_{{ $test->id }}">
+                                        @foreach ($grades as $grade)
+                                        <tr id="row_{{ $grade->id }}">
                                             <td>
-                                                {{ $test->section }} - {{ $test->section_name }}
-                                            </td>
-                                            <td>{{ $test->subject_name }}
-                                            </td>
-                                            <td>
-                                                {{ $test->class_name }}
+                                                {{ $grade->id_teaching }} -
+                                                {{ $grade->section }}/{{ $grade->section_name }}
                                             </td>
                                             <td>
-                                                <a class="btn btn-info text-white" href="{{ route('teacher.edit.test', $test->id) }}?mode=copy">Salin</a>
-                                            <a class="btn btn-warning text-white" href="{{ route('teacher.edit.test', $test->id) }}?mode=edit">Edit</a>
+                                                {{ $grade->student }}
                                             </td>
                                             <td>
-                                                <a class="btn btn-danger text-white delete_test"
-                                                    href="javascript:void(0)" data-id="{{ $test->id }}">Hapus</a>
+                                                {{ $grade->class_name }}
+                                            </td>
+                                            <td>
+                                                {{ $grade->subject }}
+                                            </td>
+                                            <td>
+                                                <b>{{ $grade->score }}</b>
+                                            </td>
+                                            <td>
+                                                {{-- <a class="btn btn-warning text-white">Edit</a> --}}
+                                            <a href="javascript:void(0)" class="btn btn-danger text-white delete_grade" data-id="{{ $grade->id }}">Hapus</a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -118,11 +110,11 @@ active
             }
         });
 
-        $('.delete_test').on('click', function () {
-            var testId = $(this).data("id");
+        $('.delete_grade').on('click', function () {
+            var gradeId = $(this).data("id");
             swal({
                     title: "Anda yakin?",
-                    text: "Setelah ujian ini dihapus, semua data yang terkait akan terhapus!",
+                    text: "Setelah nilai ini dihapus, semua data yang terkait akan terhapus!",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
@@ -131,14 +123,14 @@ active
                     if (confirm) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ url('dashboard/test/teacher/delete/')}}" + '/' +
-                                testId,
+                            url: "{{ url('dashboard/grade/delete')}}" + '/' +
+                            gradeId,
                             success: function (data) {
-                                $("#row_" + testId).remove();
-                                swal("Sukses!", "Data ujian telah dihapus.", "success");
+                                $("#row_" + gradeId).remove();
+                                swal("Sukses!", "Data nilai telah dihapus.", "success");
                             },
                             error: function (data) {
-                                swal("Gagal!", "Data ujian gagal dihapus.", "error");
+                                swal("Gagal!", "Data nilai gagal dihapus.", "error");
                             }
                         });
                     }

@@ -33,7 +33,7 @@ class GradeController extends Controller
         $token = JWTAuth::getToken();
         $id_user = JWTAuth::toUser($token)->id;
 
-        $grade = ViewStudentGrade::where('students', UserData::find($id_user)->name)->get();
+        $grade = ViewStudentGrade::where('id_students', $id_user)->get();
 
         return $this::response(200, 'success', $grade);
     }

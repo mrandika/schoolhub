@@ -34,7 +34,7 @@ class SarprasBorrowerController extends Controller
         $id = Crypt::decryptString($request);
         $token = JWTAuth::getToken();
 
-        DB::transaction(function() {
+        DB::transaction(function() use ($id, $token) {
             $inventory = SarprasInventory::find($id);
             $inventory->status = "Dipinjam";
             $inventory->save();

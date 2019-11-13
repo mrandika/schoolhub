@@ -14,8 +14,8 @@ class TestTokenSeeder extends Seeder
     public function run()
     {
         $tokens = [
-            ['id_question' => 1, 'id_student' => 7, 'token' => 'PGNLNDB'],
-            ['id_question' => 2, 'id_student' => 7, 'token' => 'DBTGTLNJT'],
+            ['id_question' => 1, 'id_student' => 7, 'token' => '123456789-PGNLNDB'],
+            ['id_question' => 2, 'id_student' => 7, 'token' => '123456789-DBTGTLNJT'],
         ];
 
         foreach($tokens as $token) {

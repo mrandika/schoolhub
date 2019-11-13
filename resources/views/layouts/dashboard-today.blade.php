@@ -4,6 +4,10 @@
 Today &mdash; SchoolHUB
 @endsection
 
+@php
+$page = \App\UserTodayPage::find(Auth::id());
+@endphp
+
 @section('content')
 <!-- Main Content -->
 <div class="main-content" style="min-height: 922px;">

@@ -55,7 +55,9 @@ active
                                 <div class="form-check mb-3">
                                     <input class="form-check-input answer" type="radio"
                                         data-id="{{ $loop->parent->iteration }}" name="jawaban_{{ $index }}" value="
-                                    {{ $answerItem->id }}">
+                                    {{ $answerItem->id }}" @if ($saved[$loop->parent->iteration] == $answerItem->id)
+                                        checked
+                                    @endif>
                                     <label class="form-check-label" for="jawaban_{{ $index }}">
                                         {!! $answerItem->text !!}
                                     </label>
