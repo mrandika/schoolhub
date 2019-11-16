@@ -2,9 +2,11 @@
 
 namespace App\Imports;
 
-use App\TestQuestion;
+use App\ViewTestQuestion;
 use App\TestQuestionItem;
 use Maatwebsite\Excel\Concerns\ToModel;
+
+use Auth;
 
 class TestQuestionItemImport implements ToModel
 {
@@ -15,7 +17,7 @@ class TestQuestionItemImport implements ToModel
     */
     public function model(array $row)
     {
-        $question = TestQuestion::latest('id')->first();
+        $question = ViewTestQuestion::where('id_teacher', Auth::id())->latest('id')->first();
         $answer = array(
 
             array(
