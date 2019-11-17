@@ -402,8 +402,8 @@ class TeacherController extends Controller
         }
 
         $file_name = "soal-ujian_" . $question->id . ".xlsx";
-        $file->move('soal', $file_name);
-        Excel::import(new TestQuestionItemImport, public_path('/soal/' . $file_name));
+        $file->move('uploads/soal', $file_name);
+        Excel::import(new TestQuestionItemImport, public_path('/uploads/soal/' . $file_name));
 
         if ($multiple) {
             return back();
