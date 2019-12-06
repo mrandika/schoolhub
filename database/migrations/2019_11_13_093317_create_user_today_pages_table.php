@@ -19,7 +19,7 @@ class CreateUserTodayPagesTable extends Migration
             $table->text('subheading');
             $table->longText('content');
 
-            $table->foreign('id_user')->references('id')->on('users');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

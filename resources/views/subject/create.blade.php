@@ -79,6 +79,18 @@ active
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Jenis
                                         Mapel</label>
                                     <div class="selectgroup w-100 col-sm-12 col-md-7">
+                                            <label class="selectgroup-item">
+                                                    <input type="radio" name="type" value="N" class="selectgroup-input">
+                                                    <span class="selectgroup-button">N</span>
+                                                </label>
+                                                <label class="selectgroup-item">
+                                                        <input type="radio" name="type" value="L" class="selectgroup-input">
+                                                        <span class="selectgroup-button">L</span>
+                                                    </label>
+                                                    <label class="selectgroup-item">
+                                                            <input type="radio" name="type" value="C" class="selectgroup-input">
+                                                            <span class="selectgroup-button">C</span>
+                                                        </label>
                                         <label class="selectgroup-item">
                                             <input type="radio" name="type" value="C1" class="selectgroup-input">
                                             <span class="selectgroup-button">C1</span>

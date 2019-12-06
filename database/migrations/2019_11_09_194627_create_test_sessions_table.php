@@ -22,8 +22,8 @@ class CreateTestSessionsTable extends Migration
             $table->boolean('is_ongoing');
             $table->boolean('is_finished');
 
-            $table->foreign('id_student')->references('id_user')->on('students');
-            $table->foreign('id_token')->references('id')->on('test_tokens');
+            $table->foreign('id_student')->references('id_user')->on('students')->onDelete('cascade');
+            $table->foreign('id_token')->references('id')->on('test_tokens')->onDelete('cascade');
             $table->timestamps();
         });
     }

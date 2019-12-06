@@ -17,7 +17,7 @@ class CreateSubjectsTable extends Migration
             $table->bigIncrements('id');
             $table->string('code')->length(50);
             $table->string('name')->length(100);
-            $table->enum('type', ['C1', 'C2', 'C3']);
+            $table->enum('type', ['N', 'L', 'C', 'C1', 'C2', 'C3']);
             $table->double('minimum');
             $table->timestamps();
         });

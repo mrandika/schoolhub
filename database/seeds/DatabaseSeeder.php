@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TestQuestionSeeder::class);
         $this->call(TestTokenSeeder::class);
         $this->call(TestQuestionItemSeeder::class);
+        $this->call(NotificationSeeder::class);
     }
 }

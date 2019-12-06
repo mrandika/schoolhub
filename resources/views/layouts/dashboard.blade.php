@@ -42,6 +42,76 @@
                     </ul>
                 </form>
                 <ul class="navbar-nav navbar-right">
+                    @php
+                    $isAnyMessageUnread = \App\Notification::where(['id_recepient' => Auth::id(), 'type' => 'message',
+                    'viewed' => 1])->count()
+                    @endphp
+                    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+                            class="nav-link nav-link-lg message-toggle @if($isAnyMessageUnread) beep @endif"><i
+                                class="far fa-envelope"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">Messages
+                                <div class="float-right">
+                                    <a href="#">Mark All As Read</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-list-content dropdown-list-message">
+                                @foreach (\App\Notification::where(['id_recepient' => Auth::id(), 'type' =>
+                                'message'])->get() as $item)
+                                <a href="#" class="dropdown-item @if($item->viewed == 0) dropdown-item-unread @endif">
+                                    <div class="dropdown-item-avatar">
+                                        <img alt="image" src="assets/img/avatar/avatar-1.png" class="rounded-circle">
+                                    </div>
+                                    <div class="dropdown-item-desc">
+                                        <b>{{ \App\UserData::find($item->id_sender)->name }}</b>
+                                        <p>{!! $item->message !!}</p>
+                                        <div class="time">10 Hours Ago</div>
+                                    </div>
+                                </a>
+                                @endforeach
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </li>
+
+                    @php
+                    $isAnyAlertUnread = \App\Notification::where(['id_recepient' => Auth::id(), 'viewed' =>
+                    1])->where('type', 'alert')->orWhere('type', 'warning')->count() >= 1
+                    @endphp
+                    <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+                            class="nav-link notification-toggle nav-link-lg @if($isAnyAlertUnread) beep @endif"><i
+                                class="far fa-bell"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">Notifications
+                                <div class="float-right">
+                                    <a id="read-all-notification" href="javascript:void(0)">Mark All As Read</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-list-content dropdown-list-icons">
+                                @foreach (\App\Notification::where('id_recepient', Auth::id())->where('type',
+                                'alert')->orWhere('type', 'warning')->get() as $item)
+                                <a href="#" class="dropdown-item dropdown-item-unread">
+                                    <div
+                                        class="dropdown-item-icon @if($item->type == 'alert') bg-warning @else bg-danger @endif text-white">
+                                        <i
+                                            class="fas @if($item->type == 'alert') fa-bell @else fa-exclamation-triangle @endif"></i>
+                                    </div>
+                                    <div class="dropdown-item-desc">
+                                        {!! $item->message !!}
+                                        <div class="time text-primary">{{ \App\UserData::find($item->id_sender)->name }}
+                                        </div>
+                                    </div>
+                                </a>
+                                @endforeach
+                            </div>
+                            <div class="dropdown-footer text-center">
+                                <a id="delete-all-notification" href="javascript:void(0)"><i class="fas fa-times"></i>
+                                    Delete All</a>
+                            </div>
+                        </div>
+                    </li>
                     <li class="dropdown"><a href="#" data-toggle="dropdown"
                             class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                             <img alt="image" src="{{ url('uploads/userImage/'.Auth::user()->image) }}"

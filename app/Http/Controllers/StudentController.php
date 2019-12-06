@@ -17,6 +17,7 @@ use App\ViewStudent;
 use App\ViewStudentGrade;
 use Auth;
 use File;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -174,7 +175,8 @@ class StudentController extends Controller
         $user = User::find($id);
         $userData = UserData::find($id);
         $class = StudentClass::all();
-        $student = Student::find($id);
+        // $student = Student::find($id);
+        $student = DB::select("CALL show_student($id)");
         return view('student/update')
             ->withUser($user)
             ->withData($userData)

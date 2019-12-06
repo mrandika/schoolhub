@@ -25,5 +25,32 @@ class SubjectSeeder extends Seeder
             $subject->minimum = $faker->numberBetween($min = 75, $max = 80);
             $subject->save();
         }
+
+        for($y = 1; $y <= 10; $y++){
+            $subject = new Subject;
+            $subject->code = 'MP-'.$i.'-'.$y;
+            $subject->name = 'Mata Pelajaran '.$i.'-'.$y;
+            $subject->type = 'N';
+            $subject->minimum = $faker->numberBetween($min = 75, $max = 80);
+            $subject->save();
+        }
+
+        for($z = 1; $z <= 10; $z++){
+            $subject = new Subject;
+            $subject->code = 'MP-'.$i.'-'.$z;
+            $subject->name = 'Mata Pelajaran '.$i.'-'.$z;
+            $subject->type = 'L';
+            $subject->minimum = $faker->numberBetween($min = 75, $max = 80);
+            $subject->save();
+        }
+
+        for($q = 1; $q <= 10; $q++){
+            $subject = new Subject;
+            $subject->code = 'MP-'.$i.'-'.$q;
+            $subject->name = 'Mata Pelajaran '.$i.'-'.$q;
+            $subject->type = 'C';
+            $subject->minimum = $faker->numberBetween($min = 75, $max = 80);
+            $subject->save();
+        }
     }
 }
